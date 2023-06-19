@@ -1,12 +1,18 @@
+using HelloWorldLibrary;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSingleton<HelloWorldService>();
+
 var app = builder.Build();
 
-app.MapGet("/", async context =>
+if (app.Environment.IsDevelopment())
 {
-    await context.Response.WriteAsync("Hello, World!");
-});
+    app.UseDeveloperExceptionPage();
+}
+
+app.MapGet("/", (HelloWorldService service) => service.GetMessage());
 
 app.Run();
