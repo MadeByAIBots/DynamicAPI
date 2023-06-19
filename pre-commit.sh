@@ -1,6 +1,10 @@
 #!/bin/bash
+
+# Run the build script
 bash build.sh
-if [ $? -ne 0 ]; then 
-  echo "Build failed, aborting commit"
-  exit 1
-fi
+
+# Run the test script
+bash test.sh
+
+# Exit with the status of the last command (to prevent the commit if the tests failed)
+exit $?
