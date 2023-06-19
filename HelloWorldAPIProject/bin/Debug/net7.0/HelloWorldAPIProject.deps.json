@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "HelloWorldAPIProject/1.0.0": {
+        "runtime": {
+          "HelloWorldAPIProject.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "HelloWorldAPIProject/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
