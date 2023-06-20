@@ -16,15 +16,22 @@ public class EndpointLoader
     public List<EndpointConfiguration> LoadConfigurations()
     {
         var configurations = new List<EndpointConfiguration>();
-        var endpointFiles = Directory.GetFiles(Path.Combine(_configPath, "endpoints"), "*.json");
+        var endpointDirectories = Directory.GetDirectories(Path.Combine(_configPath, "endpoints"));
 
-        foreach (var file in endpointFiles)
+        foreach (var dir in endpointDirectories)
         {
-            Console.WriteLine($"Loading configuration from file: {file}");
-            var configuration = JsonSerializer.Deserialize<EndpointConfiguration>(File.ReadAllText(file), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            Console.WriteLine($"Loading configuration from directory: {dir}");
+            var configuration = JsonSerializer.Deserialize<EndpointConfiguration>(File.ReadAllText(Path.Combine(dir, "endpoint.json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var executorCommand = JsonSerializer.Deserialize<ExecutorCommand>(File.ReadAllText(Path.Combine(dir, "bash.json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            configuration.Command = executorCommand.Command;
             configurations.Add(configuration);
         }
 
         return configurations;
     }
+}
+
+public class ExecutorCommand
+{
+    public string Command { get; set; }
 }
