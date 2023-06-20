@@ -1,44 +1,30 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
-using System.Collections.Generic;
 
 public class EndpointLoader
 {
-    private string configPath;
+    private readonly string _configPath;
 
     public EndpointLoader(string configPath)
     {
-        this.configPath = configPath;
+        _configPath = configPath;
+        Console.WriteLine($"EndpointLoader initialized with configPath: {_configPath}");
     }
 
     public List<EndpointConfiguration> LoadConfigurations()
     {
-        Console.WriteLine($"Loading configurations from {configPath}/endpoints/bash_hello_world.json");
+        var configurations = new List<EndpointConfiguration>();
+        var endpointFiles = Directory.GetFiles(Path.Combine(_configPath, "endpoints"), "*.json");
 
-        try
+        foreach (var file in endpointFiles)
         {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-
-            var endpointConfigurations = JsonSerializer.Deserialize<List<EndpointConfiguration>>(
-                File.ReadAllText(configPath + "/endpoints/bash_hello_world.json"), options);
-
-            Console.WriteLine($"Loaded {endpointConfigurations.Count} configurations successfully.");
-
-            foreach (var config in endpointConfigurations)
-            {
-                Console.WriteLine($"Loaded configuration: Path = {config.Path}, Executor = {config.Executor}, Command = {config.Command}");
-            }
-
-            return endpointConfigurations;
+            Console.WriteLine($"Loading configuration from file: {file}");
+            var configuration = JsonSerializer.Deserialize<EndpointConfiguration>(File.ReadAllText(file), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            configurations.Add(configuration);
         }
-        catch (Exception e)
-        {
-            Console.WriteLine($"Error loading configurations: {e.Message}");
-            return null;
-        }
+
+        return configurations;
     }
 }
