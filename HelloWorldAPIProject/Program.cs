@@ -19,6 +19,6 @@ var endpointLoader = new EndpointLoader(Path.Combine(Directory.GetParent(Directo
 var endpointConfigurations = endpointLoader.LoadConfigurations();
 
 var endpointExecutor = new EndpointExecutor();
-endpointExecutor.CreateEndpoints(app, endpointConfigurations);
+endpointExecutor.CreateEndpoints(app, endpointConfigurations, endpointLoader);
 
 app.Run();

@@ -6,10 +6,12 @@ using System.Text.Json;
 public class EndpointLoader
 {
     private readonly string _configPath;
+    private readonly Dictionary<string, BashExecutorConfiguration> _executorConfigurations;
 
     public EndpointLoader(string configPath)
     {
         _configPath = configPath;
+        _executorConfigurations = new Dictionary<string, BashExecutorConfiguration>(StringComparer.OrdinalIgnoreCase);
         Console.WriteLine($"EndpointLoader initialized with configPath: {_configPath}");
     }
 
@@ -22,16 +24,18 @@ public class EndpointLoader
         {
             Console.WriteLine($"Loading configuration from directory: {dir}");
             var configuration = JsonSerializer.Deserialize<EndpointConfiguration>(File.ReadAllText(Path.Combine(dir, "endpoint.json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            var executorCommand = JsonSerializer.Deserialize<ExecutorCommand>(File.ReadAllText(Path.Combine(dir, "bash.json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            configuration.Command = executorCommand.Command;
             configurations.Add(configuration);
+
+            var executorConfiguration = JsonSerializer.Deserialize<BashExecutorConfiguration>(File.ReadAllText(Path.Combine(dir, configuration.Executor + ".json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            _executorConfigurations.Add(configuration.Executor, executorConfiguration);
         }
 
         return configurations;
     }
-}
 
-public class ExecutorCommand
-{
-    public string Command { get; set; }
+    public BashExecutorConfiguration GetExecutorConfiguration(string executor)
+    {
+        _executorConfigurations.TryGetValue(executor, out var configuration);
+        return configuration;
+    }
 }
