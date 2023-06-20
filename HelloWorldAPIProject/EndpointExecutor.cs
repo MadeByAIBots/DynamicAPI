@@ -1,3 +1,5 @@
+using HelloWorldAPIProject.Definitions.EndpointDefinitions;
+using HelloWorldAPIProject.Definitions.ExecutorDefinitions;
 using System;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;

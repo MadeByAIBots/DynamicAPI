@@ -1,3 +1,5 @@
+using HelloWorldAPIProject.Definitions.EndpointDefinitions;
+using HelloWorldAPIProject.Definitions.ExecutorDefinitions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,7 +20,7 @@ public class EndpointLoader
     public List<EndpointConfiguration> LoadConfigurations()
     {
         var configurations = new List<EndpointConfiguration>();
-        var endpointDirectories = Directory.GetDirectories(Path.Combine(_configPath, "endpoints"));
+        var endpointDirectories = Directory.GetDirectories(_configPath);
 
         foreach (var dir in endpointDirectories)
         {

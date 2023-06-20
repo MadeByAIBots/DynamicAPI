@@ -5,6 +5,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using HelloWorldAPIProject.Definitions.EndpointDefinitions;
+using HelloWorldAPIProject.Definitions.ExecutorDefinitions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-var endpointLoader = new EndpointLoader(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "config"));
+var endpointLoader = new EndpointLoader(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "config/endpoints"));
 var endpointConfigurations = endpointLoader.LoadConfigurations();
 
 var endpointExecutor = new EndpointExecutor();
