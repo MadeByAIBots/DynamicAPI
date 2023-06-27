@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Tests.Common", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Tests.Integration", "HelloWorld\HelloWorld.Tests.Integration\HelloWorld.Tests.Integration.csproj", "{8EDA5E77-AE46-47FB-9D42-D64F40C0E030}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApiServer.Tests.Integration", "DynamicApiServer.Tests.Integration\DynamicApiServer.Tests.Integration.csproj", "{6BF16ABE-CEF8-445D-B348-D75833829397}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{8D53EEEE-DF5B-4375-A857-E9CAAED49540}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D53EEEE-DF5B-4375-A857-E9CAAED49540}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D53EEEE-DF5B-4375-A857-E9CAAED49540}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BF16ABE-CEF8-445D-B348-D75833829397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BF16ABE-CEF8-445D-B348-D75833829397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BF16ABE-CEF8-445D-B348-D75833829397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BF16ABE-CEF8-445D-B348-D75833829397}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

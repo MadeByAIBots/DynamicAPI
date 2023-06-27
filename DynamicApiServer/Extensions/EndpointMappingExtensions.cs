@@ -4,12 +4,15 @@ namespace DynamicApiServer.Extensions
 {
     public static class EndpointMappingExtensions
     {
-        public static void MapFallbackRoute(this WebApplication app)
+        public static void MapFallbackRoute(this IApplicationBuilder app)
         {
-            app.MapFallback(context =>
+            app.UseEndpoints(endpoints =>
             {
-                context.Response.StatusCode = 404;
-                return context.Response.WriteAsync("Endpoint not found");
+                endpoints.MapFallback(context =>
+                {
+                    context.Response.StatusCode = 404;
+                    return context.Response.WriteAsync("Endpoint not found");
+                });
             });
         }
     }

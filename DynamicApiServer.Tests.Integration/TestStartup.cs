@@ -1,0 +1,23 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using DynamicApiServer.Extensions;
+
+namespace DynamicApiServer.Tests.Integration
+{
+    public class TestStartup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddApiServices();
+            services.AddRouting();
+        }
+
+        public void Configure(IApplicationBuilder app)
+        {
+            app.UseRequestLogging();
+            app.UseRouting();
+            app.UseDynamicEndpoints();
+            app.MapFallbackRoute();
+        }
+    }
+}

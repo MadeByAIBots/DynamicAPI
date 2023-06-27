@@ -7,11 +7,11 @@ namespace DynamicApiServer.Extensions
 {
     public static class DynamicEndpointsExtensions
     {
-        public static void UseDynamicEndpoints(this WebApplication app)
+        public static void UseDynamicEndpoints(this IApplicationBuilder app)
         {
             app.Use(async (context, next) =>
             {
-                var handler = app.Services.GetRequiredService<DynamicEndpointHandler>();
+                var handler = app.ApplicationServices.GetRequiredService<DynamicEndpointHandler>();
                 await handler.HandleRequest(context, next);
             });
         }
