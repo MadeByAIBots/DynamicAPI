@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Definitions\EndpointDefinitions\EndpointDefinitions.csproj" />
     <ProjectReference Include="..\Definitions\ExecutorDefinitions\ExecutorDefinitions.csproj" />
+    <ProjectReference Include="..\Utilities\Process\Process.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
