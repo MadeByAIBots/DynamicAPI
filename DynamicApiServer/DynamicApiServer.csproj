@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Definitions\EndpointDefinitions\EndpointDefinitions.csproj" />
     <ProjectReference Include="..\Definitions\ExecutorDefinitions\ExecutorDefinitions.csproj" />
     <ProjectReference Include="..\Utilities\Process\Process.csproj" />
+    <ProjectReference Include="..\DynamicApiConfiguration\DynamicApiConfiguration.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

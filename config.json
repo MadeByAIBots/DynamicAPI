@@ -1,4 +1,5 @@
 {
+    "EndpointPath": "../config/endpoints",
     "Url": "http://localhost",
     "Port": 5054
 }
