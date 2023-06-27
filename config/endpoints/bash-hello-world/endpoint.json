@@ -1,4 +1,5 @@
 {
     "path": "/bash-hello-world",
-    "executor": "bash"
+    "executor": "bash",
+    "method": "post"
 }

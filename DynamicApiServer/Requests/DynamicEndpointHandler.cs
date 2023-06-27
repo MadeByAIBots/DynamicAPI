@@ -33,15 +33,8 @@ namespace DynamicApiServer.Requests
 
                 var args = _argExtractor.ExtractArguments(context, endpointConfig.Args);
 
-                if (endpointConfig.Executor == "bash")
-                {
-                    var output = await _executionHandler.ExecuteCommand(endpointConfig, args);
-                    await context.Response.WriteAsync(output);
-                }
-                else
-                {
-                    HandleUnsupportedExecutor(endpointConfig);
-                }
+                var output = await _executionHandler.ExecuteCommand(endpointConfig, args);
+                await context.Response.WriteAsync(output);
             }
             else
             {
@@ -58,11 +51,6 @@ namespace DynamicApiServer.Requests
         {
             _logger.LogInformation($"Found matching dynamic endpoint: {endpointConfig.Path}");
             _logger.LogInformation($"Executor: {endpointConfig.Executor}");
-        }
-
-        private void HandleUnsupportedExecutor(EndpointDefinition endpointConfig)
-        {
-            _logger.LogInformation($"Executor type {endpointConfig.Executor} not supported.");
         }
 
         private async Task InvokeNextMiddleware(Func<Task> next)
