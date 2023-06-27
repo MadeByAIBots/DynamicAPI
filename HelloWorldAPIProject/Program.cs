@@ -1,33 +1,36 @@
-using System;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using System;
+using HelloWorldAPIProject.Extensions;
+using HelloWorldAPIProject.Definitions.ExecutorDefinitions;
+
+Console.WriteLine("[INFO] Starting application...");
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<EndpointService>(new EndpointService("/root/workspace/DynamicAPI/config/endpoints/"));
-var app = builder.Build();
+// Register services
+builder.Services.AddSingleton<EndpointService>(sp => new EndpointService("/root/workspace/DynamicAPI/config/endpoints"));
+builder.Services.AddSingleton<RequestProcessor>();
+builder.Services.AddSingleton<EndpointExecutor>();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
+Console.WriteLine("[INFO] EndpointExecutor would be initialized here.");
 
+var app = builder.BuildConfiguredApplication();
 
+Console.WriteLine("[INFO] Web application created and configured.");
 
-app.UseRouting();
-var endpointService = app.Services.GetRequiredService<EndpointService>();
-var endpointConfigurations = endpointService.LoadConfigurations();
+// Use the request logging middleware
+app.UseRequestLogging();
 
-var endpoints = app.UseEndpoints(endpoints =>
-{
-    foreach (var config in endpointConfigurations)
-    {
-        var executorConfig = endpointService.GetExecutorConfiguration(config.Executor);
-        var executor = new EndpointExecutor(executorConfig);
-        executor.Execute(endpoints, config);
-    }
-});
+// Use the dynamic endpoint middleware
+app.UseDynamicEndpoints();
+
+// Map the fallback route
+app.MapFallbackRoute();
+
+Console.WriteLine("[INFO] Endpoints mapped.");
+
+Console.WriteLine("[INFO] Application is now listening for requests...");
 
 app.Run();

@@ -1,5 +1,4 @@
 using HelloWorldAPIProject.Definitions.EndpointDefinitions;
-using HelloWorldAPIProject.Definitions.ExecutorDefinitions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,12 +7,10 @@ using System.Text.Json;
 public class EndpointLoader
 {
     private readonly string _configPath;
-    private readonly Dictionary<string, BashExecutorConfiguration> _executorConfigurations;
 
     public EndpointLoader(string configPath)
     {
         _configPath = configPath;
-        _executorConfigurations = new Dictionary<string, BashExecutorConfiguration>(StringComparer.OrdinalIgnoreCase);
         Console.WriteLine($"EndpointLoader initialized with configPath: {_configPath}");
     }
 
@@ -28,16 +25,9 @@ public class EndpointLoader
             var configuration = JsonSerializer.Deserialize<EndpointConfiguration>(File.ReadAllText(Path.Combine(dir, "endpoint.json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             configurations.Add(configuration);
 
-            var executorConfiguration = JsonSerializer.Deserialize<BashExecutorConfiguration>(File.ReadAllText(Path.Combine(dir, configuration.Executor + ".json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            _executorConfigurations.Add(configuration.Executor, executorConfiguration);
+            Console.WriteLine($"Executor configuration would be loaded here for executor: {configuration.Executor}");
         }
 
         return configurations;
-    }
-
-    public BashExecutorConfiguration GetExecutorConfiguration(string executor)
-    {
-        _executorConfigurations.TryGetValue(executor, out var configuration);
-        return configuration;
     }
 }

@@ -1,38 +1,60 @@
-using HelloWorldAPIProject.Definitions.EndpointDefinitions;
+using HelloWorldAPIProject;
 using HelloWorldAPIProject.Definitions.ExecutorDefinitions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing;
 using System;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
+using System.Threading.Tasks;
 
-public class EndpointExecutor
+public class EndpointExecutor : IEndpointExecutor
 {
-    private readonly BashExecutorConfiguration _executorConfig;
+    private readonly ILogger<EndpointExecutor> _logger;
 
-    public EndpointExecutor(BashExecutorConfiguration executorConfig)
+    public EndpointExecutor(ILogger<EndpointExecutor> logger)
     {
-        _executorConfig = executorConfig;
-        Console.WriteLine($"EndpointExecutor initialized with executorConfig: {_executorConfig}");
+        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        _logger.LogInformation("EndpointExecutor initialized.");
     }
 
-    public void Execute(IEndpointRouteBuilder endpoints, EndpointConfiguration config)
+    public async Task<string> ExecuteCommand(BashExecutorConfiguration configuration)
     {
-        endpoints.MapPost(config.Path, async context =>
+        _logger.LogInformation("Executing command...");
+
+        try
         {
-            var process = new System.Diagnostics.Process()
+            if (configuration == null)
             {
-                StartInfo = new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = "bash",
-                    Arguments = $"-c \"{_executorConfig.Command}\"",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                }
-            };
-            process.Start();
-            string result = await process.StandardOutput.ReadToEndAsync();
-            process.WaitForExit();
-            await context.Response.WriteAsync(result);
-        });
+                _logger.LogError("The configuration is null.");
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            string command = configuration.Command;
+
+            if (string.IsNullOrEmpty(command))
+            {
+                _logger.LogError("The command is null or empty.");
+                throw new ArgumentException("Command cannot be null or empty");
+            }
+
+            _logger.LogInformation($"Starting execution of command: {command}");
+
+            var processRunner = new ProcessRunner();
+            var output = await processRunner.RunProcess(command);
+
+            if (string.IsNullOrEmpty(output))
+            {
+                _logger.LogError("The output is null or empty.");
+                throw new Exception("Output cannot be null or empty");
+            }
+
+            _logger.LogInformation($"Successfully executed command: {command}");
+            _logger.LogInformation($"Command output: {output}");
+
+            return output;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An exception occurred during command execution.");
+            return $"Error occurred during command execution: {ex.Message}";
+        }
     }
 }

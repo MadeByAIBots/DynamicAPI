@@ -14,22 +14,36 @@ public class EndpointService
     {
         _configPath = configPath;
         _executorConfigurations = new Dictionary<string, BashExecutorConfiguration>(StringComparer.OrdinalIgnoreCase);
-        Console.WriteLine($"EndpointService initialized with configPath: {_configPath}");
+        Console.WriteLine($"[INFO] Initializing EndpointService with configPath: {_configPath}");
     }
 
     public List<EndpointConfiguration> LoadConfigurations()
     {
         var configurations = new List<EndpointConfiguration>();
         var endpointDirectories = Directory.GetDirectories(_configPath);
+        Console.WriteLine($"[INFO] Found {endpointDirectories.Length} endpoint directories to load configurations from.");
 
         foreach (var dir in endpointDirectories)
         {
-            Console.WriteLine($"Loading configuration from directory: {dir}");
+            var endpointName = Path.GetFileName(dir);
+            Console.WriteLine($"[INFO] Loading configuration for endpoint: {endpointName}");
+
             var configuration = JsonSerializer.Deserialize<EndpointConfiguration>(File.ReadAllText(Path.Combine(dir, "endpoint.json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             configurations.Add(configuration);
 
-            var executorConfiguration = JsonSerializer.Deserialize<BashExecutorConfiguration>(File.ReadAllText(Path.Combine(dir, configuration.Executor + ".json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            _executorConfigurations.Add(configuration.Executor, executorConfiguration);
+            Console.WriteLine($"[INFO] Executor configuration would be loaded here for executor: {configuration.Executor}");
+            if (configuration.Executor == "bash")
+            {
+                var executorConfiguration = JsonSerializer.Deserialize<BashExecutorConfiguration>(File.ReadAllText(Path.Combine(dir, configuration.Executor + ".json")), new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                if (!_executorConfigurations.ContainsKey(configuration.Executor))
+                _executorConfigurations.Add(configuration.Executor, executorConfiguration);
+            }
+            else
+            {
+                Console.WriteLine($"[INFO] Executor type {configuration.Executor} not supported.");
+            }
+
+            Console.WriteLine($"[INFO] Successfully loaded configurations for {endpointName} endpoint.");
         }
 
         return configurations;
@@ -37,6 +51,28 @@ public class EndpointService
 
     public BashExecutorConfiguration GetExecutorConfiguration(string executor)
     {
-        return _executorConfigurations[executor];
+        Console.WriteLine($"[INFO] Executor configuration would be retrieved here for executor: {executor}");
+        if (_executorConfigurations.ContainsKey(executor))
+        {
+            return _executorConfigurations[executor];
+        }
+        else
+        {
+            Console.WriteLine($"[INFO] Executor type {executor} not supported.");
+            return null;
+        }
+    }
+
+    public EndpointConfiguration GetEndpointConfiguration(string path)
+    {
+        foreach (var config in LoadConfigurations())
+        {
+            if (config.Path == path)
+            {
+                return config;
+            }
+        }
+
+        return null;
     }
 }
