@@ -1,5 +1,7 @@
 namespace HelloWorldAPIProject.Definitions.ExecutorDefinitions
-{public class BashExecutorConfiguration
 {
-    public string Command { get; set; }
-}}
+    public class BashExecutorConfiguration : IExecutorConfiguration
+    {
+        public string Command { get; set; }
+    }
+}

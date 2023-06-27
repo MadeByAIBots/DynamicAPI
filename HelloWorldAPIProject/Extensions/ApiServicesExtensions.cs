@@ -9,8 +9,10 @@ namespace HelloWorldAPIProject.Extensions
         {
             services.AddSingleton<EndpointService>(sp => new EndpointService("/root/workspace/DynamicAPI/config/endpoints"));
             services.AddSingleton<RequestProcessor>();
-            services.AddSingleton<EndpointExecutor>();
+            services.AddSingleton<BashEndpointExecutor>();
             services.AddSingleton<DynamicEndpointHandler>();
+            services.AddSingleton<ExecutionHandler>();
+            services.AddSingleton<ExecutorFactory>();
         }
     }
 }

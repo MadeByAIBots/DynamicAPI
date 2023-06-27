@@ -12,13 +12,13 @@ namespace HelloWorldAPIProject.Requests
     {
         private readonly EndpointService _endpointService;
         private readonly ILogger<EndpointService> _logger;
-        private readonly EndpointExecutor _executor;
+        private readonly ExecutionHandler _executionHandler;
 
-        public DynamicEndpointHandler(EndpointService endpointService, ILogger<EndpointService> logger, EndpointExecutor executor)
+        public DynamicEndpointHandler(EndpointService endpointService, ILogger<EndpointService> logger, ExecutionHandler executionHandler)
         {
             _endpointService = endpointService;
             _logger = logger;
-            _executor = executor;
+            _executionHandler = executionHandler;
         }
 
         public async Task HandleRequest(HttpContext context, Func<Task> next)
@@ -31,8 +31,8 @@ namespace HelloWorldAPIProject.Requests
 
                 if (endpointConfig.Executor == "bash")
                 {
-                    var executorConfig = _endpointService.GetExecutorConfiguration(endpointConfig.Executor);
-                    await ExecuteCommandAndWriteResponse(context, executorConfig);
+                    var output = await _executionHandler.ExecuteCommand(endpointConfig);
+                    await context.Response.WriteAsync(output);
                 }
                 else
                 {
@@ -54,13 +54,6 @@ namespace HelloWorldAPIProject.Requests
         {
             _logger.LogInformation($"Found matching dynamic endpoint: {endpointConfig.Path}");
             _logger.LogInformation($"Executor: {endpointConfig.Executor}");
-        }
-
-        private async Task ExecuteCommandAndWriteResponse(HttpContext context, BashExecutorConfiguration executorConfig)
-        {
-            var output = await _executor.ExecuteCommand(executorConfig);
-            _logger.LogInformation($"Output: {output}");
-            await context.Response.WriteAsync(output);
         }
 
         private void HandleUnsupportedExecutor(EndpointConfiguration endpointConfig)
