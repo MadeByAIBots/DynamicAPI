@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\HelloWorld\HelloWorldLibrary\HelloWorldLibrary.csproj" />
     <ProjectReference Include="..\Definitions\EndpointDefinitions\EndpointDefinitions.csproj" />
     <ProjectReference Include="..\Definitions\ExecutorDefinitions\ExecutorDefinitions.csproj" />
   </ItemGroup>
