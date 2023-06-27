@@ -15,29 +15,64 @@ info: Microsoft.Hosting.Lifetime[0]
 info: Microsoft.Hosting.Lifetime[0]
       Content root path: /root/workspace/DynamicAPI/DynamicApiServer
 Received request: POST /bash-hello-world
-[INFO] Initializing EndpointService with configPath: /root/workspace/DynamicAPI/config/endpoints
-[INFO] Found 1 endpoint directories to load configurations from.
-[INFO] Loading configuration for endpoint: bash_hello_world
-[INFO] Executor configuration would be loaded here for executor: bash
-[INFO] Successfully loaded configurations for bash_hello_world endpoint.
-info: EndpointService[0]
+EndpointLoader initialized with configPath: ../config/endpoints
+[INFO] Initializing EndpointService with EndpointLoader and ExecutorDefinitionLoader
+Loading configuration from directory: ../config/endpoints/bash-hello-world
+Executor configuration would be loaded here for executor: bash
+Loading configuration from directory: ../config/endpoints/bash-hello-target
+Executor configuration would be loaded here for executor: bash
+info: DynamicApiServer.EndpointService[0]
       Found matching dynamic endpoint: /bash-hello-world
-info: EndpointService[0]
+info: DynamicApiServer.EndpointService[0]
       Executor: bash
 [INFO] Executor configuration would be retrieved here for executor: bash
-info: BashEndpointExecutor[0]
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+      Loading executor configuration...
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Endpoints path: ../config/endpoints
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Endpoint path: /bash-hello-world
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Executor: bash
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Executor path: ../config/endpoints/bash-hello-world/bash.json
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+      Deserializing configuration into BashExecutorDefinition object
+info: DynamicApiServer.Execution.Executors.Bash.BashEndpointExecutor[0]
       BashEndpointExecutor initialized.
-info: BashEndpointExecutor[0]
-      Executing command...
-info: BashEndpointExecutor[0]
-      Starting execution of command: echo Hello, World!
-info: BashEndpointExecutor[0]
-      Successfully executed command: echo Hello, World!
-info: BashEndpointExecutor[0]
-      Command output: Hello, World!
-      
-      
-info: EndpointService[0]
+info: DynamicApiServer.Execution.Executors.Bash.BashCommandArgumentInjector[0]
+      Arguments successfully injected into command.
+info: DynamicApiServer.EndpointService[0]
       Output: Hello, World!
+      
+      
+Received request: GET /bash-hello-target
+Loading configuration from directory: ../config/endpoints/bash-hello-world
+Executor configuration would be loaded here for executor: bash
+Loading configuration from directory: ../config/endpoints/bash-hello-target
+Executor configuration would be loaded here for executor: bash
+info: DynamicApiServer.EndpointService[0]
+      Found matching dynamic endpoint: /bash-hello-target
+info: DynamicApiServer.EndpointService[0]
+      Executor: bash
+[INFO] Executor configuration would be retrieved here for executor: bash
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+      Loading executor configuration...
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Endpoints path: ../config/endpoints
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Endpoint path: /bash-hello-target
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Executor: bash
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+        Executor path: ../config/endpoints/bash-hello-target/bash.json
+info: DynamicApiServer.ExecutorDefinitionLoader[0]
+      Deserializing configuration into BashExecutorDefinition object
+info: DynamicApiServer.Execution.Executors.Bash.BashEndpointExecutor[0]
+      BashEndpointExecutor initialized.
+info: DynamicApiServer.Execution.Executors.Bash.BashCommandArgumentInjector[0]
+      Arguments successfully injected into command.
+info: DynamicApiServer.EndpointService[0]
+      Output: Hello, universe!
       
       

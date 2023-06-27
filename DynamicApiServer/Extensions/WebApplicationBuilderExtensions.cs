@@ -12,8 +12,6 @@ namespace DynamicApiServer.Extensions
 
             // Register services
             builder.Services.AddLogging();
-            builder.Services.AddTransient<RequestProcessor>();
-            //builder.Services.AddTransient<EndpointRouteConfigurator>();
 
             Console.WriteLine("[INFO] Services registered.");
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class EndpointSummaryLogger
 {
-    public void LogSummary(List<EndpointConfiguration> endpointConfigs)
+    public void LogSummary(List<EndpointDefinition> endpointConfigs)
     {
         // Log the count of endpoints
         Console.WriteLine($"Total endpoints loaded and mapped: {endpointConfigs.Count}");

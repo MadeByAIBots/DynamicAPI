@@ -1,67 +1,69 @@
-using DynamicApiServer;
-using DynamicApiServer.Definitions.ExecutorDefinitions;
 using System;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using DynamicApiServer.Definitions.ExecutorDefinitions;
 
-public class BashEndpointExecutor : IEndpointExecutor
+namespace DynamicApiServer.Execution.Executors.Bash
 {
-    private readonly ILogger<BashEndpointExecutor> _logger;
-
-    public BashEndpointExecutor(ILoggerFactory loggerFactory)
+    public class BashEndpointExecutor : IEndpointExecutor
     {
-        _logger = new Logger<BashEndpointExecutor>(loggerFactory);
-        _logger.LogInformation("BashEndpointExecutor initialized.");
-    }
+        private readonly ILogger<BashEndpointExecutor> _logger;
+        private readonly BashCommandArgumentInjector _commandArgumentInjector;
+        private readonly ProcessRunner _processRunner;
 
-    /*public BashEndpointExecutor(ILogger<BashEndpointExecutor> logger)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        _logger.LogInformation("BashEndpointExecutor initialized.");
-    }*/
-
-    public async Task<string> ExecuteCommand(IExecutorConfiguration executorConfig)
-    {
-        _logger.LogInformation("Executing command...");
-
-        var bashExecutorConfig = (BashExecutorConfiguration)executorConfig;
-        try
+        public BashEndpointExecutor(ILoggerFactory loggerFactory, ProcessRunner processRunner)
         {
+            _logger = loggerFactory.CreateLogger<BashEndpointExecutor>();
+            _commandArgumentInjector = new BashCommandArgumentInjector(loggerFactory);
+            _processRunner = processRunner ?? throw new ArgumentNullException(nameof(processRunner));
+            _logger.LogInformation("BashEndpointExecutor initialized.");
+        }
+        public async Task<string> ExecuteCommand(IExecutorDefinition executorConfig, Dictionary<string, string> args)
+        {
+            if (executorConfig == null)
+            {
+                _logger.LogError("Executor configuration is null.");
+                throw new ArgumentNullException(nameof(executorConfig));
+            }
+
+            if (args == null)
+            {
+                _logger.LogError("Arguments dictionary is null.");
+                throw new ArgumentNullException(nameof(args));
+            }
+
+            var bashExecutorConfig = executorConfig as BashExecutorDefinition;
             if (bashExecutorConfig == null)
             {
-                _logger.LogError("The configuration is null.");
-                throw new ArgumentNullException(nameof(bashExecutorConfig));
+                _logger.LogError("Executor configuration is not of type BashExecutorConfig.");
+                throw new ArgumentException("Invalid executor configuration type.", nameof(executorConfig));
             }
 
             string command = bashExecutorConfig.Command;
-
-            if (string.IsNullOrEmpty(command))
+            string commandWithArgs;
+            try
             {
-                _logger.LogError("The command is null or empty.");
-                throw new ArgumentException("Command cannot be null or empty");
+                commandWithArgs = _commandArgumentInjector.InjectArgumentsIntoCommand(command, args);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error injecting arguments into command.");
+                throw;
             }
 
-            _logger.LogInformation($"Starting execution of command: {command}");
-
-            var processRunner = new ProcessRunner();
-            var output = await processRunner.RunProcess(command);
-
-            if (string.IsNullOrEmpty(output))
+            string output;
+            try
             {
-                _logger.LogError("The output is null or empty.");
-                throw new Exception("Output cannot be null or empty");
+                output = await _processRunner.RunProcess(commandWithArgs);
             }
-
-            _logger.LogInformation($"Successfully executed command: {command}");
-            _logger.LogInformation($"Command output: {output}");
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error running process.");
+                throw;
+            }
 
             return output;
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "An exception occurred during command execution.");
-            return $"Error occurred during command execution: {ex.Message}";
         }
     }
 }

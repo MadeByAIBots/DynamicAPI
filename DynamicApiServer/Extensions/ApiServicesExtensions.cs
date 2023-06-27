@@ -1,5 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using DynamicApiServer.Requests;
+using DynamicApiServer.Execution;
+using DynamicApiConfiguration;
+using DynamicApiServer.Execution.Executors.Bash;
+using DynamicApiServer.Execution.Executors;
 
 namespace DynamicApiServer.Extensions
 {
@@ -7,12 +11,23 @@ namespace DynamicApiServer.Extensions
     {
         public static void AddApiServices(this IServiceCollection services)
         {
-            services.AddSingleton<EndpointService>(sp => new EndpointService("/root/workspace/DynamicAPI/config/endpoints"));
-            services.AddSingleton<RequestProcessor>();
-            services.AddSingleton<BashEndpointExecutor>();
+            var configLoader = new ConfigurationLoader();
+            var config = configLoader.LoadConfiguration("/root/workspace/DynamicAPI/config.json");
+
+            services.AddSingleton(config);
+
             services.AddSingleton<DynamicEndpointHandler>();
+            services.AddSingleton<EndpointArgumentExtractor>();
+
+            services.AddSingleton<EndpointLoader>();
+            services.AddSingleton<EndpointService>();
+
+            services.AddSingleton<BashEndpointExecutor>();
             services.AddSingleton<ExecutionHandler>();
             services.AddSingleton<ExecutorFactory>();
+            services.AddSingleton<ExecutorDefinitionLoader>();
+
+            services.AddSingleton<ProcessRunner>();
         }
     }
 }

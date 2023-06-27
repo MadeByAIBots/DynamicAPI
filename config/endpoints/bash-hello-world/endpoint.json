@@ -1,0 +1,4 @@
+{
+    "path": "/bash-hello-world",
+    "executor": "bash"
+}
