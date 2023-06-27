@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace HelloWorldAPIProject.Definitions.ExecutorDefinitions
+namespace DynamicApiServer.Definitions.ExecutorDefinitions
 {
     public class ExecutorLoader
     {

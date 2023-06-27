@@ -1,4 +1,4 @@
-namespace HelloWorldAPIProject.Definitions.EndpointDefinitions
+namespace DynamicApiServer.Definitions.EndpointDefinitions
 {
     public class EndpointConfiguration
     {

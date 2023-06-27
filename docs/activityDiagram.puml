@@ -1,0 +1,19 @@
+@startuml
+start
+:Start Application;
+:Create EndpointService;
+:Load Configurations;
+:Get Executor Configuration;
+:Get Endpoint Configuration;
+:Create RequestProcessor;
+:Create EndpointExecutor;
+:Configure Middleware;
+:Map Fallback Route;
+:Process Request;
+:Execute Command;
+:Write Response;
+:Request processed successfully;
+stop
+@enduml
+
+View Diagram: https://showme.redstarplugin.com/d/ALQxVejS

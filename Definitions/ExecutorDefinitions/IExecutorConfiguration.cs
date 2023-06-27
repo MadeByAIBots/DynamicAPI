@@ -1,4 +1,4 @@
-namespace HelloWorldAPIProject.Definitions.ExecutorDefinitions
+namespace DynamicApiServer.Definitions.ExecutorDefinitions
 {
     public interface IExecutorConfiguration
     {

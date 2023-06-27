@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldAPIProject", "HelloWorldAPIProject\HelloWorldAPIProject.csproj", "{8D53EEEE-DF5B-4375-A857-E9CAAED49540}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApiServer", "DynamicApiServer\DynamicApiServer.csproj", "{8D53EEEE-DF5B-4375-A857-E9CAAED49540}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Tests.Common", "HelloWorld\HelloWorld.Tests.Common\HelloWorld.Tests.Common.csproj", "{B6C9B437-1C8C-4C97-8220-B3637C0316A3}"
 EndProject

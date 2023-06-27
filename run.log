@@ -1,0 +1,43 @@
+Building...
+[INFO] Starting application...
+[INFO] EndpointExecutor would be initialized here.
+[INFO] Registering services...
+[INFO] Services registered.
+[INFO] Web application created and configured.
+[INFO] Endpoints mapped.
+[INFO] Application is now listening for requests...
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5054
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /root/workspace/DynamicAPI/DynamicApiServer
+Received request: POST /bash-hello-world
+[INFO] Initializing EndpointService with configPath: /root/workspace/DynamicAPI/config/endpoints
+[INFO] Found 1 endpoint directories to load configurations from.
+[INFO] Loading configuration for endpoint: bash_hello_world
+[INFO] Executor configuration would be loaded here for executor: bash
+[INFO] Successfully loaded configurations for bash_hello_world endpoint.
+info: EndpointService[0]
+      Found matching dynamic endpoint: /bash-hello-world
+info: EndpointService[0]
+      Executor: bash
+[INFO] Executor configuration would be retrieved here for executor: bash
+info: BashEndpointExecutor[0]
+      BashEndpointExecutor initialized.
+info: BashEndpointExecutor[0]
+      Executing command...
+info: BashEndpointExecutor[0]
+      Starting execution of command: echo Hello, World!
+info: BashEndpointExecutor[0]
+      Successfully executed command: echo Hello, World!
+info: BashEndpointExecutor[0]
+      Command output: Hello, World!
+      
+      
+info: EndpointService[0]
+      Output: Hello, World!
+      
+      
