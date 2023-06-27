@@ -10,9 +10,7 @@ Console.WriteLine("[INFO] Starting application...");
 var builder = WebApplication.CreateBuilder(args);
 
 // Register services
-builder.Services.AddSingleton<EndpointService>(sp => new EndpointService("/root/workspace/DynamicAPI/config/endpoints"));
-builder.Services.AddSingleton<RequestProcessor>();
-builder.Services.AddSingleton<EndpointExecutor>();
+builder.Services.AddApiServices();
 
 Console.WriteLine("[INFO] EndpointExecutor would be initialized here.");
 
