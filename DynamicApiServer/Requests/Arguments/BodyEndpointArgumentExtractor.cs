@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace DynamicApiServer.Requests.Arguments
 {
@@ -21,24 +23,18 @@ namespace DynamicApiServer.Requests.Arguments
                 using var reader = new StreamReader(httpContext.Request.Body);
                 var body = await reader.ReadToEndAsync();
 
-                try
+                if (argumentDefinition.Type == "string")
                 {
-                    var jsonDocument = JsonDocument.Parse(body);
-                    if (jsonDocument.RootElement.TryGetProperty(argumentDefinition.Name, out var jsonElement))
-                    {
-                        _logger.LogInformation($"Successfully extracted body argument: {argumentDefinition.Name}");
-                        return jsonElement.GetString();
-                    }
-                    else
-                    {
-                        _logger.LogWarning($"Missing body argument: {argumentDefinition.Name}");
-                        return null;
-                    }
+                    return await ExtractPlainTextArgument(body, argumentDefinition);
                 }
-                catch (JsonException ex)
+                else if (argumentDefinition.Type == "json")
                 {
-                    _logger.LogError(ex, $"Error parsing JSON body for argument: {argumentDefinition.Name}");
-                    throw;
+                    return await ExtractJsonArgument(body, argumentDefinition);
+                }
+                else
+                {
+                    // Handle other argument types if necessary
+                    throw new Exception($"Unsupported argument type: {argumentDefinition.Type}");
                 }
             }
             catch (IOException ex)
@@ -59,5 +55,35 @@ namespace DynamicApiServer.Requests.Arguments
             }
         }
 
+        private async Task<string> ExtractPlainTextArgument(string body, EndpointArgumentDefinition argumentDefinition)
+        {
+            // For plain text, the entire body is the argument value
+            _logger.LogInformation($"Successfully extracted body argument: {argumentDefinition.Name}");
+            return body;
+        }
+
+        private async Task<string> ExtractJsonArgument(string body, EndpointArgumentDefinition argumentDefinition)
+        {
+            // For JSON, parse the body and extract the argument by its name
+            try
+            {
+                var jsonDocument = JsonDocument.Parse(body);
+                if (jsonDocument.RootElement.TryGetProperty(argumentDefinition.Name, out var jsonElement))
+                {
+                    _logger.LogInformation($"Successfully extracted body argument: {argumentDefinition.Name}");
+                    return jsonElement.GetString();
+                }
+                else
+                {
+                    _logger.LogWarning($"Missing body argument: {argumentDefinition.Name}");
+                    return null;
+                }
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, $"Error parsing JSON body for argument: {argumentDefinition.Name}");
+                throw;
+            }
+        }
     }
 }
