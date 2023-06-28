@@ -4,6 +4,7 @@ using DynamicApiServer.Execution;
 using DynamicApiConfiguration;
 using DynamicApiServer.Execution.Executors.Bash;
 using DynamicApiServer.Execution.Executors;
+using DynamicApiServer.Requests.Arguments;
 
 namespace DynamicApiServer.Extensions
 {

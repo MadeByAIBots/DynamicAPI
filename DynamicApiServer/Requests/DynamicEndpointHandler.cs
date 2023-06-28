@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using DynamicApiServer.Execution;
 using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApiServer.Requests.Arguments;
+
 
 namespace DynamicApiServer.Requests
 {
@@ -31,7 +33,7 @@ namespace DynamicApiServer.Requests
             {
                 LogEndpointInformation(endpointConfig);
 
-                var args = _argExtractor.ExtractArguments(context, endpointConfig.Args);
+                var args = await _argExtractor.ExtractArguments(context, endpointConfig.Args);
 
                 var output = await _executionHandler.ExecuteCommand(endpointConfig, args);
                 await context.Response.WriteAsync(output);

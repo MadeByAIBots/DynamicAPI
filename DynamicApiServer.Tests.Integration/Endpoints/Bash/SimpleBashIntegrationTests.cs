@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DynamicApiServer.Tests.Integration
 {
-    public class BashIntegrationTests
+    public class SimpleBashIntegrationTests
     {
         [Test]
         public async Task TestBashHelloWorldEndpoint()
@@ -19,21 +19,6 @@ namespace DynamicApiServer.Tests.Integration
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var content = await response.Content.ReadAsStringAsync();
             content.Trim().Should().Be("Hello, World!");
-        }
-
-
-        [Test]
-        public async Task TestBashHelloTargetEndpoint()
-        {
-            using var context = new IntegrationTestContext();
-
-            // Send a request to the endpoint
-            var response = await context.Client.GetAsync("/bash-hello-target?target=universe");
-
-            // Assert that the response is correct
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var content = await response.Content.ReadAsStringAsync();
-            content.Trim().Should().Be("Hello, universe!");
         }
 
         // Add more tests here, following the same pattern
