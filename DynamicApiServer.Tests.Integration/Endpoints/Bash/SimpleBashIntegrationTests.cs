@@ -20,7 +20,5 @@ namespace DynamicApiServer.Tests.Integration
             var content = await response.Content.ReadAsStringAsync();
             content.Trim().Should().Be("Hello, World!");
         }
-
-        // Add more tests here, following the same pattern
     }
 }
