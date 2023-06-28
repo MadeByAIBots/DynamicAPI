@@ -10,7 +10,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
     public class EndpointNotFoundTests
     {
         [Test]
-        public async Task TestBashHelloWorldEndpoint2()
+        public async Task TestEndpointNotFound()
         {
             using var context = new IntegrationTestContext();
 
@@ -20,6 +20,5 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
             // Assert that the response is correct
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
-        // Add more tests here, following the same pattern
     }
 }
