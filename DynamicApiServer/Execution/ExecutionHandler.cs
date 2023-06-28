@@ -20,11 +20,11 @@ namespace DynamicApiServer.Execution
             _executorFactory = executorFactory;
         }
 
-        public async Task<string> ExecuteCommand(EndpointDefinition endpointConfig, Dictionary<string, string> args)
+        public async Task<string> ExecuteCommand(EndpointDefinition endpointDefinition, Dictionary<string, string> args)
         {
-            var executorConfig = _endpointService.GetExecutorDefinition(endpointConfig);
-            var executor = _executorFactory.CreateExecutor(endpointConfig.Executor);
-            var output = await executor.ExecuteCommand(executorConfig, args);
+            var executorDefinition = _endpointService.GetExecutorDefinition(endpointDefinition);
+            var executor = _executorFactory.CreateExecutor(endpointDefinition.Executor);
+            var output = await executor.ExecuteCommand(endpointDefinition, executorDefinition, args);
             _logger.LogInformation($"Output: {output}");
             return output;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using DynamicApiServer.Definitions.ExecutorDefinitions;
+using DynamicApiServer.Definitions.EndpointDefinitions;
 
 namespace DynamicApiServer.Execution.Executors.Bash
 {
@@ -19,7 +20,7 @@ namespace DynamicApiServer.Execution.Executors.Bash
             _processRunner = processRunner ?? throw new ArgumentNullException(nameof(processRunner));
             _logger.LogInformation("BashEndpointExecutor initialized.");
         }
-        public async Task<string> ExecuteCommand(IExecutorDefinition executorConfig, Dictionary<string, string> args)
+        public async Task<string> ExecuteCommand(EndpointDefinition endpointDefinition, IExecutorDefinition executorConfig, Dictionary<string, string> args)
         {
             if (executorConfig == null)
             {

@@ -22,7 +22,7 @@ namespace DynamicApiServer
         public IExecutorDefinition LoadConfiguration(EndpointDefinition endpointConfig)
         {
             try
-            {                
+            {
                 _logger.LogInformation($"Loading executor configuration...");
                 _logger.LogInformation($"  Endpoints path: {_config.EndpointPath}");
                 _logger.LogInformation($"  Endpoint path: {endpointConfig.Path}");
@@ -41,6 +41,12 @@ namespace DynamicApiServer
                 {
                     _logger.LogInformation("Deserializing configuration into BashExecutorDefinition object");
                     return JsonSerializer.Deserialize<BashExecutorDefinition>(configJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+                // Deserialize the configuration into the appropriate object
+                if (endpointConfig.Executor == "csharp")
+                {
+                    _logger.LogInformation("Deserializing configuration into CSharpExecutorDefinition object");
+                    return JsonSerializer.Deserialize<CSharpExecutorDefinition>(configJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
 
                 // Add additional deserialization logic for other executor types here...

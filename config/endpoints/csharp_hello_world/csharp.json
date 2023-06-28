@@ -1,0 +1,4 @@
+{
+  "assembly": "HelloWorldLibrary.dll",
+  "class": "HelloWorldLibrary.HelloWorldEndpoint"
+}
