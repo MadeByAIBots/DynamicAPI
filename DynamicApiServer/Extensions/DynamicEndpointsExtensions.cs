@@ -9,6 +9,8 @@ namespace DynamicApiServer.Extensions
     {
         public static void UseDynamicEndpoints(this IApplicationBuilder app)
         {
+            app.UseRouting();
+            
             app.Use(async (context, next) =>
             {
                 if (!IsAuthorized(context, app))
