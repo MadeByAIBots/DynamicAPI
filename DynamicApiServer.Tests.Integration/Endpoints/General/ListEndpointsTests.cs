@@ -13,7 +13,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
             using var context = new IntegrationTestContext();
 
             // Send a request to the endpoint
-            var response = await context.Client.GetAsync("/list-endpoints");
+            var response = await context.Client.GetAsync("/endpoint-list");
 
             // Read the response content
             var content = await response.Content.ReadAsStringAsync();

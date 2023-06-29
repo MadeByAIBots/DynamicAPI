@@ -1,5 +1,5 @@
 {
-    "path": "/list-endpoints",
+    "path": "/endpoint-list",
     "executor": "csharp-script",
     "method": "get"
 }
