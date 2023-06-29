@@ -13,7 +13,7 @@ namespace DynamicApiServer.Extensions
         public static void AddApiServices(this IServiceCollection services)
         {
             var configLoader = new ConfigurationLoader();
-            var config = configLoader.LoadConfiguration("../../../../config.json");
+            var config = configLoader.LoadConfiguration("../../../config.json");
 
             services.AddSingleton(config);
 

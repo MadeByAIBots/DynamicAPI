@@ -4,6 +4,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+  
+    <!-- Set the output directory for the bin folder -->
+    <BaseOutputPath>../bin</BaseOutputPath>
+
+    <!-- Set the output directory for the obj folder -->
+    <BaseIntermediateOutputPath>../obj</BaseIntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.11.0" />
