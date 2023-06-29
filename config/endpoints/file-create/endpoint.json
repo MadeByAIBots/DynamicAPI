@@ -1,0 +1,25 @@
+{
+  "path": "/file-create",
+  "executor": "csharp-script",
+  "method": "post",
+  "args": [
+    {
+      "name": "working-directory",
+      "type": "string",
+      "source": "query",
+      "description": "The base path where the file will be created."
+    },
+    {
+      "name": "file-path",
+      "type": "string",
+      "source": "query",
+      "description": "The path of the file relative to the working directory."
+    },
+    {
+      "name": "content",
+      "type": "string",
+      "source": "body",
+      "description": "The content to write to the file."
+    }
+  ]
+}
