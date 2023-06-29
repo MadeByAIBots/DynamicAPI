@@ -5,7 +5,8 @@
   "description_for_human": "Dynamically generated API",
   "description_for_model": "Dynamically generated API",
   "auth": {
-    "type": "none"
+    "type": "service_http",
+    "authorization_type": "bearer"
   },
   "api": {
     "type": "openapi",
