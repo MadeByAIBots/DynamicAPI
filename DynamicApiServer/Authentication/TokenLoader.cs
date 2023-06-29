@@ -34,7 +34,7 @@ namespace DynamicApiServer.Authentication
             _logger.LogInformation("Token path: " + tokenFilePath);
             try
             {
-                var token = File.ReadAllText(tokenFilePath);
+                var token = File.ReadAllText(tokenFilePath).Trim();
                 _logger.LogInformation($"Successfully loaded token from {tokenFilePath}");
                 return token;
             }
