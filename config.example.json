@@ -1,0 +1,6 @@
+{
+    "EndpointPath": "/root/workspace/DynamicAPI/config/endpoints",
+    "Url": "http://localhost",
+    "Port": 5054,
+    "TokenFilePath": "/root/workspace/DynamicAPI/auth-token.security"
+}
