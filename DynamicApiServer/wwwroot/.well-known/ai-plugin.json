@@ -6,7 +6,9 @@
   "description_for_model": "Dynamically generated API",
   "auth": {
     "type": "service_http",
-    "authorization_type": "bearer"
+    "authorization_type": "bearer",
+    "verification_tokens":{
+      "openai":"467e3d536e29420683962acc18c03dc3"
   },
   "api": {
     "type": "openapi",
