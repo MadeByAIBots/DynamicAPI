@@ -5,20 +5,24 @@ using System.IO;
 using System.Text.Json;
 using DynamicApiConfiguration;
 
+namespace DynamicApiServer;
+
 public class EndpointLoader
 {
     private readonly ApiConfiguration _config;
+    private readonly WorkingDirectoryResolver _resolver;
 
-    public EndpointLoader(ApiConfiguration config)
+    public EndpointLoader(ApiConfiguration config, WorkingDirectoryResolver resolver)
     {
         _config = config;
+        _resolver = resolver;
         Console.WriteLine($"EndpointLoader initialized with configPath: {_config.EndpointPath}");
     }
 
     public List<EndpointDefinition> LoadConfigurations()
     {
         var configurations = new List<EndpointDefinition>();
-        var endpointDirectories = Directory.GetDirectories(_config.EndpointPath);
+        var endpointDirectories = Directory.GetDirectories(_resolver.WorkingDirectory() + "/" + _config.EndpointPath);
 
         foreach (var dir in endpointDirectories)
         {

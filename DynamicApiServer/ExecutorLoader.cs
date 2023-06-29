@@ -12,9 +12,11 @@ namespace DynamicApiServer
     {
         private readonly ILogger _logger;
         private readonly ApiConfiguration _config;
+        private readonly WorkingDirectoryResolver _resolver;
 
-        public ExecutorDefinitionLoader(ApiConfiguration config, ILoggerFactory loggerFactory)
+        public ExecutorDefinitionLoader(ApiConfiguration config, WorkingDirectoryResolver resolver, ILoggerFactory loggerFactory)
         {
+            _resolver = resolver;
             _config = config;
             _logger = new Logger<ExecutorDefinitionLoader>(loggerFactory);
         }
@@ -29,7 +31,7 @@ namespace DynamicApiServer
                 _logger.LogInformation($"  Executor: {endpointConfig.Executor}");
 
                 // Determine the path to the executor configuration file
-                string configFilePath = _config.EndpointPath + "/" + endpointConfig.FolderName + "/" + endpointConfig.Executor + ".json";
+                string configFilePath = _resolver.WorkingDirectory() + "/" + _config.EndpointPath + "/" + endpointConfig.FolderName + "/" + endpointConfig.Executor + ".json";
 
                 _logger.LogInformation($"  Executor path: {configFilePath}");
 

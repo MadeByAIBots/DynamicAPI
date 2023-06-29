@@ -38,30 +38,3 @@ Console.WriteLine("[INFO] Endpoints mapped.");
 Console.WriteLine("[INFO] Application is now listening for requests...");
 
 app.Run();
-// using Microsoft.AspNetCore.Builder;
-// using Microsoft.Extensions.Hosting;
-// using Microsoft.AspNetCore.StaticFiles;
-
-// var builder = WebApplication.CreateBuilder(args);
-// var app = builder.Build();
-
-// if (app.Environment.IsDevelopment())
-// {
-//     app.UseDeveloperExceptionPage();
-// }
-
-// app.UseStaticFiles(new StaticFileOptions
-// {
-//     ContentTypeProvider = new FileExtensionContentTypeProvider
-//     {
-//         Mappings =
-//         {
-//             [".yaml"] = "application/yaml",
-//             [".yml"] = "application/yaml"
-//         }
-//     }
-// });
-
-// app.MapGet("/", () => "Hello, World!");
-
-// app.Run();

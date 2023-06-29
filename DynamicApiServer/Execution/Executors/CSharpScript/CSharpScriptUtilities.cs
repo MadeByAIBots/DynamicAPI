@@ -8,9 +8,16 @@ using DynamicApiConfiguration;
 
 namespace DynamicApiServer.Execution.Executors.CSharpScript
 {
-    public static class CSharpScriptUtilities
+    public class CSharpScriptUtilities
     {
-        public static void ValidateInput(IExecutorDefinition executorConfig, Dictionary<string, string> args)
+        private readonly WorkingDirectoryResolver _resolver;
+
+        public CSharpScriptUtilities(WorkingDirectoryResolver resolver)
+        {
+            _resolver = resolver;
+        }
+
+        public void ValidateInput(IExecutorDefinition executorConfig, Dictionary<string, string> args)
         {
             if (executorConfig == null)
             {
@@ -23,9 +30,9 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
             }
         }
 
-        public static string FindScript(string scriptName, string folderName, ApiConfiguration _apiConfig)
+        public string FindScript(string scriptName, string folderName, ApiConfiguration _apiConfig)
         {
-            string scriptPath = Path.Combine(_apiConfig.EndpointPath, folderName, scriptName);
+            string scriptPath = Path.Combine(_resolver.WorkingDirectory(), _apiConfig.EndpointPath, folderName, scriptName);
 
             if (!File.Exists(scriptPath))
             {
@@ -35,13 +42,13 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
             return scriptPath;
         }
 
-        public static void ValidateScript(string scriptPath)
+        public void ValidateScript(string scriptPath)
         {
             // Verification of script compilation is currently disabled
             // TODO: Add script verification logic here
         }
 
-        public static async Task<string> ExecuteScript(string scriptPath, Dictionary<string, string> args)
+        public async Task<string> ExecuteScript(string scriptPath, Dictionary<string, string> args)
         {
             var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(File.ReadAllText(scriptPath), globalsType: typeof(Dictionary<string, string>));
             var result = await script.RunAsync(args);

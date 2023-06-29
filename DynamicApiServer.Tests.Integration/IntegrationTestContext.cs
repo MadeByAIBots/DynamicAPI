@@ -31,17 +31,21 @@ public class IntegrationTestContext : IDisposable
 
     public TestEndpointManager Endpoint()
     {
+        // TODO: Clean up this function
+        var resolver = new WorkingDirectoryResolver();
         var loggerFactory = Server.Services.GetRequiredService<ILoggerFactory>();
         // TODO: Remove hardcoded path
-        _endpointManager = new TestEndpointManager("../../../config/endpoints", loggerFactory);
+        _endpointManager = new TestEndpointManager(resolver.WorkingDirectory() + "/config/endpoints", loggerFactory);
         return _endpointManager;
     }
 
     public void UseToken()
     {
+        // TODO: Clean up
+        var resolver = new WorkingDirectoryResolver();
         var config = Server.Services.GetRequiredService<ApiConfiguration>();
         var tokenLoader = Server.Services.GetRequiredService<TokenLoader>();
-        var token = tokenLoader.LoadToken(config.TokenFilePath);
+        var token = tokenLoader.LoadToken(Path.Combine(resolver.WorkingDirectory(), config.TokenFilePath));
 
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }

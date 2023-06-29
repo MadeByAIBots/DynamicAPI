@@ -13,7 +13,7 @@ public class ListEndpointsScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var directories = Directory.GetDirectories(parameters.ApiConfig.EndpointPath);
+        var directories = Directory.GetDirectories(parameters.Resolver.WorkingDirectory() + "/" + parameters.ApiConfig.EndpointPath);
         var endpoints = new List<object>();
 
         foreach (var dir in directories)

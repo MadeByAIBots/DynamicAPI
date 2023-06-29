@@ -12,14 +12,19 @@ namespace DynamicApiServer.Extensions
     {
         public static void AddApiServices(this IServiceCollection services)
         {
+            // TODO: Clean up this function
+            var resolver = new WorkingDirectoryResolver();
+
             var configLoader = new ConfigurationLoader();
-            var config = configLoader.LoadConfiguration("../../../config.json");
+            var config = configLoader.LoadConfiguration(resolver.WorkingDirectory() + "/config.json");
 
             services.AddSingleton(config);
 
             services.AddSingleton<TokenLoader>();
 
-            services.AddToken(config.TokenFilePath);
+            services.AddSingleton<WorkingDirectoryResolver>();
+
+            services.AddToken(resolver.WorkingDirectory() + "/" + config.TokenFilePath);
 
             services.AddSingleton<DynamicEndpointHandler>();
             services.AddSingleton<EndpointArgumentExtractor>();

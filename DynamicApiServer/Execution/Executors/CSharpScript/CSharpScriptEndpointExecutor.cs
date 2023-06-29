@@ -17,9 +17,13 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
     {
         private readonly ILogger<CSharpScriptEndpointExecutor> _logger;
         private readonly ApiConfiguration _apiConfig;
+        private readonly CSharpScriptUtilities _utilities;
+        private readonly WorkingDirectoryResolver _resolver;
 
-        public CSharpScriptEndpointExecutor(ApiConfiguration apiConfig, ILoggerFactory loggerFactory)
+        public CSharpScriptEndpointExecutor(ApiConfiguration apiConfig, WorkingDirectoryResolver resolver, CSharpScriptUtilities utilities, ILoggerFactory loggerFactory)
         {
+            _resolver = resolver;
+            _utilities = utilities;
             _apiConfig = apiConfig;
             _logger = loggerFactory.CreateLogger<CSharpScriptEndpointExecutor>();
             _logger.LogInformation("CSharpScriptEndpointExecutor initialized with ApiConfiguration: {0}", _apiConfig);
@@ -32,16 +36,16 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
             try
             {
                 _logger.LogInformation("Validating input...");
-                CSharpScriptUtilities.ValidateInput(executorConfig, args);
+                _utilities.ValidateInput(executorConfig, args);
                 _logger.LogInformation("Input validated.");
 
                 _logger.LogInformation("Finding script...");
                 var csharpScriptExecutorConfig = executorConfig as CSharpScriptExecutorDefinition;
-                string scriptPath = CSharpScriptUtilities.FindScript(csharpScriptExecutorConfig.Script, endpointDefinition.FolderName, _apiConfig);
+                string scriptPath = _utilities.FindScript(csharpScriptExecutorConfig.Script, endpointDefinition.FolderName, _apiConfig);
                 _logger.LogInformation("Script found at path: {0}", scriptPath);
 
                 _logger.LogInformation("Validating script...");
-                CSharpScriptUtilities.ValidateScript(scriptPath);
+                _utilities.ValidateScript(scriptPath);
                 _logger.LogInformation("Script validated.");
 
                 _logger.LogInformation("Compiling script...");
@@ -83,7 +87,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 
                     _logger.LogInformation("Executing script method...");
                     var method = type.GetMethod("ExecuteAsync");
-                    var result = await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfig, args) });
+                    var result = await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfig, _resolver, args) });
                     string output = result.Body;
 
                     _logger.LogInformation("Script executed. Output: {0}", output);

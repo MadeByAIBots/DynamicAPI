@@ -16,10 +16,12 @@ namespace DynamicApiServer.Execution.Executors.CSharp
     {
         private readonly ILogger<CSharpEndpointExecutor> _logger;
         private readonly ApiConfiguration _apiConfig;
+        private readonly WorkingDirectoryResolver _resolver;
 
-        public CSharpEndpointExecutor(ApiConfiguration apiConfig, ILoggerFactory loggerFactory)
+        public CSharpEndpointExecutor(ApiConfiguration apiConfig, WorkingDirectoryResolver resolver, ILoggerFactory loggerFactory)
         {
             _apiConfig = apiConfig;
+            _resolver = resolver;
             _logger = loggerFactory.CreateLogger<CSharpEndpointExecutor>();
             _logger.LogInformation("CSharpEndpointExecutor initialized.");
         }
@@ -66,7 +68,7 @@ namespace DynamicApiServer.Execution.Executors.CSharp
 
         private string FindDll(string assemblyName, string folderName)
         {
-            string baseDirectory = Path.Combine(_apiConfig.EndpointPath, folderName, "bin");
+            string baseDirectory = Path.Combine(_resolver.WorkingDirectory(), _apiConfig.EndpointPath, folderName, "bin");
 
             _logger.LogInformation("Looking for assembly in: {baseDirectory}");
 
@@ -137,7 +139,7 @@ namespace DynamicApiServer.Execution.Executors.CSharp
         {
             EndpointExecutionResult result;
 
-            var parameters = new DynamicExecutionParameters(_apiConfig, args);
+            var parameters = new DynamicExecutionParameters(_apiConfig, _resolver, args);
 
             try
             {
