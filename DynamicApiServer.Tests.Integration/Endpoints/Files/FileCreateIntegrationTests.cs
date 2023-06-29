@@ -15,6 +15,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
         public async Task TestFileCreateEndpoint()
         {
             using var context = new IntegrationTestContext();
+            context.UseToken();
 
             // Set up
             var workingDirectory = Path.GetTempPath();

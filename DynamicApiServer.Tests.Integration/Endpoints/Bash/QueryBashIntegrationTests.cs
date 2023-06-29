@@ -11,6 +11,7 @@ namespace DynamicApiServer.Tests.Integration
         public async Task TestBashHelloTargetEndpoint()
         {
             using var context = new IntegrationTestContext();
+            context.UseToken();
 
             // Send a request to the endpoint
             var response = await context.Client.GetAsync("/bash-hello-target?target=universe");

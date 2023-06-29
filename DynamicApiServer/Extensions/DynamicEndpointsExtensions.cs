@@ -11,9 +11,32 @@ namespace DynamicApiServer.Extensions
         {
             app.Use(async (context, next) =>
             {
+                if (!IsAuthorized(context, app))
+                {
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Unauthorized");
+                    return;
+                }
+
                 var handler = app.ApplicationServices.GetRequiredService<DynamicEndpointHandler>();
                 await handler.HandleRequest(context, next);
             });
         }
+
+        private static bool IsAuthorized(HttpContext context, IApplicationBuilder app)
+        {
+            var tokenLoader = app.ApplicationServices.GetRequiredService<TokenLoader>();
+            var token = tokenLoader.LoadToken();
+
+            var authorizationHeader = context.Request.Headers["Authorization"].ToString();
+            if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
+            {
+                return false;
+            }
+
+            var bearerToken = authorizationHeader.Split(' ')[1];
+            return bearerToken == token;
+        }
+
     }
 }

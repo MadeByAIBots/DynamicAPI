@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
 
 namespace DynamicApiServer.Tests.Integration;
 
@@ -34,6 +35,15 @@ public class IntegrationTestContext : IDisposable
         // TODO: Remove hardcoded path
         _endpointManager = new TestEndpointManager("/root/workspace/DynamicAPI/config/endpoints", loggerFactory);
         return _endpointManager;
+    }
+
+    public void UseToken()
+    {
+        var config = Server.Services.GetRequiredService<ApiConfiguration>();
+        var tokenLoader = Server.Services.GetRequiredService<TokenLoader>();
+        var token = tokenLoader.LoadToken(config.TokenFilePath);
+
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 
 

@@ -18,6 +18,8 @@ var app = builder.BuildConfiguredApplication();
 
 Console.WriteLine("[INFO] Web application created and configured.");
 
+app.UseTokenValidation();
+
 // Use the request logging middleware
 app.UseRequestLogging();
 

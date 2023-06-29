@@ -11,6 +11,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.CSharpScript
         public async Task TestHelloWorldEndpoint()
         {
             using var context = new IntegrationTestContext();
+            context.UseToken();
 
             // Send a request to the endpoint
             var response = await context.Client.GetAsync("/csharp-script-hello-world");

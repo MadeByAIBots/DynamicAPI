@@ -13,6 +13,7 @@ namespace DynamicApiServer.Tests.Integration
         public async Task TestBashHelloWorldEndpoint()
         {
             using var context = new IntegrationTestContext();
+            context.UseToken();
 
             var output = "Hello world!";
 

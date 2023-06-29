@@ -13,6 +13,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Bash
         public async Task TestBashHelloTargetBodyJsonEndpoint()
         {
             using var context = new IntegrationTestContext();
+            context.UseToken();
 
             // Construct JSON body
             var jsonBody = "{\"target\": \"world\"}";

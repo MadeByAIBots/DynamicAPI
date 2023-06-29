@@ -13,6 +13,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Bash
         public async Task TestBashHelloTargetBodyTextEndpoint()
         {
             using var context = new IntegrationTestContext();
+            context.UseToken();
 
             // Construct text body
             var textBody = "world";

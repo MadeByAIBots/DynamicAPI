@@ -13,7 +13,8 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
         public async Task TestEndpointNotFound()
         {
             using var context = new IntegrationTestContext();
-
+            context.UseToken();
+            
             // Send a request to the endpoint
             var response = await context.Client.GetAsync("/not-found");
 

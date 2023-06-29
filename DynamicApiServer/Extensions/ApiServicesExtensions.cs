@@ -17,6 +17,10 @@ namespace DynamicApiServer.Extensions
 
             services.AddSingleton(config);
 
+services.AddSingleton<TokenLoader>();
+
+services.AddToken(config.TokenFilePath);
+
             services.AddSingleton<DynamicEndpointHandler>();
             services.AddSingleton<EndpointArgumentExtractor>();
 

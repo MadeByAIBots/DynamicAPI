@@ -2,3 +2,4 @@ run.pid
 **/bin/
 **/obj/
 *.log
+*.security
