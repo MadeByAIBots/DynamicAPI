@@ -3,7 +3,6 @@
 # Run the tests
 bash test.sh
 
-
 # Check if the tests passed
 if [ $? -eq 0 ]
 then
@@ -23,9 +22,6 @@ then
 
   # Pull the latest changes
   git pull
-
-  # Push any changes
-  git push
 
   # Run the application
   bash run.sh
