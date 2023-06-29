@@ -12,7 +12,15 @@ namespace DynamicApiServer.Extensions
 
             app.Use(async (context, next) =>
             {
-                var bearerToken = context.Request.Headers["Authorization"].ToString().Split(' ')[1];
+                var authorizationHeader = context.Request.Headers["Authorization"].ToString();
+                if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
+                {
+                    context.Response.StatusCode = 401;
+                    await context.Response.WriteAsync("Unauthorized");
+                    return;
+                }
+
+                var bearerToken = authorizationHeader.Split(' ')[1];
                 if (bearerToken != token)
                 {
                     context.Response.StatusCode = 401;
