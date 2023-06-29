@@ -64,27 +64,15 @@ public class TestEndpointManager : IDisposable
         return this;
     }
 
-    public TestEndpointManager AddFile(object contentObj)
+    public TestEndpointManager AddFile(EndpointDefinition contentObj)
     {
         // Determine the file name based on the type of the object
-        string fileName;
-        if (contentObj is EndpointDefinition)
-        {
-            fileName = "endpoint.json";
+        string fileName = "endpoint.json";
 
             // Set the temporary endpoint path/name to the endpoint definition because a unique ID is appended to the name it starts with so that it's unique for testing
             var endpointDefinition = (EndpointDefinition)contentObj;
             endpointDefinition.Path = "/" + _endpointName.TrimStart('/');
             endpointDefinition.FolderName = _endpointName;
-        }
-        else if (contentObj is BashExecutorDefinition)
-        {
-            fileName = "bash.json";
-        }
-        else
-        {
-            throw new ArgumentException("Invalid object type");
-        }
 
         // Serialize the object to a JSON string
         string content = JsonSerializer.Serialize(contentObj);
@@ -93,6 +81,34 @@ public class TestEndpointManager : IDisposable
 
         return this;
     }
+
+    public TestEndpointManager AddFile(BashExecutorDefinition contentObj)
+    {
+        // Determine the file name based on the type of the object
+        string fileName = "bash.json";
+        
+        // Serialize the object to a JSON string
+        string content = JsonSerializer.Serialize(contentObj);
+
+        AddFile(fileName, content);
+
+        return this;
+    }
+
+
+    public TestEndpointManager AddFile(CSharpScriptExecutorDefinition contentObj)
+    {
+        // Determine the file name based on the type of the object
+        string fileName = "csharp-script.json";
+        
+        // Serialize the object to a JSON string
+        string content = JsonSerializer.Serialize(contentObj);
+
+        AddFile(fileName, content);
+
+        return this;
+    }
+
 
     public TestEndpointManager AddBashEndpoint(string command, string method)
     {

@@ -1,27 +1,41 @@
-using System.Net;
-using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using System.Net;
+using System.Threading.Tasks;
+using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApiServer.Definitions.ExecutorDefinitions;
+using System.Net.Http;
 
-namespace DynamicApiServer.Tests.Integration.Endpoints.CSharpScript
+namespace DynamicApiServer.Tests.Integration
 {
     public class CSharpScriptHelloWorldTests
     {
         [Test]
-        public async Task TestHelloWorldEndpoint()
+        public async Task TestCSharpHelloWorldEndpoint()
         {
             using var context = new IntegrationTestContext();
             context.UseToken();
 
-            // Send a request to the endpoint
-            var response = await context.Client.GetAsync("/csharp-script-hello-world");
+            var endpointPath = context.Endpoint()
+                .Create("csharp-script-hello-world-test")
+                .AddFile(new EndpointDefinition
+                {
+                    Path = "/csharp-script-hello-world-test",
+                    Executor = "csharp-script",
+                    Method = "get"
+                })
+                .AddFile(new CSharpScriptExecutorDefinition
+                {
+                    Script = "HelloWorldScript.csx"
+                })
+                .AddFile("HelloWorldScript.csx", "\n#r \"/root/workspace/DynamicAPI/DynamicApi.Contracts/bin/Debug/net7.0/DynamicApi.Contracts.dll\"\n\nusing System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing DynamicApi.Contracts;\n\npublic class HelloWorldScriptEndpoint : IDynamicEndpointExecutor\n{\n    public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)\n    {\n        return Task.FromResult(new EndpointExecutionResult\n        {\n            Body = \"Hello, World!\"\n        });\n    }\n}\n")
+                .GetEndpointPath();
 
-            // Read the response content
-            var content = await response.Content.ReadAsStringAsync();
+            var response = await context.Client.GetAsync("/" + endpointPath);
 
-            // Assert that the response is correct
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            content.Should().Contain("Hello, World!");
+            var content = await response.Content.ReadAsStringAsync();
+            content.Trim().Should().Be("Hello, World!");
         }
     }
 }
