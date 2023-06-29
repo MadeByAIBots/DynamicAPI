@@ -7,7 +7,8 @@ namespace DynamicApiServer.Extensions
     {
         public static void UseTokenValidation(this IApplicationBuilder app)
         {
-            var token = app.ApplicationServices.GetRequiredService<string>();
+            var tokenLoader = app.ApplicationServices.GetRequiredService<TokenLoader>();
+            var token = tokenLoader.LoadToken();
 
             app.Use(async (context, next) =>
             {
