@@ -1,0 +1,13 @@
+{
+  "path": "/bash-hello-target",
+  "executor": "bash",
+  "method": "get",
+  "args": [
+    {
+      "name": "target",
+      "type": "string",
+      "source": "query",
+      "description": "The target to say hello to."
+    }
+  ]
+}

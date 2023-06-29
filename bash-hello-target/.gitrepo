@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/ingydotnet/git-subrepo#readme
+;
+[subrepo]
+	remote = config/endpoints/bash-hello-target
+	branch = main
+	commit = 1fb45776dcf3996582f7829ec26c1eff3d35ae73
+	parent = 98fca020efb6624ae3b80bc4c8487ba336359c06
+	method = merge
+	cmdver = 0.4.6
