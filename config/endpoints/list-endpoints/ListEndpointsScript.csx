@@ -10,7 +10,7 @@ public class ListEndpointsScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var directories = Directory.GetDirectories("/root/workspace/DynamicAPI/config/endpoints/");
+        var directories = Directory.GetDirectories(parameters.ApiConfig.EndpointPath);
         var endpointNames = new List<string>();
         endpointNames.Add("Available endpoints:");
         foreach (var dir in directories)
