@@ -137,7 +137,7 @@ namespace DynamicApiServer.Execution.Executors.CSharp
         {
             EndpointExecutionResult result;
 
-            var parameters = new DynamicExecutionParameters(args);
+            var parameters = new DynamicExecutionParameters(_apiConfig, args);
 
             try
             {

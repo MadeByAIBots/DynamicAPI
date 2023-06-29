@@ -83,7 +83,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 
                     _logger.LogInformation("Executing script method...");
                     var method = type.GetMethod("ExecuteAsync");
-                    var result = await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(args) });
+                    var result = await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfig, args) });
                     string output = result.Body;
 
                     _logger.LogInformation("Script executed. Output: {0}", output);
