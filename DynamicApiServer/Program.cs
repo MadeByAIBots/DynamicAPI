@@ -20,12 +20,13 @@ var app = builder.BuildConfiguredApplication();
 
 Console.WriteLine("[INFO] Web application created and configured.");
 
+// Use the request logging middleware
+app.UseRequestLogging();
+
 app.UseCustomStaticFiles();
 
 app.UseTokenValidation();
 
-// Use the request logging middleware
-app.UseRequestLogging();
 
 // Use the dynamic endpoint middleware
 app.UseDynamicEndpoints();
