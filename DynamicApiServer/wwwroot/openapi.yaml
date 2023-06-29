@@ -7,11 +7,11 @@ info:
 servers:
   - url: https://dynamicapi.madebyaibots.com
 paths:
-  /hello-world:
+  /endpoint-list:
     get:
-      operationId: helloWorld
-      summary: A simple Hello World endpoint
-      description: This endpoint returns a simple Hello World message.
+      operationId: endpointList
+      summary: A list of all endpoints
+      description: This endpoint returns a list of all endpoints.
       responses:
         "200":
           description: The request was successful.
@@ -20,12 +20,8 @@ paths:
               schema:
                 type: object
                 properties:
-                  message:
-                    type: string
-                    description: The Hello World message.
-        "401":
-          description: Unauthorized. The request requires user authentication.
-        "404":
-          description: Not Found. The requested resource could not be found.
-        "500":
-          description: There was an error processing the request on the server.
+                  endpoints:
+                    type: array
+                    items:
+                      type: string
+                    description: The list of endpoints.
