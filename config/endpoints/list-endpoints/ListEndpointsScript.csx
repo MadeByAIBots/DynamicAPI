@@ -1,26 +1,40 @@
 #r "/root/workspace/DynamicAPI/DynamicApi.Contracts/bin/Debug/net7.0/DynamicApi.Contracts.dll"
+#r "/root/workspace/DynamicAPI/Definitions/EndpointDefinitions/bin/Debug/net7.0/EndpointDefinitions.dll"
 
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DynamicApi.Contracts;
+using DynamicApiServer.Definitions.EndpointDefinitions;
+using System.Text.Json;
 
 public class ListEndpointsScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
         var directories = Directory.GetDirectories(parameters.ApiConfig.EndpointPath);
-        var endpointNames = new List<string>();
-        endpointNames.Add("Available endpoints:");
+        var endpoints = new List<object>();
+
         foreach (var dir in directories)
         {
-            endpointNames.Add(Path.GetFileName(dir));
+            var endpointJsonPath = Path.Combine(dir, "endpoint.json");
+            if (File.Exists(endpointJsonPath))
+            {
+                var endpointJson = File.ReadAllText(endpointJsonPath);
+                var endpointInfo = JsonSerializer.Deserialize<EndpointDefinition>(endpointJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                endpoints.Add(new
+                {
+                    path = endpointInfo.Path,
+                    method = endpointInfo.Method
+                });
+            }
         }
 
+        var json = JsonSerializer.Serialize(endpoints);
         return Task.FromResult(new EndpointExecutionResult
         {
-            Body = string.Join(", ", endpointNames)
+            Body = json
         });
     }
 }
