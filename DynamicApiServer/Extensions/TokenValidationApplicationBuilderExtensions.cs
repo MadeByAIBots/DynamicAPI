@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace DynamicApiServer.Extensions
 {
@@ -12,24 +13,38 @@ namespace DynamicApiServer.Extensions
 
             app.Use(async (context, next) =>
             {
-                var authorizationHeader = context.Request.Headers["Authorization"].ToString();
-                if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
+                if (!IsPubliclyAccessiblePath(context.Request.Path))
                 {
-                    context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync("Unauthorized");
-                    return;
-                }
+                    var authorizationHeader = context.Request.Headers["Authorization"].ToString();
+                    if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Unauthorized");
+                        return;
+                    }
 
-                var bearerToken = authorizationHeader.Split(' ')[1];
-                if (bearerToken != token)
-                {
-                    context.Response.StatusCode = 401;
-                    await context.Response.WriteAsync("Unauthorized");
-                    return;
+                    var bearerToken = authorizationHeader.Split(' ')[1];
+                    if (bearerToken != token)
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Unauthorized");
+                        return;
+                    }
                 }
 
                 await next.Invoke();
             });
+        }
+
+        private static bool IsPubliclyAccessiblePath(string path)
+        {
+            var publiclyAccessiblePaths = GetPubliclyAccessiblePaths();
+            return publiclyAccessiblePaths.Contains(path);
+        }
+
+        private static List<string> GetPubliclyAccessiblePaths()
+        {
+            return new List<string> { "/openapi.yaml", "/anotherfile" };
         }
     }
 }

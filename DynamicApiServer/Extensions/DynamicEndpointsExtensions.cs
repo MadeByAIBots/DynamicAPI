@@ -27,6 +27,8 @@ namespace DynamicApiServer.Extensions
 
         private static bool IsAuthorized(HttpContext context, IApplicationBuilder app)
         {
+            // TODO: Move this to a dedicated class
+            
             var tokenLoader = app.ApplicationServices.GetRequiredService<TokenLoader>();
             var token = tokenLoader.LoadToken();
 

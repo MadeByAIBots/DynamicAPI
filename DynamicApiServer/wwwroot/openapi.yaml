@@ -1,0 +1,30 @@
+openapi: 3.0.1
+info:
+  title: DynamicAPI: Self-Evolving Endpoints
+  description: DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality. Leveraging the power of ChatGPT, DynamicAPI aims to streamline the process of endpoint creation, making API development faster and more efficient.
+  version: 'v1'
+servers:
+  - url: https://dynamicapi.madebyaibots.com
+paths:
+  /hello-world:
+    get:
+      operationId: helloWorld
+      summary: A simple Hello World endpoint
+      description: This endpoint returns a simple Hello World message.
+      responses:
+        "200":
+          description: The request was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: The Hello World message.
+        "401":
+          description: Unauthorized. The request requires user authentication.
+        "404":
+          description: Not Found. The requested resource could not be found.
+        "500":
+          description: There was an error processing the request on the server.

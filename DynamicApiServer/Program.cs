@@ -4,6 +4,8 @@ using Microsoft.Extensions.Logging;
 using System;
 using DynamicApiServer.Extensions;
 using DynamicApiServer.Definitions.ExecutorDefinitions;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 Console.WriteLine("[INFO] Starting application...");
 
@@ -17,6 +19,8 @@ Console.WriteLine("[INFO] EndpointExecutor would be initialized here.");
 var app = builder.BuildConfiguredApplication();
 
 Console.WriteLine("[INFO] Web application created and configured.");
+
+app.UseCustomStaticFiles();
 
 app.UseTokenValidation();
 
@@ -34,3 +38,30 @@ Console.WriteLine("[INFO] Endpoints mapped.");
 Console.WriteLine("[INFO] Application is now listening for requests...");
 
 app.Run();
+// using Microsoft.AspNetCore.Builder;
+// using Microsoft.Extensions.Hosting;
+// using Microsoft.AspNetCore.StaticFiles;
+
+// var builder = WebApplication.CreateBuilder(args);
+// var app = builder.Build();
+
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseDeveloperExceptionPage();
+// }
+
+// app.UseStaticFiles(new StaticFileOptions
+// {
+//     ContentTypeProvider = new FileExtensionContentTypeProvider
+//     {
+//         Mappings =
+//         {
+//             [".yaml"] = "application/yaml",
+//             [".yml"] = "application/yaml"
+//         }
+//     }
+// });
+
+// app.MapGet("/", () => "Hello, World!");
+
+// app.Run();
