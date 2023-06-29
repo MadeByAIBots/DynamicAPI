@@ -1,0 +1,3 @@
+{
+    "command": "echo 'Available endpoints:' && ls /root/workspace/DynamicAPI/config/endpoints/"
+}

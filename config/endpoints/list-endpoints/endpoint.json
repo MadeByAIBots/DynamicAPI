@@ -1,0 +1,5 @@
+{
+    "path": "/list-endpoints",
+    "executor": "bash",
+    "method": "get"
+}
