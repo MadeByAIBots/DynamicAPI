@@ -42,11 +42,18 @@ namespace DynamicApiServer
                     _logger.LogInformation("Deserializing configuration into BashExecutorDefinition object");
                     return JsonSerializer.Deserialize<BashExecutorDefinition>(configJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
+
                 // Deserialize the configuration into the appropriate object
                 if (endpointConfig.Executor == "csharp")
                 {
                     _logger.LogInformation("Deserializing configuration into CSharpExecutorDefinition object");
                     return JsonSerializer.Deserialize<CSharpExecutorDefinition>(configJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+
+                if (endpointConfig.Executor == "csharp-script")
+                {
+                    _logger.LogInformation("Deserializing configuration into CSharpScriptExecutorDefinition object");
+                    return JsonSerializer.Deserialize<CSharpScriptExecutorDefinition>(configJson, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                 }
 
                 // Add additional deserialization logic for other executor types here...

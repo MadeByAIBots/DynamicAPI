@@ -1,5 +1,6 @@
 using DynamicApiServer.Execution.Executors.Bash;
 using DynamicApiServer.Execution.Executors.CSharp;
+using DynamicApiServer.Execution.Executors.CSharpScript;
 using DynamicApiConfiguration;
 
 namespace DynamicApiServer.Execution.Executors;
@@ -27,6 +28,8 @@ public class ExecutorFactory
                 return new BashEndpointExecutor(loggerFactory, processRunner);
             case "csharp":
                 return new CSharpEndpointExecutor(config, loggerFactory);
+            case "csharp-script":
+                return new CSharpScriptEndpointExecutor(config, loggerFactory);
             // Add cases for other executor types as needed...
             default:
                 throw new NotSupportedException($"Executor type {executorType} is not supported.");
