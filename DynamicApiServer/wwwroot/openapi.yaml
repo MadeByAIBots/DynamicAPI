@@ -25,3 +25,10 @@ paths:
                     items:
                       type: string
                     description: The list of endpoints.
+  /bash-hello-world:
+    post:
+      summary: Executes the bash hello world command
+      operationId: bashHelloWorld
+      responses:
+        '200':
+          description: Successful operation
