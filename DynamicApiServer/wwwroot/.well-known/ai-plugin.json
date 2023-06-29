@@ -2,8 +2,8 @@
   "schema_version": "v1",
   "name_for_human": "DynamicAPI: Self-Evolving Endpoints",
   "name_for_model": "dynamic_api_execution",
-  "description_for_human": "DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality.",
-  "description_for_model": "DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality.",
+  "description_for_human": "Dynamically generated API",
+  "description_for_model": "Dynamically generated API",
   "auth": {
     "type": "none"
   },
