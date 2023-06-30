@@ -10,13 +10,13 @@
       "description": "The base path where the file is located."
     },
     {
-      "name": "source-path",
+      "name": "sourcePath",
       "type": "string",
       "source": "query",
       "description": "The source file path, relative to the working directory."
     },
     {
-      "name": "destination-path",
+      "name": "destinationPath",
       "type": "string",
       "source": "query",
       "description": "The destination file path, relative to the working directory."

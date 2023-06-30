@@ -17,17 +17,17 @@ paths:
               required:
                 - workingDirectory
                 - filePath
-                - line-number
-                - new-content
+                - lineNumber
+                - newContent
               type: object
               properties:
                 workingDirectory:
                   type: string
                 filePath:
                   type: string
-                line-number:
+                lineNumber:
                   type: string
-                new-content:
+                newContent:
                   type: string
       responses:
         '200':
@@ -46,7 +46,7 @@ paths:
                 - workingDirectory
                 - filePath
                 - content
-                - add-newline
+                - addNewline
               type: object
               properties:
                 workingDirectory:
@@ -55,7 +55,7 @@ paths:
                   type: string
                 content:
                   type: string
-                add-newline:
+                addNewline:
                   type: string
       responses:
         '200':
@@ -94,17 +94,17 @@ paths:
               required:
                 - workingDirectory
                 - filePath
-                - before-line-number
-                - new-content
+                - beforeLineNumber
+                - newContent
               type: object
               properties:
                 workingDirectory:
                   type: string
                 filePath:
                   type: string
-                before-line-number:
+                beforeLineNumber:
                   type: string
-                new-content:
+                newContent:
                   type: string
       responses:
         '200':
@@ -148,13 +148,13 @@ paths:
           required: true
           schema:
             type: string
-        - name: source-path
+        - name: sourcePath
           in: query
           description: 'The source file path, relative to the working directory.'
           required: true
           schema:
             type: string
-        - name: destination-path
+        - name: destinationPath
           in: query
           description: 'The destination file path, relative to the working directory.'
           required: true
@@ -208,13 +208,13 @@ paths:
           required: true
           schema:
             type: string
-        - name: source-path
+        - name: sourcePath
           in: query
           description: 'The source file path, relative to the working directory.'
           required: true
           schema:
             type: string
-        - name: destination-path
+        - name: destinationPath
           in: query
           description: 'The destination file path, relative to the working directory.'
           required: true
@@ -237,7 +237,7 @@ paths:
                 - workingDirectory
                 - filePath
                 - content
-                - add-newline
+                - addNewline
               type: object
               properties:
                 workingDirectory:
@@ -246,7 +246,7 @@ paths:
                   type: string
                 content:
                   type: string
-                add-newline:
+                addNewline:
                   type: string
       responses:
         '200':
@@ -289,14 +289,14 @@ paths:
               required:
                 - workingDirectory
                 - filePath
-                - line-number
+                - lineNumber
               type: object
               properties:
                 workingDirectory:
                   type: string
                 filePath:
                   type: string
-                line-number:
+                lineNumber:
                   type: string
       responses:
         '200':

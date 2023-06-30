@@ -14,7 +14,7 @@ public class FilePrependScriptEndpoint : IDynamicEndpointExecutor
         var workingDirectory = parameters.Parameters["workingDirectory"];
         var filePath = parameters.Parameters["filePath"];
         var content = parameters.Parameters["content"];
-        var addNewline = parameters.Parameters.ContainsKey("add-newline") ? Convert.ToBoolean(parameters.Parameters["add-newline"]) : true;
+        var addNewline = parameters.Parameters.ContainsKey("addNewline") ? Convert.ToBoolean(parameters.Parameters["addNewline"]) : true;
 
         var fullPath = Path.Combine(workingDirectory, filePath);
 

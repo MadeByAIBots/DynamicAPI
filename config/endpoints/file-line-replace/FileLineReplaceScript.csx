@@ -13,8 +13,8 @@ public class FileLineReplaceScriptEndpoint : IDynamicEndpointExecutor
     {
         var workingDirectory = parameters.Parameters["workingDirectory"];
         var filePath = parameters.Parameters["filePath"];
-        var lineNumber = Convert.ToInt32(parameters.Parameters["line-number"]);
-        var newContent = parameters.Parameters["new-content"];
+        var lineNumber = Convert.ToInt32(parameters.Parameters["lineNumber"]);
+        var newContent = parameters.Parameters["newContent"];
 
         var fullPath = Path.Combine(workingDirectory, filePath);
 

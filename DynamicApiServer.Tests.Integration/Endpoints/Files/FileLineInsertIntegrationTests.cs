@@ -24,7 +24,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
 
             // Exercise
-            var response = await context.Client.PostAsync($"/file-line-insert", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"before-line-number\": \"3\", \"new-content\": \"New line\" }", Encoding.UTF8, "application/json"));
+            var response = await context.Client.PostAsync($"/file-line-insert", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"beforeLineNumber\": \"3\", \"newContent\": \"New line\" }", Encoding.UTF8, "application/json"));
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);

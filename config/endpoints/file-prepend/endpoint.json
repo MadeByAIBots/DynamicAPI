@@ -22,7 +22,7 @@
       "description": "The content to prepend."
     },
     {
-      "name": "add-newline",
+      "name": "addNewline",
       "type": "json",
       "source": "body",
       "description": "Optional. Whether to add a newline character between the existing content and the new content. Defaults to true.",

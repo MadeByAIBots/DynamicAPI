@@ -14,7 +14,7 @@ public class FileLineDeleteScriptEndpoint : IDynamicEndpointExecutor
     {
         var workingDirectory = parameters.Parameters["workingDirectory"];
         var filePath = parameters.Parameters["filePath"];
-        var lineNumber = int.Parse(parameters.Parameters["line-number"]);
+        var lineNumber = int.Parse(parameters.Parameters["lineNumber"]);
 
         var fullPath = Path.Combine(workingDirectory, filePath);
 
@@ -33,7 +33,7 @@ public class FileLineDeleteScriptEndpoint : IDynamicEndpointExecutor
         {
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = "Error: The 'line-number' parameter is out of range.",
+                Body = "Error: The 'lineNumber' parameter is out of range.",
                 //StatusCode = 400
             });
         }

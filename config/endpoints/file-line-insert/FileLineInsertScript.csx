@@ -14,8 +14,8 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
     {
         var workingDirectory = parameters.Parameters["workingDirectory"];
         var filePath = parameters.Parameters["filePath"];
-        var beforeLineNumber = int.Parse(parameters.Parameters["before-line-number"]);
-        var newContent = parameters.Parameters["new-content"];
+        var beforeLineNumber = int.Parse(parameters.Parameters["beforeLineNumber"]);
+        var newContent = parameters.Parameters["newContent"];
 
         // Parameter checks
         if (string.IsNullOrEmpty(workingDirectory))
@@ -40,7 +40,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
         {
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = "Error: The 'before-line-number' parameter must be greater than 0.",
+                Body = "Error: The 'beforeLineNumber' parameter must be greater than 0.",
                 //StatusCode = 400
             });
         }
@@ -49,7 +49,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
         {
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = "Error: The 'new-content' parameter is null or empty.",
+                Body = "Error: The 'newContent' parameter is null or empty.",
                 //StatusCode = 400
             });
         }
@@ -73,7 +73,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
         {
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = $"Error: The 'before-line-number' parameter is greater than the number of lines in the file plus 1.",
+                Body = $"Error: The 'beforeLineNumber' parameter is greater than the number of lines in the file plus 1.",
                 //StatusCode = 400
             });
         }

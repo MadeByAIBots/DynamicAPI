@@ -26,7 +26,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             // Exercise
             var lineNumber = 2;
             var newContent = "New Line 2";
-            var response = await context.Client.PostAsync($"/file-line-replace", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"line-number\": \"" + lineNumber + "\", \"new-content\": \"" + newContent + "\" }", Encoding.UTF8, "application/json"));
+            var response = await context.Client.PostAsync($"/file-line-replace", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"lineNumber\": \"" + lineNumber + "\", \"newContent\": \"" + newContent + "\" }", Encoding.UTF8, "application/json"));
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);

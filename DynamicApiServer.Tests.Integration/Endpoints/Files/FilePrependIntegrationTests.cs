@@ -25,7 +25,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 
             // Exercise
             var contentToPrepend = "Prepended content";
-            var response = await context.Client.PostAsync($"/file-prepend", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"content\": \"" + contentToPrepend + "\", \"add-newline\": \"false\" }", Encoding.UTF8, "application/json"));
+            var response = await context.Client.PostAsync($"/file-prepend", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"content\": \"" + contentToPrepend + "\", \"addNewline\": \"false\" }", Encoding.UTF8, "application/json"));
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);
