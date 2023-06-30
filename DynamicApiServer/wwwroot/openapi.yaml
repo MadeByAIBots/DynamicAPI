@@ -254,7 +254,7 @@ paths:
         '400':
           description: Bad request
   /file-create:
-    get:
+    post:
       operationId: fileCreate
       requestBody:
         description: request body
