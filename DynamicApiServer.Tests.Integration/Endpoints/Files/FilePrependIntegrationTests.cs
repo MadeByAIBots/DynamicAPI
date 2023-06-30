@@ -9,10 +9,10 @@ using NUnit.Framework;
 
 namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 {
-    public class FileAppendIntegrationTests
+    public class FilePrependIntegrationTests
     {
         [Test]
-        public async Task TestFileAppendEndpoint()
+        public async Task TestFilePrependEndpoint()
         {
             using var context = new IntegrationTestContext();
             context.UseToken();
@@ -24,16 +24,16 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             await File.WriteAllTextAsync(Path.Combine(workingDirectory, filePath), initialContent);
 
             // Exercise
-            var contentToAppend = "Appended content";
-            var response = await context.Client.PostAsync($"/file-append", new StringContent("{ \"working-directory\": \"" + workingDirectory + "\", \"file-path\": \"" + filePath + "\", \"content\": \"" + contentToAppend + "\", \"add-newline\": false }", Encoding.UTF8, "application/json"));
+            var contentToPrepend = "Prepended content";
+            var response = await context.Client.PostAsync($"/file-prepend", new StringContent("{ \"working-directory\": \"" + workingDirectory + "\", \"file-path\": \"" + filePath + "\", \"content\": \"" + contentToPrepend + "\", \"add-newline\": \"false\" }", Encoding.UTF8, "application/json"));
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseContent = await response.Content.ReadAsStringAsync();
-            responseContent.Trim().Should().Be("Content appended successfully");
+            responseContent.Trim().Should().Be("Content prepended successfully");
 
             var updatedContent = await File.ReadAllTextAsync(Path.Combine(workingDirectory, filePath));
-            updatedContent.Should().Be(initialContent + contentToAppend);
+            updatedContent.Should().Be(contentToPrepend + initialContent);
 
             // Teardown
             File.Delete(Path.Combine(workingDirectory, filePath));

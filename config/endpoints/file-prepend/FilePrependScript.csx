@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using DynamicApi.Contracts;
 using DynamicApiServer.Definitions.EndpointDefinitions;
 
-public class FileAppendScriptEndpoint : IDynamicEndpointExecutor
+public class FilePrependScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
         var workingDirectory = parameters.Parameters["working-directory"];
         var filePath = parameters.Parameters["file-path"];
         var content = parameters.Parameters["content"];
-        var addNewline = parameters.Parameters.ContainsKey("add-newline") ? (bool)parameters.Parameters["add-newline"] : true;
+        var addNewline = parameters.Parameters.ContainsKey("add-newline") ? Convert.ToBoolean(parameters.Parameters["add-newline"]) : true;
 
         var fullPath = Path.Combine(workingDirectory, filePath);
 
@@ -26,12 +26,13 @@ public class FileAppendScriptEndpoint : IDynamicEndpointExecutor
             });
         }
 
-        var newContent = addNewline ? content + "\n" : content;
-        File.AppendAllText(fullPath, newContent);
+        var originalContent = File.ReadAllText(fullPath);
+        var newContent = addNewline ? content + "\n" + originalContent : content + originalContent;
+        File.WriteAllText(fullPath, newContent);
 
         return Task.FromResult(new EndpointExecutionResult
         {
-            Body = "Content appended successfully",
+            Body = "Content prepended successfully",
         });
     }
 }
