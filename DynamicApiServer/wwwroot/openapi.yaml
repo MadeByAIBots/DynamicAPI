@@ -9,27 +9,21 @@ paths:
   /file-line-replace:
     get:
       operationId: fileLineReplace
-      parameters:
-        - name: working-directory
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: json
-        - name: file-path
-          description: 'The path of the file to replace a line in, relative to the working directory.'
-          required: true
-          schema:
-            type: json
-        - name: line-number
-          description: The line number to replace.
-          required: true
-          schema:
-            type: json
-        - name: new-content
-          description: The new content to replace the old content with.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                working-directory:
+                  type: string
+                file-path:
+                  type: string
+                line-number:
+                  type: string
+                new-content:
+                  type: string
       responses:
         '200':
           description: Line replaced successfully
@@ -38,27 +32,21 @@ paths:
   /file-append:
     get:
       operationId: fileAppend
-      parameters:
-        - name: working-directory
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: json
-        - name: file-path
-          description: 'The path of the file to append to, relative to the working directory.'
-          required: true
-          schema:
-            type: json
-        - name: content
-          description: The content to append.
-          required: true
-          schema:
-            type: json
-        - name: add-newline
-          description: Optional. Whether to add a newline character between the existing content and the new content. Defaults to true.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                working-directory:
+                  type: string
+                file-path:
+                  type: string
+                content:
+                  type: string
+                add-newline:
+                  type: string
       responses:
         '200':
           description: Content appended successfully
@@ -69,15 +57,17 @@ paths:
       operationId: fileReadLines
       parameters:
         - name: working-directory
+          in: query
           description: The base path where the file is located.
           required: true
           schema:
-            type: json
+            type: string
         - name: file-path
+          in: query
           description: 'The path of the file to be read, relative to the working directory.'
           required: true
           schema:
-            type: json
+            type: string
       responses:
         '200':
           description: File read successfully
@@ -86,27 +76,21 @@ paths:
   /file-line-insert:
     get:
       operationId: fileLineInsert
-      parameters:
-        - name: working-directory
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: json
-        - name: file-path
-          description: 'The path of the file to insert a line into, relative to the working directory.'
-          required: true
-          schema:
-            type: json
-        - name: before-line-number
-          description: The line number before which to insert the new content.
-          required: true
-          schema:
-            type: json
-        - name: new-content
-          description: The new content to insert.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                working-directory:
+                  type: string
+                file-path:
+                  type: string
+                before-line-number:
+                  type: string
+                new-content:
+                  type: string
       responses:
         '200':
           description: Line inserted successfully
@@ -117,16 +101,19 @@ paths:
       operationId: fileSearch
       parameters:
         - name: working-directory
+          in: query
           description: The base path where the file is located.
           required: true
           schema:
             type: string
         - name: file-path
+          in: query
           description: 'The path of the file to search in, relative to the working directory.'
           required: true
           schema:
             type: string
         - name: query
+          in: query
           description: The search query.
           required: true
           schema:
@@ -141,16 +128,19 @@ paths:
       operationId: fileCopy
       parameters:
         - name: working-directory
+          in: query
           description: The base path where the file is located.
           required: true
           schema:
             type: string
         - name: source-path
+          in: query
           description: 'The source file path, relative to the working directory.'
           required: true
           schema:
             type: string
         - name: destination-path
+          in: query
           description: 'The destination file path, relative to the working directory.'
           required: true
           schema:
@@ -171,22 +161,19 @@ paths:
   /file-update:
     get:
       operationId: fileUpdate
-      parameters:
-        - name: working-directory
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: json
-        - name: file-path
-          description: 'The path of the file to be updated, relative to the working directory.'
-          required: true
-          schema:
-            type: json
-        - name: content
-          description: The content to update the file with.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                working-directory:
+                  type: string
+                file-path:
+                  type: string
+                content:
+                  type: string
       responses:
         '200':
           description: File updated successfully
@@ -197,16 +184,19 @@ paths:
       operationId: fileMove
       parameters:
         - name: working-directory
+          in: query
           description: The base path where the file is located.
           required: true
           schema:
             type: string
         - name: source-path
+          in: query
           description: 'The source file path, relative to the working directory.'
           required: true
           schema:
             type: string
         - name: destination-path
+          in: query
           description: 'The destination file path, relative to the working directory.'
           required: true
           schema:
@@ -219,27 +209,21 @@ paths:
   /file-prepend:
     get:
       operationId: filePrepend
-      parameters:
-        - name: working-directory
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: json
-        - name: file-path
-          description: 'The path of the file to prepend to, relative to the working directory.'
-          required: true
-          schema:
-            type: json
-        - name: content
-          description: The content to prepend.
-          required: true
-          schema:
-            type: json
-        - name: add-newline
-          description: Optional. Whether to add a newline character between the existing content and the new content. Defaults to true.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                working-directory:
+                  type: string
+                file-path:
+                  type: string
+                content:
+                  type: string
+                add-newline:
+                  type: string
       responses:
         '200':
           description: Content prepended successfully
@@ -248,22 +232,19 @@ paths:
   /file-create:
     get:
       operationId: fileCreate
-      parameters:
-        - name: working-directory
-          description: The base path where the file will be created.
-          required: true
-          schema:
-            type: json
-        - name: file-path
-          description: 'The path of the file to be created, relative to the working directory.'
-          required: true
-          schema:
-            type: json
-        - name: content
-          description: The content to write to the file.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                working-directory:
+                  type: string
+                file-path:
+                  type: string
+                content:
+                  type: string
       responses:
         '200':
           description: File created successfully
@@ -272,22 +253,19 @@ paths:
   /file-line-delete:
     get:
       operationId: fileLineDelete
-      parameters:
-        - name: working-directory
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: json
-        - name: file-path
-          description: 'The path of the file to delete a line from, relative to the working directory.'
-          required: true
-          schema:
-            type: json
-        - name: line-number
-          description: The line number to delete.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                working-directory:
+                  type: string
+                file-path:
+                  type: string
+                line-number:
+                  type: string
       responses:
         '200':
           description: Line deleted successfully
@@ -296,17 +274,17 @@ paths:
   /execute:
     get:
       operationId: execute
-      parameters:
-        - name: command
-          description: The bash command to execute.
-          required: true
-          schema:
-            type: json
-        - name: working-directory
-          description: The base working directory to execute the command in.
-          required: true
-          schema:
-            type: json
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                command:
+                  type: string
+                working-directory:
+                  type: string
       responses:
         '200':
           description: A successful response
@@ -317,6 +295,7 @@ paths:
       operationId: directoryList
       parameters:
         - name: working-directory
+          in: query
           description: The base path of the directory to list.
           required: true
           schema:

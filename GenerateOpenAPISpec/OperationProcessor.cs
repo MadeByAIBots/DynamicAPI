@@ -46,8 +46,9 @@ public class OperationProcessor
 
         if (endpointDefinition.Args != null)
         {
-            var parameters = _parameterProcessor.CreateParameters(endpointDefinition.Args);
+            var (parameters, requestBody) = _parameterProcessor.CreateParameters(endpointDefinition.Args);
             operation.Parameters = parameters;
+            operation.RequestBody = requestBody;
         }
 
         return operation;

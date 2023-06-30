@@ -13,7 +13,7 @@ public class ParameterProcessor
         _logger = logger;
     }
 
-    public List<OpenApiParameter> CreateParameters(List<EndpointArgumentDefinition> args)
+    public (List<OpenApiParameter> Parameters, OpenApiRequestBody RequestBody) CreateParameters(List<EndpointArgumentDefinition> args)
     {
         if (args == null)
         {
@@ -24,6 +24,7 @@ public class ParameterProcessor
         _logger.LogInformation("Creating parameters for args...");
 
         var parameters = new List<OpenApiParameter>();
+        var requestBodyProperties = new Dictionary<string, OpenApiSchema>();
 
         foreach (var arg in args)
         {
@@ -39,15 +40,65 @@ public class ParameterProcessor
                 continue;
             }
 
-            parameters.Add(new OpenApiParameter
+            if (arg.Source.ToLower() == "body")
             {
-                Name = arg.Name,
-                Description = arg.Description,
-                Required = true,
-                Schema = new OpenApiSchema { Type = arg.Type }
-            });
+                requestBodyProperties.Add(arg.Name, new OpenApiSchema { Type = MapTypeToOpenApiType(arg.Type) });
+            }
+            else
+            {
+                parameters.Add(new OpenApiParameter
+                {
+                    Name = arg.Name,
+                    Description = arg.Description,
+                    Required = true,
+                    In = MapSourceToIn(arg.Source),
+                    Schema = new OpenApiSchema { Type = MapTypeToOpenApiType(arg.Type) }
+                });
+            }
         }
 
-        return parameters;
+        var requestBody = requestBodyProperties.Count > 0 ? new OpenApiRequestBody
+        {
+            Description = "request body",
+            Content = new Dictionary<string, OpenApiMediaType>
+            {
+                ["application/json"] = new OpenApiMediaType
+                {
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "object",
+                        Properties = requestBodyProperties
+                    }
+                }
+            }
+        } : null;
+
+        return (parameters, requestBody);
+    }
+
+    private ParameterLocation MapSourceToIn(string source)
+    {
+        return source.ToLower() switch
+        {
+            "query" => ParameterLocation.Query,
+            "header" => ParameterLocation.Header,
+            "path" => ParameterLocation.Path,
+            "cookie" => ParameterLocation.Cookie,
+            _ => throw new ArgumentException($"Invalid source: {source}")
+        };
+    }
+
+    private string MapTypeToOpenApiType(string type)
+    {
+        var validTypes = new HashSet<string> { "string", "number", "boolean", "integer", "array", "object" };
+
+        if (validTypes.Contains(type.ToLower()))
+        {
+            return type.ToLower();
+        }
+        else
+        {
+            return "string";
+        }
     }
 }
