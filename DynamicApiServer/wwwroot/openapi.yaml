@@ -39,7 +39,7 @@ paths:
         '400':
           description: A bad request response
   /execute:
-    post:
+    get:
       operationId: execute
       parameters:
         - name: command
