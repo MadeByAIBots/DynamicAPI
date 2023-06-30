@@ -5,6 +5,8 @@ bash build.sh || echo "Build failed"
 
 bash validate.sh || echo "Validation failed"
 
+bash GenerateOpenAPISpec.sh || echo "Failed to generate open API spec"
+
 # Run the test script
 bash test.sh || echo "Test(s) failed"
 
