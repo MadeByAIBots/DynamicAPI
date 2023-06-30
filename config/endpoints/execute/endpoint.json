@@ -1,7 +1,7 @@
 {
   "path": "/execute",
   "executor": "bash",
-  "method": "get",
+  "method": "post",
   "args": [
     {
       "name": "command",
