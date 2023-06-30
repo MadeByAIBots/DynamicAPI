@@ -24,7 +24,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             await File.WriteAllTextAsync(Path.Combine(workingDirectory, filePath), initialContent);
 
             // Exercise
-            var contentToAppend = "\nAppended content";
+            var contentToAppend = "Appended content";
             var response = await context.Client.PostAsync($"/file-append", new StringContent("{ \"working-directory\": \"" + workingDirectory + "\", \"file-path\": \"" + filePath + "\", \"content\": \"" + contentToAppend + "\" }", Encoding.UTF8, "application/json"));
 
             // Verify
