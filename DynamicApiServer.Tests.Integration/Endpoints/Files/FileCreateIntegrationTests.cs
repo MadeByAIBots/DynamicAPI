@@ -21,14 +21,15 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             var workingDirectory = Path.GetTempPath();
             var filePath = Path.GetRandomFileName();
             var content = "Hello, world!";
+            var jsonContent = new StringContent($"{{\"working-directory\": \"{workingDirectory}\", \"file-path\": \"{filePath}\", \"content\": \"{content}\"}}", Encoding.UTF8, "application/json");
 
             // Exercise
-            var response = await context.Client.PostAsync($"/file-create?working-directory={workingDirectory}&file-path={filePath}", new StringContent(content, Encoding.UTF8, "text/plain"));
+            var response = await context.Client.PostAsync("/file-create", jsonContent);
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseContent = await response.Content.ReadAsStringAsync();
-            responseContent.Trim().Should().Be("File created successfully.");
+            responseContent.Trim().Should().StartWith("File created successfully at");
 
             var createdFilePath = Path.Combine(workingDirectory, filePath);
             File.Exists(createdFilePath).Should().BeTrue();

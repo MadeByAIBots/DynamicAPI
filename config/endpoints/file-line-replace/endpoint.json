@@ -1,0 +1,43 @@
+{
+  "path": "/file-line-replace",
+  "executor": "bash",
+  "method": "post",
+  "args": [
+    {
+      "name": "working-directory",
+      "type": "string",
+      "source": "query",
+      "description": "The base path where the file is located."
+    },
+    {
+      "name": "file-path",
+      "type": "string",
+      "source": "query",
+      "description": "The path of the file to replace a line in, relative to the working directory."
+    },
+    {
+      "name": "line-number",
+      "type": "integer",
+      "source": "query",
+      "description": "The line number to replace."
+    },
+    {
+      "name": "new-content",
+      "type": "string",
+      "source": "body",
+      "description": "The new content to replace the old content with."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Line replaced successfully",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}

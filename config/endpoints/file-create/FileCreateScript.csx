@@ -11,31 +11,30 @@ public class FileCreateScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        if (!parameters.Parameters.ContainsKey("working-directory") ||
-            !parameters.Parameters.ContainsKey("file-path") ||
-            !parameters.Parameters.ContainsKey("content"))
-        {
-            return Task.FromResult(new EndpointExecutionResult
-            {
-                Body = "Error: Missing required parameters. Please provide 'working-directory', 'file-path', and 'content'.",
-                //StatusCode = 400
-            });
-        }
-
         var workingDirectory = parameters.Parameters["working-directory"];
         var filePath = parameters.Parameters["file-path"];
         var content = parameters.Parameters["content"];
 
-        if (!Directory.Exists(workingDirectory))
+        var fullPath = Path.Combine(workingDirectory, filePath);
+        var parentDirectory = Path.GetDirectoryName(fullPath);
+
+        if (!Directory.Exists(parentDirectory))
         {
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = $"Error: The working directory '{workingDirectory}' does not exist.",
+                Body = $"Error: The directory '{parentDirectory}' does not exist.",
                 //StatusCode = 400
             });
         }
 
-        var fullPath = Path.Combine(workingDirectory, filePath);
+        if (File.Exists(fullPath))
+        {
+            return Task.FromResult(new EndpointExecutionResult
+            {
+                Body = $"Error: The file '{fullPath}' already exists.",
+                //StatusCode = 400
+            });
+        }
 
         try
         {
@@ -52,7 +51,7 @@ public class FileCreateScriptEndpoint : IDynamicEndpointExecutor
 
         return Task.FromResult(new EndpointExecutionResult
         {
-            Body = "File created successfully.",
+            Body = $"File created successfully at {fullPath}.",
             //StatusCode = 200
         });
     }

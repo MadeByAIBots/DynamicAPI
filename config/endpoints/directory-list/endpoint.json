@@ -1,0 +1,25 @@
+{
+  "path": "/directory-list",
+  "executor": "bash",
+  "method": "get",
+  "args": [
+    {
+      "name": "working-directory",
+      "type": "string",
+      "source": "query",
+      "description": "The base path of the directory to list."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Directory listing",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}

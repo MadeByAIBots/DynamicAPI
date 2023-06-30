@@ -1,0 +1,37 @@
+{
+  "path": "/file-move",
+  "executor": "bash",
+  "method": "post",
+  "args": [
+    {
+      "name": "working-directory",
+      "type": "string",
+      "source": "query",
+      "description": "The base path where the file is located."
+    },
+    {
+      "name": "source-path",
+      "type": "string",
+      "source": "query",
+      "description": "The source file path, relative to the working directory."
+    },
+    {
+      "name": "destination-path",
+      "type": "string",
+      "source": "query",
+      "description": "The destination file path, relative to the working directory."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "File moved successfully",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}
