@@ -1,7 +1,7 @@
 {
   "path": "/file-line-replace",
   "executor": "csharp-script",
-  "method": "get",
+  "method": "post",
   "args": [
     {
       "name": "workingDirectory",
