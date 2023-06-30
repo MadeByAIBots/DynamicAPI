@@ -7,7 +7,7 @@ servers:
   - url: https://dynamicapi.madebyaibots.com
 paths:
   /file-line-replace:
-    get:
+    post:
       operationId: fileLineReplace
       requestBody:
         description: request body
@@ -35,7 +35,7 @@ paths:
         '400':
           description: Bad request
   /file-append:
-    get:
+    post:
       operationId: fileAppend
       requestBody:
         description: request body
@@ -63,7 +63,7 @@ paths:
         '400':
           description: Bad request
   /file-read-lines:
-    get:
+    post:
       operationId: fileReadLines
       parameters:
         - name: workingDirectory
@@ -84,7 +84,7 @@ paths:
         '400':
           description: Bad request
   /file-line-insert:
-    get:
+    post:
       operationId: fileLineInsert
       requestBody:
         description: request body
@@ -174,7 +174,7 @@ paths:
         '400':
           description: A bad request response
   /file-update:
-    get:
+    post:
       operationId: fileUpdate
       requestBody:
         description: request body
@@ -226,7 +226,7 @@ paths:
         '400':
           description: Bad request
   /file-prepend:
-    get:
+    post:
       operationId: filePrepend
       requestBody:
         description: request body
@@ -279,7 +279,7 @@ paths:
         '400':
           description: Bad request
   /file-line-delete:
-    get:
+    post:
       operationId: fileLineDelete
       requestBody:
         description: request body
