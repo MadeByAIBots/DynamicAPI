@@ -1,0 +1,3 @@
+{
+    "command": "cd ${working-directory} && ${command}"
+}

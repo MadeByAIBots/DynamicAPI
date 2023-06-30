@@ -14,7 +14,7 @@ namespace DynamicApiServer.Requests.Arguments
             _logger = logger;
         }
 
-        public async Task<Dictionary<string, string>> ExtractArguments(HttpContext httpContext, List<EndpointArgumentDefinition> argumentDefinitions)
+        public async Task<Dictionary<string, string>> ExtractArguments(EndpointRequestInfo requestInfo, List<EndpointArgumentDefinition> argumentDefinitions)
         {
             var arguments = new Dictionary<string, string>();
 
@@ -23,7 +23,7 @@ namespace DynamicApiServer.Requests.Arguments
                 try
                 {
                     _logger.LogInformation($"Starting extraction of argument: {argumentDefinition.Name}");
-                    var argumentValue = await ExtractSingleArgument(httpContext, argumentDefinition);
+                    var argumentValue = await ExtractSingleArgument(requestInfo, argumentDefinition);
                     if (argumentValue == null)
                     {
                         _logger.LogWarning($"Missing argument: {argumentDefinition.Name}");
@@ -45,6 +45,6 @@ namespace DynamicApiServer.Requests.Arguments
             return arguments;
         }
 
-        protected abstract Task<string> ExtractSingleArgument(HttpContext httpContext, EndpointArgumentDefinition argumentDefinition);
+        protected abstract Task<string> ExtractSingleArgument(EndpointRequestInfo requestInfo, EndpointArgumentDefinition argumentDefinition);
     }
 }

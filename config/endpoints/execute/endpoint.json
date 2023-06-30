@@ -1,0 +1,31 @@
+{
+  "path": "/execute",
+  "executor": "bash",
+  "method": "post",
+  "args": [
+    {
+      "name": "command",
+      "type": "json",
+      "source": "body",
+      "description": "The bash command to execute."
+    },
+    {
+      "name": "working-directory",
+      "type": "json",
+      "source": "body",
+      "description": "The base working directory to execute the command in."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "A successful response",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "A bad request response",
+      "type": "string"
+    }
+  ]
+}

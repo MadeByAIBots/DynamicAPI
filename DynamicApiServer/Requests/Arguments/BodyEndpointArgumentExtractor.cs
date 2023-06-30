@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DynamicApiServer.Requests.Arguments
@@ -14,15 +15,16 @@ namespace DynamicApiServer.Requests.Arguments
         {
         }
 
-        protected override async Task<string> ExtractSingleArgument(HttpContext httpContext, EndpointArgumentDefinition argumentDefinition)
+        protected override async Task<string> ExtractSingleArgument(EndpointRequestInfo requestInfo, EndpointArgumentDefinition argumentDefinition)
         {
             try
             {
+
                 _logger.LogInformation($"Starting extraction of body argument: {argumentDefinition.Name}");
 
-                using var reader = new StreamReader(httpContext.Request.Body);
-                var body = await reader.ReadToEndAsync();
+                var body = await requestInfo.Body();
 
+                _logger.LogInformation("Body: " + body);
                 if (argumentDefinition.Type == "string")
                 {
                     return await ExtractPlainTextArgument(body, argumentDefinition);
@@ -81,8 +83,9 @@ namespace DynamicApiServer.Requests.Arguments
             }
             catch (JsonException ex)
             {
-                _logger.LogError(ex, $"Error parsing JSON body for argument: {argumentDefinition.Name}");
-                throw;
+                var sanitizedBody = Regex.Replace(body, "\\W", "*");
+                _logger.LogError(ex, $"Error parsing JSON body for argument: {argumentDefinition.Name}. Sanitized body content: {sanitizedBody}");
+                throw new Exception($"Error parsing JSON body for argument: {argumentDefinition.Name}. Sanitized body content: {sanitizedBody}", ex);
             }
         }
     }

@@ -25,18 +25,18 @@ namespace DynamicApiServer.Requests
             _argExtractor = argExtractor;
         }
 
-        public async Task HandleRequest(HttpContext context, Func<Task> next)
+        public async Task HandleRequest(EndpointRequestInfo requestInfo, Func<Task> next)
         {
-            var endpointConfig = GetEndpointDefinition(context);
+            var endpointConfig = GetEndpointDefinition(requestInfo.Context);
 
             if (endpointConfig != null)
             {
                 LogEndpointInformation(endpointConfig);
 
-                var args = await _argExtractor.ExtractArguments(context, endpointConfig.Args);
+                var args = await _argExtractor.ExtractArguments(requestInfo, endpointConfig.Args);
 
                 var output = await _executionHandler.ExecuteCommand(endpointConfig, args);
-                await context.Response.WriteAsync(output);
+                await requestInfo.Context.Response.WriteAsync(output);
             }
             else
             {

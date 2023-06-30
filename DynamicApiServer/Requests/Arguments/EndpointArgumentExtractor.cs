@@ -23,7 +23,7 @@ namespace DynamicApiServer.Requests.Arguments
             };
         }
 
-        public async Task<Dictionary<string, string>> ExtractArguments(HttpContext httpContext, List<EndpointArgumentDefinition> argumentDefinitions)
+        public async Task<Dictionary<string, string>> ExtractArguments(EndpointRequestInfo requestInfo, List<EndpointArgumentDefinition> argumentDefinitions)
         {
             var arguments = new Dictionary<string, string>();
 
@@ -41,7 +41,7 @@ namespace DynamicApiServer.Requests.Arguments
                     _logger.LogInformation($"Extracting arguments for source: {source}");
                     try
                     {
-                        var extractedArguments = await extractor.ExtractArguments(httpContext, matchingDefinitions);
+                        var extractedArguments = await extractor.ExtractArguments(requestInfo, matchingDefinitions);
                         foreach (var arg in extractedArguments)
                         {
                             arguments[arg.Key] = arg.Value;

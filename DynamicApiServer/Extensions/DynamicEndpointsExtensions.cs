@@ -21,7 +21,7 @@ namespace DynamicApiServer.Extensions
                 }
 
                 var handler = app.ApplicationServices.GetRequiredService<DynamicEndpointHandler>();
-                await handler.HandleRequest(context, next);
+                await handler.HandleRequest(new EndpointRequestInfo(context), next);
             });
         }
 

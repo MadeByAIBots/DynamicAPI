@@ -11,13 +11,13 @@ namespace DynamicApiServer.Requests.Arguments
         {
         }
 
-        protected override async Task<string> ExtractSingleArgument(HttpContext httpContext, EndpointArgumentDefinition argumentDefinition)
+        protected override async Task<string> ExtractSingleArgument(EndpointRequestInfo requestInfo, EndpointArgumentDefinition argumentDefinition)
         {
             try
             {
                 _logger.LogInformation($"Starting extraction of query argument: {argumentDefinition.Name}");
 
-                var values = httpContext.Request.Query[argumentDefinition.Name];
+                var values = requestInfo.Context.Request.Query[argumentDefinition.Name];
 
                 if (values == StringValues.Empty)
                 {
