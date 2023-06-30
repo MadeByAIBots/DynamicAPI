@@ -12,16 +12,16 @@ public class FileReadLinesScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var workingDirectory = parameters.Parameters["working-directory"];
+        var workingDirectory = parameters.Parameters["workingDirectory"];
         var filePath = parameters.Parameters["file-path"];
 
         // Parameter checks
         if (string.IsNullOrEmpty(workingDirectory))
         {
-            Console.WriteLine("Error: The 'working-directory' parameter is null or empty.");
+            Console.WriteLine("Error: The 'workingDirectory' parameter is null or empty.");
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = "Error: The 'working-directory' parameter is null or empty.",
+                Body = "Error: The 'workingDirectory' parameter is null or empty.",
                 //StatusCode = 400
             });
         }

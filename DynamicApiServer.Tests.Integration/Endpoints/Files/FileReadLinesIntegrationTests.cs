@@ -24,7 +24,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
 
             // Exercise
-            var response = await context.Client.GetAsync($"/file-read-lines?working-directory={workingDirectory}&file-path={filePath}");
+            var response = await context.Client.GetAsync($"/file-read-lines?workingDirectory={workingDirectory}&file-path={filePath}");
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);

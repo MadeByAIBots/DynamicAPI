@@ -4,7 +4,7 @@
   "method": "get",
   "args": [
     {
-      "name": "working-directory",
+      "name": "workingDirectory",
       "type": "json",
       "source": "query",
       "description": "The base path where the file is located."

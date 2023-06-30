@@ -25,6 +25,7 @@ public class ParameterProcessor
 
         var parameters = new List<OpenApiParameter>();
         var requestBodyProperties = new Dictionary<string, OpenApiSchema>();
+        var requiredProperties = new HashSet<string>();
 
         foreach (var arg in args)
         {
@@ -43,6 +44,10 @@ public class ParameterProcessor
             if (arg.Source.ToLower() == "body")
             {
                 requestBodyProperties.Add(arg.Name, new OpenApiSchema { Type = MapTypeToOpenApiType(arg.Type) });
+                if (arg.Required)
+                {
+                    requiredProperties.Add(arg.Name);
+                }
             }
             else
             {
@@ -67,7 +72,8 @@ public class ParameterProcessor
                     Schema = new OpenApiSchema
                     {
                         Type = "object",
-                        Properties = requestBodyProperties
+                        Properties = requestBodyProperties,
+                        Required = requiredProperties
                     }
                 }
             }

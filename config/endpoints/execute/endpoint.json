@@ -10,7 +10,7 @@
       "description": "The bash command to execute."
     },
     {
-      "name": "working-directory",
+      "name": "workingDirectory",
       "type": "json",
       "source": "body",
       "description": "The base working directory to execute the command in."

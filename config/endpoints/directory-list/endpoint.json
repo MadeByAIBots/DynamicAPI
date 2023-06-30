@@ -4,7 +4,7 @@
   "method": "get",
   "args": [
     {
-      "name": "working-directory",
+      "name": "workingDirectory",
       "type": "string",
       "source": "query",
       "description": "The base path of the directory to list."

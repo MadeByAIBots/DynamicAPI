@@ -12,7 +12,7 @@ public class FileLineDeleteScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var workingDirectory = parameters.Parameters["working-directory"];
+        var workingDirectory = parameters.Parameters["workingDirectory"];
         var filePath = parameters.Parameters["file-path"];
         var lineNumber = int.Parse(parameters.Parameters["line-number"]);
 

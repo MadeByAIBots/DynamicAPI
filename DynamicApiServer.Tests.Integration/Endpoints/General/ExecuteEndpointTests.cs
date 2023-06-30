@@ -17,7 +17,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
 
             // Create the request content
             var content = new StringContent(
-                "{\"command\": \"echo hello\", \"working-directory\": \"/root\"}",
+                "{\"command\": \"echo hello\", \"workingDirectory\": \"/root\"}",
                 Encoding.UTF8,
                 "application/json"
             );

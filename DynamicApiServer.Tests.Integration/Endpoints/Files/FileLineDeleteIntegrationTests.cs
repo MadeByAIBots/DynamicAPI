@@ -24,7 +24,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
 
             // Exercise
-            var response = await context.Client.PostAsync($"/file-line-delete", new StringContent("{ \"working-directory\": \"" + workingDirectory + "\", \"file-path\": \"" + filePath + "\", \"line-number\": \"2\" }", Encoding.UTF8, "application/json"));
+            var response = await context.Client.PostAsync($"/file-line-delete", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"file-path\": \"" + filePath + "\", \"line-number\": \"2\" }", Encoding.UTF8, "application/json"));
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);

@@ -11,7 +11,7 @@ public class FileAppendScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var workingDirectory = parameters.Parameters["working-directory"];
+        var workingDirectory = parameters.Parameters["workingDirectory"];
         var filePath = parameters.Parameters["file-path"];
         var content = parameters.Parameters["content"];
         var addNewline = parameters.Parameters.ContainsKey("add-newline") ? Convert.ToBoolean(parameters.Parameters["add-newline"]) : true;
