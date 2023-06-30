@@ -1,5 +1,0 @@
-{
-    "path": "/csharp-script-hello-world",
-    "executor": "csharp-script",
-    "method": "get"
-}

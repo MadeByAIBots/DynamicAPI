@@ -21,9 +21,8 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
 
             // Assert that the response is correct
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            content.Should().Contain("bash-hello-world");
-            content.Should().Contain("bash-hello-target");
-            content.Should().Contain("bash-hello-target-body-text");
+            content.Should().Contain("endpoint-list");
+            content.Should().Contain("file-create");
         }
     }
 }

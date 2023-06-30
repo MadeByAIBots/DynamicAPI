@@ -1,5 +1,17 @@
 {
-    "path": "/endpoint-list",
-    "executor": "csharp-script",
-    "method": "get"
+  "path": "/endpoint-list",
+  "executor": "csharp-script",
+  "method": "get",
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "A successful response",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "A bad request response",
+      "type": "string"
+    }
+  ]
 }

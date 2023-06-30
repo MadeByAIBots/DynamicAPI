@@ -1,34 +1,45 @@
----
 openapi: 3.0.1
 info:
   title: DynamicAPI Self-Evolving Endpoints
-  description: DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality. Leveraging the power of ChatGPT, DynamicAPI aims to streamline the process of endpoint creation, making API development faster and more efficient.
-  version: 'v1'
+  description: 'DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality. Leveraging the power of ChatGPT, DynamicAPI aims to streamline the process of endpoint creation, making API development faster and more efficient.'
+  version: 1.0.0
 servers:
   - url: https://dynamicapi.madebyaibots.com
 paths:
-  /endpoint-list:
+  /csharp-hello-world:
     get:
-      operationId: endpointList
-      summary: A list of all endpoints
-      description: This endpoint returns a list of all endpoints.
-      responses:
-        "200":
-          description: The request was successful.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  endpoints:
-                    type: array
-                    items:
-                      type: string
-                    description: The list of endpoints.
-  /bash-hello-world:
-    post:
-      summary: Executes the bash hello world command
-      operationId: bashHelloWorld
       responses:
         '200':
-          description: Successful operation
+          description: A successful response
+        '400':
+          description: A bad request response
+  /file-create:
+    post:
+      parameters:
+        - name: working-directory
+          description: The base path where the file will be created.
+          required: true
+          schema:
+            type: string
+        - name: file-path
+          description: The path of the file relative to the working directory.
+          required: true
+          schema:
+            type: string
+        - name: content
+          description: The content to write to the file.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A successful response
+        '400':
+          description: A bad request response
+  /endpoint-list:
+    get:
+      responses:
+        '200':
+          description: A successful response
+        '400':
+          description: A bad request response

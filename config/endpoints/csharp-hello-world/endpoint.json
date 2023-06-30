@@ -1,5 +1,17 @@
 {
   "path": "/csharp-hello-world",
   "executor": "csharp",
-  "method": "get"
+  "method": "get",
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "A successful response",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "A bad request response",
+      "type": "string"
+    }
+  ]
 }
