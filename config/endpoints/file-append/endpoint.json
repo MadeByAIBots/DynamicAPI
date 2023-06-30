@@ -1,7 +1,7 @@
 {
   "path": "/file-append",
   "executor": "csharp-script",
-  "method": "post",
+  "method": "get",
   "args": [
     {
       "name": "working-directory",
