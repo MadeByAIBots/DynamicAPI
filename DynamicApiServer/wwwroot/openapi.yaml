@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: DynamicAPI Self-Evolving Endpoints
   description: 'DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality. Leveraging the power of ChatGPT, DynamicAPI aims to streamline the process of endpoint creation, making API development faster and more efficient.'
-  version: 'v1.1'
+  version: 1.0.0
 servers:
   - url: https://dynamicapi.madebyaibots.com
 paths:
@@ -33,6 +33,25 @@ paths:
           required: true
           schema:
             type: string
+      responses:
+        '200':
+          description: A successful response
+        '400':
+          description: A bad request response
+  /execute:
+    post:
+      operationId: execute
+      parameters:
+        - name: command
+          description: The bash command to execute.
+          required: true
+          schema:
+            type: json
+        - name: working-directory
+          description: The base working directory to execute the command in.
+          required: true
+          schema:
+            type: json
       responses:
         '200':
           description: A successful response
