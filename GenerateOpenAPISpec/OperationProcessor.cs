@@ -25,6 +25,9 @@ public class OperationProcessor
 
         var operation = new OpenApiOperation();
 
+        // Set the operationId property of the operation.
+        operation.OperationId = ConvertEndpointNameToOperationId(endpointDefinition.Path);
+
         if (endpointDefinition.Responses != null)
         {
             operation.Responses = new OpenApiResponses();
@@ -48,5 +51,21 @@ public class OperationProcessor
         }
 
         return operation;
+    }
+
+    private string ConvertEndpointNameToOperationId(string endpointName)
+    {
+        // Remove the leading slash from the endpoint name.
+        if (endpointName.StartsWith("/"))
+        {
+            endpointName = endpointName.Substring(1);
+        }
+
+        var words = endpointName.Split(new[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+        for (int i = 1; i < words.Length; i++)
+        {
+            words[i] = char.ToUpper(words[i][0]) + words[i].Substring(1);
+        }
+        return string.Join("", words);
     }
 }

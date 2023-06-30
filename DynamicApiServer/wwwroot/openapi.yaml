@@ -8,6 +8,7 @@ servers:
 paths:
   /csharp-hello-world:
     get:
+      operationId: csharpHelloWorld
       responses:
         '200':
           description: A successful response
@@ -15,6 +16,7 @@ paths:
           description: A bad request response
   /file-create:
     post:
+      operationId: fileCreate
       parameters:
         - name: working-directory
           description: The base path where the file will be created.
@@ -38,6 +40,7 @@ paths:
           description: A bad request response
   /endpoint-list:
     get:
+      operationId: endpointList
       responses:
         '200':
           description: A successful response
