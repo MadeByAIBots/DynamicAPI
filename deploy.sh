@@ -21,7 +21,7 @@ then
   cd /root/deploy/live/DynamicAPI
 
   # Pull the latest changes
-  git pull
+  git pull || echo "Pull failed"
 
   # Run the application
   bash run.sh
