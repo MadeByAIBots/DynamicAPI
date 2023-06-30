@@ -13,7 +13,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
         var workingDirectory = parameters.Parameters["workingDirectory"];
-        var filePath = parameters.Parameters["file-path"];
+        var filePath = parameters.Parameters["filePath"];
         var beforeLineNumber = int.Parse(parameters.Parameters["before-line-number"]);
         var newContent = parameters.Parameters["new-content"];
 
@@ -31,7 +31,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
         {
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = "Error: The 'file-path' parameter is null or empty.",
+                Body = "Error: The 'filePath' parameter is null or empty.",
                 //StatusCode = 400
             });
         }

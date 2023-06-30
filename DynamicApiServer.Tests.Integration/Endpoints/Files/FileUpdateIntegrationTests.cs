@@ -23,7 +23,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             var initialContent = "Initial content";
             File.WriteAllText(Path.Combine(workingDirectory, filePath), initialContent);
             var newContent = "Updated content";
-            var jsonContent = new StringContent($"{{\"workingDirectory\": \"{workingDirectory}\", \"file-path\": \"{filePath}\", \"content\": \"{newContent}\"}}", Encoding.UTF8, "application/json");
+            var jsonContent = new StringContent($"{{\"workingDirectory\": \"{workingDirectory}\", \"filePath\": \"{filePath}\", \"content\": \"{newContent}\"}}", Encoding.UTF8, "application/json");
 
             // Exercise
             var response = await context.Client.PostAsync("/file-update", jsonContent);

@@ -12,7 +12,7 @@ public class FileCreateScriptEndpoint : IDynamicEndpointExecutor
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
         var workingDirectory = parameters.Parameters["workingDirectory"];
-        var filePath = parameters.Parameters["file-path"];
+        var filePath = parameters.Parameters["filePath"];
         var content = parameters.Parameters["content"];
 
         var fullPath = Path.Combine(workingDirectory, filePath);
