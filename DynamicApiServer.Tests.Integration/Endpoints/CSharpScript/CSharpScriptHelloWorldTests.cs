@@ -28,7 +28,7 @@ namespace DynamicApiServer.Tests.Integration
                 {
                     Script = "HelloWorldScript.csx"
                 })
-                .AddFile("HelloWorldScript.csx", "\n#r \"/root/workspace/DynamicAPI/DynamicApi.Contracts/bin/Debug/net7.0/DynamicApi.Contracts.dll\"\n\nusing System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing DynamicApi.Contracts;\n\npublic class HelloWorldScriptEndpoint : IDynamicEndpointExecutor\n{\n    public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)\n    {\n        return Task.FromResult(new EndpointExecutionResult\n        {\n            Body = \"Hello, World!\"\n        });\n    }\n}\n")
+                .AddFile("HelloWorldScript.csx", "using System;\nusing System.Collections.Generic;\nusing System.Threading.Tasks;\nusing DynamicApi.Contracts;\n\npublic class HelloWorldScriptEndpoint : IDynamicEndpointExecutor\n{\n    public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)\n    {\n        return Task.FromResult(new EndpointExecutionResult\n        {\n            Body = \"Hello, World!\"\n        });\n    }\n}\n")
                 .GetEndpointPath();
 
             var response = await context.Client.GetAsync("/" + endpointPath);

@@ -76,10 +76,11 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 				"System.Text.RegularExpressions",
 				"DynamicApi.Contracts",
 				"DynamicApiServer.Definitions.EndpointDefinitions",
+				"DynamicApi.Utilities.Files",
 				"Microsoft.Extensions.Logging",
 				"System.Security.Cryptography",
 				"System.Text",
-				"DynamicApi.Utilities.Files"
+				"System.Threading"
 				};
 
 				foreach (var import in imports)
