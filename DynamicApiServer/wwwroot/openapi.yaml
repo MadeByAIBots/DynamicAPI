@@ -348,3 +348,28 @@ paths:
           description: A successful response
         '400':
           description: A bad request response
+  /file-list-containing-content:
+    post:
+      operationId: fileListContainingContent
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - query
+                - recursive
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                query:
+                  type: string
+                recursive:
+                  type: string
+      responses:
+        '200':
+          description: Search completed successfully
+        '400':
+          description: Bad request
