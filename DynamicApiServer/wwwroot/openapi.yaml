@@ -157,7 +157,7 @@ paths:
         '400':
           description: Bad request
   /file-read-lines:
-    get:
+    post:
       operationId: fileReadLines
       requestBody:
         description: request body
@@ -461,7 +461,7 @@ paths:
         '400':
           description: A bad request response
   /file-read:
-    get:
+    post:
       operationId: fileRead
       requestBody:
         description: request body

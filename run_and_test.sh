@@ -14,11 +14,14 @@ authToken=$(cat auth-token.security)
 # Test the endpoint
 #curl -X GET http://localhost:5054/bash-hello-target?target=universe
 
+
+PORT=$(jq -r '.Port' config.json)
+
 echo ""
 echo "Testing the file-read endpoint"
 echo ""
 
-curl -X GET http://localhost:5054/file-read \
+curl -X GET http://localhost:$PORT/file-read \
 -H "Authorization: Bearer $authToken" \
 -H 'Content-Type: application/json' \
 -d '{
@@ -30,7 +33,7 @@ echo ""
 echo "Testing the file-read-lines endpoint"
 echo ""
 
-curl -X GET http://localhost:5054/file-read-lines \
+curl -X GET http://localhost:$PORT/file-read-lines \
 -H "Authorization: Bearer $authToken" \
 -H 'Content-Type: application/json' \
 -d '{
