@@ -5,10 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApiServer", "DynamicApiServer\DynamicApiServer.csproj", "{8D53EEEE-DF5B-4375-A857-E9CAAED49540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Tests.Common", "HelloWorld\HelloWorld.Tests.Common\HelloWorld.Tests.Common.csproj", "{B6C9B437-1C8C-4C97-8220-B3637C0316A3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorld.Tests.Integration", "HelloWorld\HelloWorld.Tests.Integration\HelloWorld.Tests.Integration.csproj", "{8EDA5E77-AE46-47FB-9D42-D64F40C0E030}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApiServer.Tests.Integration", "DynamicApiServer.Tests.Integration\DynamicApiServer.Tests.Integration.csproj", "{6BF16ABE-CEF8-445D-B348-D75833829397}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Contracts", "DynamicApi.Contracts\DynamicApi.Contracts.csproj", "{4BAB51AD-9C8E-43EF-A8EC-5C1BDD6A437A}"
