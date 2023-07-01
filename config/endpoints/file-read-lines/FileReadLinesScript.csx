@@ -1,13 +1,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using DynamicApi.Contracts;
 using DynamicApiServer.Definitions.EndpointDefinitions;
 using Microsoft.Extensions.Logging;
-using System.Security.Cryptography;
-using System.Text;
 using DynamicApi.Utilities.Files;
 
 public class FileReadLinesScriptEndpoint : IDynamicEndpointExecutor
@@ -24,54 +20,16 @@ public class FileReadLinesScriptEndpoint : IDynamicEndpointExecutor
 		var workingDirectory = parameters.Parameters["workingDirectory"];
 		var filePath = parameters.Parameters["filePath"];
 
-		// Parameter checks
-		if (string.IsNullOrEmpty(workingDirectory))
-		{
-			Console.WriteLine("Error: The 'workingDirectory' parameter is null or empty.");
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: The 'workingDirectory' parameter is null or empty.",
-				//StatusCode = 400
-			});
-		}
-
-		if (string.IsNullOrEmpty(filePath))
-		{
-			Console.WriteLine("Error: The 'filePath' parameter is null or empty.");
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: The 'filePath' parameter is null or empty.",
-				//StatusCode = 400
-			});
-		}
-
-		var fullPath = Path.Combine(workingDirectory, filePath);
-
-		// File existence check
-		if (!File.Exists(fullPath))
-		{
-			Console.WriteLine($"Error: The file '{fullPath}' does not exist.");
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = $"Error: The file '{fullPath}' does not exist.",
-				//StatusCode = 400
-			});
-		}
+		// ... existing code ...
 
 		try
 		{
-			var lines = File.ReadAllLines(fullPath);
-			var formattedLines = new List<string>();
-
-			for (int i = 0; i < lines.Length; i++)
-			{
-				var hash = HashUtils.GenerateSimpleHash(lines[i]);
-				formattedLines.Add(FormatLine(hash, i + 1, lines[i]));
-			}
+			var text = File.ReadAllText(Path.Combine(workingDirectory, filePath));
+			var formattedText = text.ToNumbered();
 
 			return Task.FromResult(new EndpointExecutionResult
 			{
-				Body = string.Join("\n", formattedLines),
+				Body = formattedText,
 				//StatusCode = 200
 			});
 		}
@@ -84,12 +42,5 @@ public class FileReadLinesScriptEndpoint : IDynamicEndpointExecutor
 				//StatusCode = 500
 			});
 		}
-	}
-
-
-
-	private string FormatLine(string hash, int lineNumber, string lineContent)
-	{
-		return $"[{hash}] {lineNumber}: {lineContent}";
 	}
 }

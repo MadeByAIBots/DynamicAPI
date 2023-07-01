@@ -15,33 +15,41 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 		[Test]
 		public async Task TestFileLineDeleteEndpoint()
 		{
-			using var context = new IntegrationTestContext();
-			context.UseToken();
+			// Setup
+			var testContext = new IntegrationTestContext();
+			testContext.UseToken();
 
-			// Set up
-			var workingDirectory = Path.GetTempPath();
-			var filePath = Path.GetRandomFileName();
-			var lines = new[] { "First line", "Second line", "Third line" };
-			await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
+			var tempDirectory = Path.GetTempPath();
+			var randomFileName = Path.GetRandomFileName();
+			var fileLines = new[] { "First line", "Second line", "Third line" };
+			var fileFullPath = Path.Combine(tempDirectory, randomFileName);
 
-			var lineToDelete = lines[1];
+			await File.WriteAllLinesAsync(fileFullPath, fileLines);
+
+			var lineToDelete = fileLines[1];
 			var lineHash = HashUtils.GenerateSimpleHash(lineToDelete);
 
-			// Exercise
-			var response = await context.Client.PostAsync($"/file-line-delete", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"lineNumber\": \"2\", \"lineHash\": \"" + lineHash + "\" }", Encoding.UTF8, "application/json"));
+			var requestContent = new StringContent(
+				"{ \"workingDirectory\": \"" + tempDirectory +
+				"\", \"filePath\": \"" + randomFileName +
+				"\", \"lineNumber\": \"2\", \"lineHash\": \"" + lineHash + "\" }",
+				Encoding.UTF8, "application/json");
 
+			// Act
+			var response = await testContext.Client.PostAsync("/file-line-delete", requestContent);
+
+			var expectedLines = new[] { "First line", "Third line", "" };
 			// Verify
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Line deleted successfully");
+			responseContent.Trim().Should().StartWith("Line deleted successfully\nNew file content:\n" + expectedLines.ToNumbered().Trim());
 
-			var updatedLines = await File.ReadAllLinesAsync(Path.Combine(workingDirectory, filePath));
-			updatedLines.Length.Should().Be(2);
-			updatedLines[0].Should().Be("First line");
-			updatedLines[1].Should().Be("Third line");
+			var updatedFileContent = await File.ReadAllTextAsync(fileFullPath);
+			var expectedFileContent = string.Join('\n', expectedLines);
+			updatedFileContent.Should().Be(expectedFileContent);
 
 			// Teardown
-			File.Delete(Path.Combine(workingDirectory, filePath));
+			File.Delete(fileFullPath);
 		}
 	}
 }

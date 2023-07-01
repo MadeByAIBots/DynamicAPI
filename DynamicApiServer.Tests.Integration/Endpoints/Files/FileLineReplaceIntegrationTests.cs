@@ -21,7 +21,8 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			// Set up
 			var workingDirectory = Path.GetTempPath();
 			var filePath = Path.GetRandomFileName();
-			var initialContent = "Line 1\nLine 2\nLine 3";
+			var initialLines = new string[] { "Line 1", "Line 2", "Line 3" };
+			var initialContent = string.Join("\n", initialLines);
 			await File.WriteAllTextAsync(Path.Combine(workingDirectory, filePath), initialContent);
 
 			var lineHash = HashUtils.GenerateSimpleHash("Line 2");
@@ -32,12 +33,15 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			var response = await context.Client.PostAsync($"/file-line-replace", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"lineNumber\": \"" + lineNumber + "\",\"lineHash\": \"" + lineHash + "\", \"newContent\": \"" + newContent + "\" }", Encoding.UTF8, "application/json"));
 
 			// Verify
+			var expectedLines = initialLines;
+			expectedLines[1] = newContent;
+
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Line replaced successfully");
+			responseContent.Trim().Should().Be("Line replaced successfully\nNew file content:\n" + expectedLines.ToNumbered());
 
 			var updatedContent = await File.ReadAllTextAsync(Path.Combine(workingDirectory, filePath));
-			updatedContent.Trim().Should().Be("Line 1\n" + newContent + "\nLine 3");
+			updatedContent.Trim().Should().Be(string.Join('\n', expectedLines));
 
 			// Teardown
 			File.Delete(Path.Combine(workingDirectory, filePath));

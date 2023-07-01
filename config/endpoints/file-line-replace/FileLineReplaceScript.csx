@@ -49,7 +49,7 @@ public class FileLineReplaceScriptEndpoint : IDynamicEndpointExecutor
 
         return Task.FromResult(new EndpointExecutionResult
         {
-            Body = "Line replaced successfully",
+            Body = "Line replaced successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered(),
         });
     }
 }

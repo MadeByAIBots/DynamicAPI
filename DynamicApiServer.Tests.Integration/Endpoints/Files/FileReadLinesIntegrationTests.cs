@@ -26,7 +26,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 
 			var lines = new[] { "First line", "Second line", "Modified third line" };
 			var hashes = lines.Select(HashUtils.GenerateSimpleHash).ToArray();
-			var expectedOutput = string.Join(Environment.NewLine, lines.Select((line, i) => $"[{hashes[i]}] {i + 1}: {line}"));
+			var expectedOutput = string.Join(Environment.NewLine, lines.ToNumbered());
 			await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
 
 			// Exercise

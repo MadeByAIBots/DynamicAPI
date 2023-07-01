@@ -51,7 +51,7 @@ public class FileLineDeleteScriptEndpoint : IDynamicEndpointExecutor
 
 		return Task.FromResult(new EndpointExecutionResult
 		{
-			Body = "Line deleted successfully",
+			Body = "Line deleted successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered(),
 			//StatusCode = 200
 		});
 	}

@@ -30,7 +30,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 
 		private List<string> ListFiles(string directory, string pattern)
 		{
-return Directory.GetFiles(Path.GetDirectoryName(directory), Path.GetFileName(directory)).ToList();
+			return Directory.GetFiles(Path.GetDirectoryName(directory), Path.GetFileName(directory)).ToList();
 		}
 
 		private string GetWildcardPattern(string reference)
@@ -46,7 +46,7 @@ return Directory.GetFiles(Path.GetDirectoryName(directory), Path.GetFileName(dir
 		{
 			var references = new List<string>();
 
-			foreach (var reference in _apiConfig.CSharp.References)
+			foreach (var reference in _apiConfig.CSharpScript.References)
 			{
 				if (IsAssemblyName(reference))
 				{
@@ -69,7 +69,7 @@ return Directory.GetFiles(Path.GetDirectoryName(directory), Path.GetFileName(dir
 		}
 		private List<string> GetUsings()
 		{
-			return _apiConfig.CSharp.Usings;
+			return _apiConfig.CSharpScript.Usings;
 		}
 		private readonly ApiConfiguration _apiConfig;
 		private readonly CSharpScriptUtilities _utilities;

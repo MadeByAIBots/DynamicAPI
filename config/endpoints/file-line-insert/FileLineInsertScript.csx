@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using DynamicApi.Contracts;
 using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Utilities.Files;
 
 public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
 {
@@ -94,7 +95,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
 
 		return Task.FromResult(new EndpointExecutionResult
 		{
-			Body = "Line inserted successfully",
+			Body = "Line inserted successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered(),
 			//StatusCode = 200
 		});
 	}

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using DynamicApi.Utilities.Files;
 
 namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 {
@@ -29,9 +30,12 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			var response = await context.Client.PostAsync($"/file-line-insert", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\",  \"beforeLineHash\": \"" + lineHash + "\",\"beforeLineNumber\": \"3\", \"newContent\": \"New line\" }", Encoding.UTF8, "application/json"));
 
 			// Verify
+			var expectedLines = new List<string>(lines);
+			expectedLines.Insert(2, "New line");
+
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Line inserted successfully");
+			responseContent.Trim().Should().Be("Line inserted successfully\nNew file content:\n" + expectedLines.ToArray().ToNumbered());
 
 			var updatedLines = await File.ReadAllLinesAsync(Path.Combine(workingDirectory, filePath));
 			updatedLines[2].Should().Be("New line");
