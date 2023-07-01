@@ -6,6 +6,7 @@
     <ProjectReference Include="..\Utilities\Process\Process.csproj" />
     <ProjectReference Include="..\DynamicApiConfiguration\DynamicApiConfiguration.csproj" />
     <ProjectReference Include="..\DynamicApi.Contracts\DynamicApi.Contracts.csproj" />
+    <ProjectReference Include="..\Utilities\Files\DynamicApi.Utilities.Files.csproj" />
   </ItemGroup>
 
   <ItemGroup>

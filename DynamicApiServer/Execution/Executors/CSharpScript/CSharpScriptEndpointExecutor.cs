@@ -58,8 +58,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 				scriptOptions = scriptOptions.AddReferences(
 					"System.Linq",
 					 "System.Security.Cryptography",
-					 "Microsoft.Extensions.Logging.dll",
-					 _resolver.WorkingDirectory() + "/Utilities/Files/bin/Debug/net7.0/DynamicApi.Utilities.Files.dll"
+					 "Microsoft.Extensions.Logging.dll"
 					 );
 
 				_logger.LogInformation("Adding references");

@@ -1,6 +1,6 @@
 {
-  "path": "/file-read-lines",
-  "executor": "csharp-script",
+  "path": "/file-read",
+  "executor": "bash",
   "method": "get",
   "args": [
     {
