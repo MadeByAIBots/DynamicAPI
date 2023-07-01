@@ -36,10 +36,6 @@
         {
             "statusCode": 400,
             "description": "Error: The file does not exist or the 'lineNumber' parameter is out of range."
-        },
-        {
-            "statusCode": 400,
-            "description": "Error: Invalid hash."
         }
     ]
 }

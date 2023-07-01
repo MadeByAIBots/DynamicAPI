@@ -40,6 +40,7 @@ paths:
                 - workingDirectory
                 - filePath
                 - lineNumber
+                - lineHash
                 - newContent
               type: object
               properties:
@@ -48,6 +49,8 @@ paths:
                 filePath:
                   type: string
                 lineNumber:
+                  type: string
+                lineHash:
                   type: string
                 newContent:
                   type: string
@@ -186,6 +189,7 @@ paths:
                 - workingDirectory
                 - filePath
                 - beforeLineNumber
+                - beforeLineHash
                 - newContent
               type: object
               properties:
@@ -194,6 +198,8 @@ paths:
                 filePath:
                   type: string
                 beforeLineNumber:
+                  type: string
+                beforeLineHash:
                   type: string
                 newContent:
                   type: string
@@ -366,6 +372,7 @@ paths:
                 - workingDirectory
                 - filePath
                 - lineNumber
+                - lineHash
               type: object
               properties:
                 workingDirectory:
@@ -374,11 +381,13 @@ paths:
                   type: string
                 lineNumber:
                   type: string
+                lineHash:
+                  type: string
       responses:
         '200':
           description: Line deleted successfully
         '400':
-          description: Bad request
+          description: 'Error: The file does not exist or the ''lineNumber'' parameter is out of range.'
   /file-search-names:
     post:
       operationId: fileSearchNames
