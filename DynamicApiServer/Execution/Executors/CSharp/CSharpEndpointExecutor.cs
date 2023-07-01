@@ -15,6 +15,7 @@ namespace DynamicApiServer.Execution.Executors.CSharp
     public class CSharpEndpointExecutor : IEndpointExecutor
     {
         private readonly ILogger<CSharpEndpointExecutor> _logger;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly ApiConfiguration _apiConfig;
         private readonly WorkingDirectoryResolver _resolver;
 
@@ -22,6 +23,7 @@ namespace DynamicApiServer.Execution.Executors.CSharp
         {
             _apiConfig = apiConfig;
             _resolver = resolver;
+            _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<CSharpEndpointExecutor>();
             _logger.LogInformation("CSharpEndpointExecutor initialized.");
         }
@@ -139,7 +141,7 @@ namespace DynamicApiServer.Execution.Executors.CSharp
         {
             EndpointExecutionResult result;
 
-            var parameters = new DynamicExecutionParameters(_apiConfig, _resolver, args);
+            var parameters = new DynamicExecutionParameters(_apiConfig, _resolver, _loggerFactory, args);
 
             try
             {

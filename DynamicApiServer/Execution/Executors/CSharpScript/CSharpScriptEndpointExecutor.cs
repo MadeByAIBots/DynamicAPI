@@ -16,6 +16,8 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
     public class CSharpScriptEndpointExecutor : IEndpointExecutor
     {
         private readonly ILogger<CSharpScriptEndpointExecutor> _logger;
+        private readonly ILoggerFactory _loggerFactory;
+
         private readonly ApiConfiguration _apiConfig;
         private readonly CSharpScriptUtilities _utilities;
         private readonly WorkingDirectoryResolver _resolver;
@@ -25,6 +27,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
             _resolver = resolver;
             _utilities = utilities;
             _apiConfig = apiConfig;
+            _loggerFactory = loggerFactory;
             _logger = loggerFactory.CreateLogger<CSharpScriptEndpointExecutor>();
             _logger.LogInformation("CSharpScriptEndpointExecutor initialized with ApiConfiguration: {0}", _apiConfig);
         }
@@ -50,7 +53,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 
                 _logger.LogInformation("Compiling script...");
                 string scriptCode = File.ReadAllText(scriptPath);
-var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptCode, Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default.AddReferences("System.Linq"));
+var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptCode, Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default.AddReferences("System.Linq", "System.Security.Cryptography"));
                 var compilation = script.GetCompilation();
                 using (var ms = new MemoryStream())
                 {
@@ -87,7 +90,7 @@ var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptC
 
                     _logger.LogInformation("Executing script method...");
                     var method = type.GetMethod("ExecuteAsync");
-                    var result = await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfig, _resolver, args) });
+                    var result = await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfig, _resolver, _loggerFactory, args) });
                     string output = result.Body;
 
                     _logger.LogInformation("Script executed. Output: {0}", output);
