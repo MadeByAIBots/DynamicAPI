@@ -34,5 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DynamicApiServer\DynamicApiServer.csproj" />
+    <ProjectReference Include="..\Utilities\Files\DynamicApi.Utilities.Files.csproj" />
   </ItemGroup>
 </Project>
