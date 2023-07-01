@@ -1,25 +1,25 @@
 {
-  "path": "/file-copy",
+  "path": "/directory-search-names",
   "executor": "bash",
   "method": "post",
   "args": [
     {
-      "name": "sourcePath",
+      "name": "workingDirectory",
       "type": "json",
       "source": "body",
-      "description": "The source file path."
+      "description": "The base path where the search should start."
     },
     {
-      "name": "destinationPath",
+      "name": "directoryName",
       "type": "json",
       "source": "body",
-      "description": "The destination file path."
+      "description": "The name of the directory to search for."
     }
   ],
   "responses": [
     {
       "statusCode": 200,
-      "description": "File copied successfully",
+      "description": "Search completed successfully",
       "type": "string"
     },
     {

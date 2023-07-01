@@ -4,22 +4,16 @@
   "method": "post",
   "args": [
     {
-      "name": "workingDirectory",
-      "type": "string",
-      "source": "query",
-      "description": "The base path where the file is located."
-    },
-    {
       "name": "sourcePath",
-      "type": "string",
-      "source": "query",
-      "description": "The source file path, relative to the working directory."
+      "type": "json",
+      "source": "body",
+      "description": "The source file path."
     },
     {
       "name": "destinationPath",
-      "type": "string",
-      "source": "query",
-      "description": "The destination file path, relative to the working directory."
+      "type": "json",
+      "source": "body",
+      "description": "The destination file path."
     }
   ],
   "responses": [

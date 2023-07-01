@@ -1,25 +1,25 @@
 {
-  "path": "/file-copy",
+  "path": "/directory-create",
   "executor": "bash",
   "method": "post",
   "args": [
     {
-      "name": "sourcePath",
+      "name": "workingDirectory",
       "type": "json",
       "source": "body",
-      "description": "The source file path."
+      "description": "The base path where the new directory should be created."
     },
     {
-      "name": "destinationPath",
+      "name": "directoryName",
       "type": "json",
       "source": "body",
-      "description": "The destination file path."
+      "description": "The name of the new directory."
     }
   ],
   "responses": [
     {
       "statusCode": 200,
-      "description": "File copied successfully",
+      "description": "Directory created successfully",
       "type": "string"
     },
     {

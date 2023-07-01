@@ -1,0 +1,3 @@
+{
+    "command": "find '${workingDirectory}' -type d -name '${directoryName}'"
+}

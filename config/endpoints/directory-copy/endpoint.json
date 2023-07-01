@@ -1,5 +1,5 @@
 {
-  "path": "/file-copy",
+  "path": "/directory-copy",
   "executor": "bash",
   "method": "post",
   "args": [
@@ -7,19 +7,19 @@
       "name": "sourcePath",
       "type": "json",
       "source": "body",
-      "description": "The source file path."
+      "description": "The source path of the directory to be copied."
     },
     {
       "name": "destinationPath",
       "type": "json",
       "source": "body",
-      "description": "The destination file path."
+      "description": "The destination path where the directory should be copied to."
     }
   ],
   "responses": [
     {
       "statusCode": 200,
-      "description": "File copied successfully",
+      "description": "Directory copied successfully",
       "type": "string"
     },
     {

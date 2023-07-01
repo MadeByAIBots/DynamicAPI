@@ -6,6 +6,28 @@ info:
 servers:
   - url: https://dynamicapi.madebyaibots.com
 paths:
+  /directory-create:
+    post:
+      operationId: directoryCreate
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - directoryName
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                directoryName:
+                  type: string
+      responses:
+        '200':
+          description: Directory created successfully
+        '400':
+          description: Bad request
   /file-line-replace:
     post:
       operationId: fileLineReplace
@@ -34,6 +56,28 @@ paths:
           description: Line replaced successfully
         '400':
           description: Bad request
+  /directory-move:
+    post:
+      operationId: directoryMove
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - sourcePath
+                - destinationPath
+              type: object
+              properties:
+                sourcePath:
+                  type: string
+                destinationPath:
+                  type: string
+      responses:
+        '200':
+          description: Directory moved successfully
+        '400':
+          description: Bad request
   /file-search-content:
     post:
       operationId: fileSearchContent
@@ -57,6 +101,28 @@ paths:
       responses:
         '200':
           description: Search completed successfully
+        '400':
+          description: Bad request
+  /directory-copy:
+    post:
+      operationId: directoryCopy
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - sourcePath
+                - destinationPath
+              type: object
+              properties:
+                sourcePath:
+                  type: string
+                destinationPath:
+                  type: string
+      responses:
+        '200':
+          description: Directory copied successfully
         '400':
           description: Bad request
   /file-append:
@@ -137,27 +203,22 @@ paths:
         '400':
           description: Bad request
   /file-copy:
-    get:
+    post:
       operationId: fileCopy
-      parameters:
-        - name: workingDirectory
-          in: query
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: string
-        - name: sourcePath
-          in: query
-          description: 'The source file path, relative to the working directory.'
-          required: true
-          schema:
-            type: string
-        - name: destinationPath
-          in: query
-          description: 'The destination file path, relative to the working directory.'
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - sourcePath
+                - destinationPath
+              type: object
+              properties:
+                sourcePath:
+                  type: string
+                destinationPath:
+                  type: string
       responses:
         '200':
           description: File copied successfully
@@ -199,25 +260,20 @@ paths:
   /file-move:
     post:
       operationId: fileMove
-      parameters:
-        - name: workingDirectory
-          in: query
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: string
-        - name: sourcePath
-          in: query
-          description: 'The source file path, relative to the working directory.'
-          required: true
-          schema:
-            type: string
-        - name: destinationPath
-          in: query
-          description: 'The destination file path, relative to the working directory.'
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - sourcePath
+                - destinationPath
+              type: object
+              properties:
+                sourcePath:
+                  type: string
+                destinationPath:
+                  type: string
       responses:
         '200':
           description: File moved successfully
@@ -274,6 +330,28 @@ paths:
       responses:
         '200':
           description: File created successfully
+        '400':
+          description: Bad request
+  /directory-search-names:
+    post:
+      operationId: directorySearchNames
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - directoryName
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                directoryName:
+                  type: string
+      responses:
+        '200':
+          description: Search completed successfully
         '400':
           description: Bad request
   /file-line-delete:
