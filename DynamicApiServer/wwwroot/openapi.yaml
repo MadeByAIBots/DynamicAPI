@@ -301,28 +301,28 @@ paths:
           description: Line deleted successfully
         '400':
           description: Bad request
-  /execute:
+  /file-search-names:
     post:
-      operationId: execute
+      operationId: fileSearchNames
       requestBody:
         description: request body
         content:
           application/json:
             schema:
               required:
-                - command
                 - workingDirectory
+                - fileName
               type: object
               properties:
-                command:
-                  type: string
                 workingDirectory:
+                  type: string
+                fileName:
                   type: string
       responses:
         '200':
-          description: A successful response
+          description: Search completed successfully
         '400':
-          description: A bad request response
+          description: Bad request
   /directory-list:
     post:
       operationId: directoryList
@@ -342,6 +342,28 @@ paths:
           description: Directory listed successfully
         '400':
           description: Bad request
+  /run-bash-command:
+    post:
+      operationId: runBashCommand
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - command
+                - workingDirectory
+              type: object
+              properties:
+                command:
+                  type: string
+                workingDirectory:
+                  type: string
+      responses:
+        '200':
+          description: A successful response
+        '400':
+          description: A bad request response
   /endpoint-list:
     get:
       operationId: endpointList

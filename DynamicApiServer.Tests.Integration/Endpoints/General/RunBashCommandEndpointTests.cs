@@ -23,7 +23,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
             );
 
             // Send a request to the endpoint
-            var response = await context.Client.PostAsync("/execute", content);
+            var response = await context.Client.PostAsync("/run-bash-command", content);
 
             // Read the response content
             var responseContent = await response.Content.ReadAsStringAsync();

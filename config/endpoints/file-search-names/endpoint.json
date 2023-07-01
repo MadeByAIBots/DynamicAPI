@@ -1,30 +1,30 @@
 {
-  "path": "/execute",
+  "path": "/file-search-names",
   "executor": "bash",
   "method": "post",
   "args": [
     {
-      "name": "command",
-      "type": "json",
-      "source": "body",
-      "description": "The bash command to execute."
-    },
-    {
       "name": "workingDirectory",
       "type": "json",
       "source": "body",
-      "description": "The base working directory to execute the command in."
+      "description": "The base path where the search should start."
+    },
+    {
+      "name": "fileName",
+      "type": "json",
+      "source": "body",
+      "description": "The name of the file to search for."
     }
   ],
   "responses": [
     {
       "statusCode": 200,
-      "description": "A successful response",
+      "description": "Search completed successfully",
       "type": "string"
     },
     {
       "statusCode": 400,
-      "description": "A bad request response",
+      "description": "Bad request",
       "type": "string"
     }
   ]
