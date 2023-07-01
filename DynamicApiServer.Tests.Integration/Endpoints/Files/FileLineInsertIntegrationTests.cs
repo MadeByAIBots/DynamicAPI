@@ -9,33 +9,35 @@ using NUnit.Framework;
 
 namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 {
-    public class FileLineInsertIntegrationTests
-    {
-        [Test]
-        public async Task TestFileLineInsertEndpoint()
-        {
-            using var context = new IntegrationTestContext();
-            context.UseToken();
+	public class FileLineInsertIntegrationTests
+	{
+		[Test]
+		public async Task TestFileLineInsertEndpoint()
+		{
+			using var context = new IntegrationTestContext();
+			context.UseToken();
 
-            // Set up
-            var workingDirectory = Path.GetTempPath();
-            var filePath = Path.GetRandomFileName();
-            var lines = new[] { "First line", "Second line", "Third line" };
-            await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
+			// Set up
+			var workingDirectory = Path.GetTempPath();
+			var filePath = Path.GetRandomFileName();
+			var lines = new[] { "First line", "Second line", "Third line" };
+			await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
 
-            // Exercise
-            var response = await context.Client.PostAsync($"/file-line-insert", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"beforeLineNumber\": \"3\", \"newContent\": \"New line\" }", Encoding.UTF8, "application/json"));
+			var lineHash = DynamicApi.Utilities.Files.HashUtils.GenerateSimpleHash(lines[2]);
 
-            // Verify
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            responseContent.Trim().Should().Be("Line inserted successfully");
+			// Exercise
+			var response = await context.Client.PostAsync($"/file-line-insert", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\",  \"beforeLineHash\": \"" + lineHash + "\",\"beforeLineNumber\": \"3\", \"newContent\": \"New line\" }", Encoding.UTF8, "application/json"));
 
-            var updatedLines = await File.ReadAllLinesAsync(Path.Combine(workingDirectory, filePath));
-            updatedLines[2].Should().Be("New line");
+			// Verify
+			response.StatusCode.Should().Be(HttpStatusCode.OK);
+			var responseContent = await response.Content.ReadAsStringAsync();
+			responseContent.Trim().Should().Be("Line inserted successfully");
 
-            // Teardown
-            File.Delete(Path.Combine(workingDirectory, filePath));
-        }
-    }
+			var updatedLines = await File.ReadAllLinesAsync(Path.Combine(workingDirectory, filePath));
+			updatedLines[2].Should().Be("New line");
+
+			// Teardown
+			File.Delete(Path.Combine(workingDirectory, filePath));
+		}
+	}
 }

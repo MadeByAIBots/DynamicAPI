@@ -22,6 +22,12 @@
       "description": "The line number before which to insert the new content."
     },
     {
+      "name": "beforeLineHash",
+      "type": "json",
+      "source": "body",
+      "description": "The hash of the line to insert before."
+    },
+    {
       "name": "newContent",
       "type": "json",
       "source": "body",
