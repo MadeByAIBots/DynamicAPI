@@ -34,6 +34,31 @@ paths:
           description: Line replaced successfully
         '400':
           description: Bad request
+  /file-search-content:
+    post:
+      operationId: fileSearchContent
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - query
+                - recursive
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                query:
+                  type: string
+                recursive:
+                  type: string
+      responses:
+        '200':
+          description: Search completed successfully
+        '400':
+          description: Bad request
   /file-append:
     post:
       operationId: fileAppend
@@ -109,33 +134,6 @@ paths:
       responses:
         '200':
           description: Line inserted successfully
-        '400':
-          description: Bad request
-  /file-search:
-    get:
-      operationId: fileSearch
-      parameters:
-        - name: workingDirectory
-          in: query
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: string
-        - name: filePath
-          in: query
-          description: 'The path of the file to search in, relative to the working directory.'
-          required: true
-          schema:
-            type: string
-        - name: query
-          in: query
-          description: The search query.
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: 'Search results, including line numbers and the matching content.'
         '400':
           description: Bad request
   /file-copy:
@@ -326,18 +324,22 @@ paths:
         '400':
           description: A bad request response
   /directory-list:
-    get:
+    post:
       operationId: directoryList
-      parameters:
-        - name: workingDirectory
-          in: query
-          description: The base path of the directory to list.
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
       responses:
         '200':
-          description: Directory listing
+          description: Directory listed successfully
         '400':
           description: Bad request
   /endpoint-list:
@@ -348,28 +350,3 @@ paths:
           description: A successful response
         '400':
           description: A bad request response
-  /file-list-containing-content:
-    post:
-      operationId: fileListContainingContent
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - query
-                - recursive
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                query:
-                  type: string
-                recursive:
-                  type: string
-      responses:
-        '200':
-          description: Search completed successfully
-        '400':
-          description: Bad request
