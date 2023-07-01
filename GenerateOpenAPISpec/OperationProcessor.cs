@@ -23,7 +23,7 @@ public class OperationProcessor
             throw new ArgumentNullException(nameof(endpointDefinition));
         }
 
-        var operation = new OpenApiOperation();
+var operation = new OpenApiOperation { Description = endpointDefinition.Description };
 
         // Set the operationId property of the operation.
         operation.OperationId = ConvertEndpointNameToOperationId(endpointDefinition.Path);

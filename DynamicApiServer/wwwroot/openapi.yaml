@@ -8,6 +8,7 @@ servers:
 paths:
   /directory-create:
     post:
+      description: Creates a new directory within the specified working directory.
       operationId: directoryCreate
       requestBody:
         description: request body
@@ -16,13 +17,15 @@ paths:
             schema:
               required:
                 - workingDirectory
-                - directoryName
+                - directoryPath
               type: object
               properties:
                 workingDirectory:
                   type: string
-                directoryName:
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
+                directoryPath:
                   type: string
+                  description: The relative path of the new directory to be created.
       responses:
         '200':
           description: Directory created successfully
@@ -46,14 +49,19 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the file is located.
                 filePath:
                   type: string
+                  description: 'The path of the file to replace a line in, relative to the working directory.'
                 lineNumber:
                   type: string
+                  description: The line number to replace.
                 lineHash:
                   type: string
+                  description: 'The line hash, to verify it''s the correct line.'
                 newContent:
                   type: string
+                  description: The new content to replace the old content with.
       responses:
         '200':
           description: Line replaced successfully
@@ -61,6 +69,7 @@ paths:
           description: Bad request
   /directory-move:
     post:
+      description: Moves a directory from a specified source path to a specified destination path within the working directory.
       operationId: directoryMove
       requestBody:
         description: request body
@@ -74,8 +83,10 @@ paths:
               properties:
                 sourcePath:
                   type: string
+                  description: The absolute path of the directory to be moved.
                 destinationPath:
                   type: string
+                  description: The absolute path where the directory should be moved to.
       responses:
         '200':
           description: Directory moved successfully
@@ -97,10 +108,13 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the search should start.
                 query:
                   type: string
+                  description: The search query. Use * wildcards the same way you would use in grep.
                 recursive:
                   type: string
+                  description: Whether to search within subdirectories.
       responses:
         '200':
           description: Search completed successfully
@@ -121,8 +135,10 @@ paths:
               properties:
                 sourcePath:
                   type: string
+                  description: The source path of the directory to be copied.
                 destinationPath:
                   type: string
+                  description: The destination path where the directory should be copied to.
       responses:
         '200':
           description: Directory copied successfully
@@ -130,6 +146,7 @@ paths:
           description: Bad request
   /file-append:
     post:
+      description: Appends specified content to a file.
       operationId: fileAppend
       requestBody:
         description: request body
@@ -145,12 +162,16 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
                 filePath:
                   type: string
+                  description: The relative path of the file to append to.
                 content:
                   type: string
+                  description: The content to append to the file.
                 addNewline:
                   type: string
+                  description: Optional. Whether to add a newline character after the appended content. Defaults to true.
       responses:
         '200':
           description: Content appended successfully
@@ -171,8 +192,10 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the file is located.
                 filePath:
                   type: string
+                  description: 'The path of the file to be read, relative to the working directory.'
       responses:
         '200':
           description: File read successfully
@@ -180,6 +203,7 @@ paths:
           description: Bad request
   /file-line-insert:
     post:
+      description: 'Inserts a new line before a specified line in a file. NOTE: Use the ''file read lines'' endpoint to get the correct line number and hash. DO NOT GUESS OR ASSUME.'
       operationId: fileLineInsert
       requestBody:
         description: request body
@@ -196,17 +220,22 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
                 filePath:
                   type: string
+                  description: The relative path of the file where a line will be inserted.
                 beforeLineNumber:
                   type: string
+                  description: The line number before which the new content will be inserted. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
                 beforeLineHash:
                   type: string
+                  description: The hash of the line to insert before for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
                 newContent:
                   type: string
+                  description: The new content to insert.
       responses:
         '200':
-          description: Line inserted successfully
+          description: 'Line inserted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it''s correct.'
         '400':
           description: Bad request
   /file-copy:
@@ -224,8 +253,10 @@ paths:
               properties:
                 sourcePath:
                   type: string
+                  description: The source file path.
                 destinationPath:
                   type: string
+                  description: The destination file path.
       responses:
         '200':
           description: File copied successfully
@@ -255,10 +286,13 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the file is located.
                 filePath:
                   type: string
+                  description: 'The path of the file to be updated, relative to the working directory.'
                 content:
                   type: string
+                  description: The content to update the file with.
       responses:
         '200':
           description: File updated successfully
@@ -279,8 +313,10 @@ paths:
               properties:
                 sourcePath:
                   type: string
+                  description: The source file path.
                 destinationPath:
                   type: string
+                  description: The destination file path.
       responses:
         '200':
           description: File moved successfully
@@ -303,12 +339,16 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the file is located.
                 filePath:
                   type: string
+                  description: 'The path of the file to prepend to, relative to the working directory.'
                 content:
                   type: string
+                  description: The content to prepend.
                 addNewline:
                   type: string
+                  description: Optional. Whether to add a newline character between the existing content and the new content. Defaults to true.
       responses:
         '200':
           description: Content prepended successfully
@@ -330,10 +370,13 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the file will be created.
                 filePath:
                   type: string
+                  description: 'The path of the file to be created, relative to the working directory.'
                 content:
                   type: string
+                  description: The content to write to the file.
       responses:
         '200':
           description: File created successfully
@@ -341,6 +384,7 @@ paths:
           description: Bad request
   /directory-search-names:
     post:
+      description: Searches for directories within a specified path in the working directory.
       operationId: directorySearchNames
       requestBody:
         description: request body
@@ -349,13 +393,19 @@ paths:
             schema:
               required:
                 - workingDirectory
-                - directoryName
+                - searchPath
+                - query
               type: object
               properties:
                 workingDirectory:
                   type: string
-                directoryName:
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
+                searchPath:
                   type: string
+                  description: The relative path from the working directory where the search should start.
+                query:
+                  type: string
+                  description: The query for the directory names to search for. This can include wildcards for more flexible searching.
       responses:
         '200':
           description: Search completed successfully
@@ -404,8 +454,10 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the search should start.
                 fileName:
                   type: string
+                  description: The name of the file to search for. Use * wildcards the same way you would with 'find' bash command.
       responses:
         '200':
           description: Search completed successfully
@@ -413,6 +465,7 @@ paths:
           description: Bad request
   /directory-list:
     post:
+      description: Lists the contents of a specified directory within the working directory.
       operationId: directoryList
       requestBody:
         description: request body
@@ -421,10 +474,15 @@ paths:
             schema:
               required:
                 - workingDirectory
+                - directoryPath
               type: object
               properties:
                 workingDirectory:
                   type: string
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
+                directoryPath:
+                  type: string
+                  description: The relative path of the directory to be listed within the working directory.
       responses:
         '200':
           description: Directory listed successfully
@@ -445,8 +503,10 @@ paths:
               properties:
                 command:
                   type: string
+                  description: The bash command to execute.
                 workingDirectory:
                   type: string
+                  description: The base working directory to execute the command in.
       responses:
         '200':
           description: A successful response
@@ -475,8 +535,10 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The base path where the file is located.
                 filePath:
                   type: string
+                  description: 'The path of the file to be read, relative to the working directory.'
       responses:
         '200':
           description: File read successfully

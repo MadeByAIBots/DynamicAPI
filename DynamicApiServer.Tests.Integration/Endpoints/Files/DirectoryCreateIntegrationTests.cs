@@ -21,16 +21,16 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             // Set up
             var uniqueId = Guid.NewGuid().ToString();
             var workingDirectory = Path.Combine(Path.GetTempPath(), uniqueId);
-            var directoryName = Guid.NewGuid().ToString();
+            var directoryPath = Guid.NewGuid().ToString();
 
             // Exercise
-            var payload = new { workingDirectory, directoryName };
+            var payload = new { workingDirectory, directoryPath };
             var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
             var response = await context.Client.PostAsync("/directory-create", content);
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            Directory.Exists(Path.Combine(workingDirectory, directoryName)).Should().BeTrue();
+            Directory.Exists(Path.Combine(workingDirectory, directoryPath)).Should().BeTrue();
 
             // Teardown
             Directory.Delete(workingDirectory, true);

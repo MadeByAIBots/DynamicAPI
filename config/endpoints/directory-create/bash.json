@@ -1,3 +1,3 @@
 {
-    "command": "mkdir -p '${workingDirectory}/${directoryName}'"
+    "command": "mkdir -p '${workingDirectory}/${directoryPath}'"
 }

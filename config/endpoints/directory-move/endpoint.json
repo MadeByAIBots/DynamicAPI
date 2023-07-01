@@ -1,4 +1,5 @@
 {
+  "description": "Moves a directory from a specified source path to a specified destination path within the working directory.",
   "path": "/directory-move",
   "executor": "bash",
   "method": "post",
@@ -7,13 +8,13 @@
       "name": "sourcePath",
       "type": "json",
       "source": "body",
-      "description": "The source path of the directory to be moved."
+      "description": "The absolute path of the directory to be moved."
     },
     {
       "name": "destinationPath",
       "type": "json",
       "source": "body",
-      "description": "The destination path where the directory should be moved to."
+      "description": "The absolute path where the directory should be moved to."
     }
   ],
   "responses": [

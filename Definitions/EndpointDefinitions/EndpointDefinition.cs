@@ -10,5 +10,6 @@ namespace DynamicApiServer.Definitions.EndpointDefinitions
         public List<EndpointResponseDefinition> Responses { get; set; }
         public string Executor { get; set; }
         public List<EndpointArgumentDefinition> Args { get; set; }
+        public string Description { get; set; }
     }
 }

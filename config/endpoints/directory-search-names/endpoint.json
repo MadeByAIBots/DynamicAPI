@@ -1,4 +1,5 @@
 {
+  "description": "Searches for directories within a specified path in the working directory.",
   "path": "/directory-search-names",
   "executor": "bash",
   "method": "post",
@@ -7,13 +8,19 @@
       "name": "workingDirectory",
       "type": "json",
       "source": "body",
-      "description": "The base path where the search should start."
+      "description": "The absolute path to the current working directory (e.g., project or repository root)."
     },
     {
-      "name": "directoryName",
+      "name": "searchPath",
       "type": "json",
       "source": "body",
-      "description": "The name of the directory to search for."
+      "description": "The relative path from the working directory where the search should start."
+    },
+    {
+      "name": "query",
+      "type": "json",
+      "source": "body",
+      "description": "The query for the directory names to search for. This can include wildcards for more flexible searching."
     }
   ],
   "responses": [
