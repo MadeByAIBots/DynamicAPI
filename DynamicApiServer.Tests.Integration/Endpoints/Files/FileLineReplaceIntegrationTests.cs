@@ -65,7 +65,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			// Verify
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Error: Invalid hash.");
+			responseContent.Trim().Should().Be("Error: Invalid hash. Read the lines to find out the correct hash and line number.");
 
 			//var updatedContent = await File.ReadAllTextAsync(Path.Combine(workingDirectory, filePath));
 			//updatedContent.Trim().Should().Be("Line 1\n" + newContent + "\nLine 3");

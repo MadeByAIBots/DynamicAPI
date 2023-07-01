@@ -13,7 +13,7 @@
       "name": "query",
       "type": "json",
       "source": "body",
-      "description": "The search query."
+      "description": "The search query. Use * wildcards the same way you would use in grep."
     },
     {
       "name": "recursive",

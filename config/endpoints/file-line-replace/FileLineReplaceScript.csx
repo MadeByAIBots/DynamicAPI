@@ -44,7 +44,7 @@ public class FileLineReplaceScriptEndpoint : IDynamicEndpointExecutor
         {
             return Task.FromResult(new EndpointExecutionResult
             {
-                Body = "Error: Invalid hash.",
+                Body = "Error: Invalid hash. Read the lines to find out the correct hash and line number.",
             });
         }
 
