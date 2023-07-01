@@ -22,6 +22,12 @@
       "description": "The line number to replace."
     },
     {
+      "name": "lineHash",
+      "type": "json",
+      "source": "body",
+      "description": "The line hash, to verify it's the correct line."
+    },
+    {
       "name": "newContent",
       "type": "json",
       "source": "body",

@@ -6,38 +6,42 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using NUnit.Framework;
+using DynamicApi.Utilities.Files;
 
 namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 {
-    public class FileLineDeleteIntegrationTests
-    {
-        [Test]
-        public async Task TestFileLineDeleteEndpoint()
-        {
-            using var context = new IntegrationTestContext();
-            context.UseToken();
+	public class FileLineDeleteIntegrationTests
+	{
+		[Test]
+		public async Task TestFileLineDeleteEndpoint()
+		{
+			using var context = new IntegrationTestContext();
+			context.UseToken();
 
-            // Set up
-            var workingDirectory = Path.GetTempPath();
-            var filePath = Path.GetRandomFileName();
-            var lines = new[] { "First line", "Second line", "Third line" };
-            await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
+			// Set up
+			var workingDirectory = Path.GetTempPath();
+			var filePath = Path.GetRandomFileName();
+			var lines = new[] { "First line", "Second line", "Third line" };
+			await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
 
-            // Exercise
-            var response = await context.Client.PostAsync($"/file-line-delete", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"lineNumber\": \"2\" }", Encoding.UTF8, "application/json"));
+			var lineToDelete = lines[1];
+			var lineHash = HashUtils.GenerateSimpleHash(lineToDelete);
 
-            // Verify
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var responseContent = await response.Content.ReadAsStringAsync();
-            responseContent.Trim().Should().Be("Line deleted successfully");
+			// Exercise
+			var response = await context.Client.PostAsync($"/file-line-delete", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"lineNumber\": \"2\", \"lineHash\": \"" + lineHash + "\" }", Encoding.UTF8, "application/json"));
 
-            var updatedLines = await File.ReadAllLinesAsync(Path.Combine(workingDirectory, filePath));
-            updatedLines.Length.Should().Be(2);
-            updatedLines[0].Should().Be("First line");
-            updatedLines[1].Should().Be("Third line");
+			// Verify
+			response.StatusCode.Should().Be(HttpStatusCode.OK);
+			var responseContent = await response.Content.ReadAsStringAsync();
+			responseContent.Trim().Should().Be("Line deleted successfully");
 
-            // Teardown
-            File.Delete(Path.Combine(workingDirectory, filePath));
-        }
-    }
+			var updatedLines = await File.ReadAllLinesAsync(Path.Combine(workingDirectory, filePath));
+			updatedLines.Length.Should().Be(2);
+			updatedLines[0].Should().Be("First line");
+			updatedLines[1].Should().Be("Third line");
+
+			// Teardown
+			File.Delete(Path.Combine(workingDirectory, filePath));
+		}
+	}
 }
