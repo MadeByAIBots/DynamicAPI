@@ -1,5 +1,5 @@
 {
-  "path": "/file-list-containing-content",
+  "path": "/file-search-content",
   "executor": "bash",
   "method": "post",
   "args": [

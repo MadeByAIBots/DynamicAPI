@@ -10,10 +10,10 @@ using NUnit.Framework;
 
 namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 {
-    public class FileSearchContentsIntegrationTests
+    public class FileSearchContentIntegrationTests
     {
         [Test]
-        public async Task TestFileSearchContentsEndpoint()
+        public async Task TestFileSearchContentEndpoint()
         {
             using var context = new IntegrationTestContext();
             context.UseToken();
@@ -30,7 +30,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
             // Exercise
             var payload = new { workingDirectory, query = "line", recursive = "true" };
             var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
-            var response = await context.Client.PostAsync("/file-list-containing-content", content);
+            var response = await context.Client.PostAsync("/file-search-content", content);
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);

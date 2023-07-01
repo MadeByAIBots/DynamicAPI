@@ -1,19 +1,19 @@
 {
   "path": "/directory-list",
   "executor": "bash",
-  "method": "get",
+  "method": "post",
   "args": [
     {
       "name": "workingDirectory",
-      "type": "string",
-      "source": "query",
-      "description": "The base path of the directory to list."
+      "type": "json",
+      "source": "body",
+      "description": "The path of the directory to list."
     }
   ],
   "responses": [
     {
       "statusCode": 200,
-      "description": "Directory listing",
+      "description": "Directory listed successfully",
       "type": "string"
     },
     {
