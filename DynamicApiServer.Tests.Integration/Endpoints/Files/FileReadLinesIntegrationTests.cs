@@ -30,7 +30,8 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			await File.WriteAllLinesAsync(Path.Combine(workingDirectory, filePath), lines);
 
 			// Exercise
-			var response = await context.Client.GetAsync($"/file-read-lines?workingDirectory={workingDirectory}&filePath={filePath}");
+			var response = await context.Client.PostAsync($"/file-read-lines", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\" }", Encoding.UTF8, "application/json"));
+
 
 			// Verify
 			response.StatusCode.Should().Be(HttpStatusCode.OK);

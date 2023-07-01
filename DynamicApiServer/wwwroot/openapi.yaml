@@ -157,21 +157,22 @@ paths:
         '400':
           description: Bad request
   /file-read-lines:
-    post:
+    get:
       operationId: fileReadLines
-      parameters:
-        - name: workingDirectory
-          in: query
-          description: The base path where the file is located.
-          required: true
-          schema:
-            type: string
-        - name: filePath
-          in: query
-          description: 'The path of the file to be read, relative to the working directory.'
-          required: true
-          schema:
-            type: string
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePath
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                filePath:
+                  type: string
       responses:
         '200':
           description: File read successfully
@@ -459,3 +460,25 @@ paths:
           description: A successful response
         '400':
           description: A bad request response
+  /file-read:
+    get:
+      operationId: fileRead
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePath
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                filePath:
+                  type: string
+      responses:
+        '200':
+          description: File read successfully
+        '400':
+          description: Bad request
