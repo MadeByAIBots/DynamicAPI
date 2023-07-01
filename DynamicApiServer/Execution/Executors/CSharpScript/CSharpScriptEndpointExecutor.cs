@@ -50,7 +50,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 
                 _logger.LogInformation("Compiling script...");
                 string scriptCode = File.ReadAllText(scriptPath);
-                var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptCode);
+var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptCode, Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default.AddReferences("System.Linq"));
                 var compilation = script.GetCompilation();
                 using (var ms = new MemoryStream())
                 {

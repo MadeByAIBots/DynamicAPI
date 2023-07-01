@@ -1,0 +1,37 @@
+{
+  "path": "/file-list-containing-content",
+  "executor": "bash",
+  "method": "post",
+  "args": [
+    {
+      "name": "workingDirectory",
+      "type": "json",
+      "source": "body",
+      "description": "The base path where the search should start."
+    },
+    {
+      "name": "query",
+      "type": "json",
+      "source": "body",
+      "description": "The search query."
+    },
+    {
+      "name": "recursive",
+      "type": "json",
+      "source": "body",
+      "description": "Whether to search within subdirectories."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Search completed successfully",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}

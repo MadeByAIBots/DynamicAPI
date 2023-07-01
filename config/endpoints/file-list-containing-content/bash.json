@@ -1,0 +1,3 @@
+{
+    "command": "grep -r -l -F -- '${query}' '${workingDirectory}'"
+}
