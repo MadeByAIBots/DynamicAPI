@@ -18,6 +18,59 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 		private readonly ILogger<CSharpScriptEndpointExecutor> _logger;
 		private readonly ILoggerFactory _loggerFactory;
 
+		private bool IsAssemblyName(string reference)
+		{
+			return !reference.Contains('/') && !reference.Contains('*');
+		}
+
+		private bool IsFilePathWithWildcard(string reference)
+		{
+			return reference.Contains('*');
+		}
+
+		private List<string> ListFiles(string directory, string pattern)
+		{
+return Directory.GetFiles(Path.GetDirectoryName(directory), Path.GetFileName(directory)).ToList();
+		}
+
+		private string GetWildcardPattern(string reference)
+		{
+			return Path.GetFileName(reference);
+		}
+
+		private string ResolvePath(string reference)
+		{
+			return Path.Combine(_resolver.WorkingDirectory(), reference);
+		}
+		private List<string> GetReferences()
+		{
+			var references = new List<string>();
+
+			foreach (var reference in _apiConfig.CSharp.References)
+			{
+				if (IsAssemblyName(reference))
+				{
+					references.Add(reference);
+				}
+				else if (IsFilePathWithWildcard(reference))
+				{
+					var resolvedDirectory = ResolvePath(reference);
+					var matchingFiles = ListFiles(resolvedDirectory, GetWildcardPattern(reference));
+
+					references.AddRange(matchingFiles);
+				}
+				else // IsFilePathWithoutWildcard(reference)
+				{
+					var resolvedPath = ResolvePath(reference);
+					references.Add(resolvedPath);
+				}
+			}
+			return references;
+		}
+		private List<string> GetUsings()
+		{
+			return _apiConfig.CSharp.Usings;
+		}
 		private readonly ApiConfiguration _apiConfig;
 		private readonly CSharpScriptUtilities _utilities;
 		private readonly WorkingDirectoryResolver _resolver;
@@ -55,37 +108,20 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 				string scriptCode = File.ReadAllText(scriptPath);
 
 				var scriptOptions = Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default;
-				scriptOptions = scriptOptions.AddReferences(
-					"System.Linq",
-					 "System.Security.Cryptography",
-					 "Microsoft.Extensions.Logging.dll"
-					 );
 
-				_logger.LogInformation("Adding references");
-				foreach (var dll in Directory.GetFiles(_resolver.WorkingDirectory() + "/DynamicApiServer/bin/Debug/net7.0", "*.dll"))
-
+				var references = GetReferences();
+				foreach (var reference in references)
 				{
-					_logger.LogInformation("Adding reference: " + dll);
-					scriptOptions = scriptOptions.AddReferences(dll);
+					scriptOptions = scriptOptions.AddReferences(reference);
 				}
+				_logger.LogInformation("Adding references");
 
-				var imports = new string[]{ "System",
-				"System.IO",
-				"System.Threading.Tasks",
-				"System.Collections.Generic",
-				"System.Text.RegularExpressions",
-				"DynamicApi.Contracts",
-				"DynamicApiServer.Definitions.EndpointDefinitions",
-				"DynamicApi.Utilities.Files",
-				"Microsoft.Extensions.Logging",
-				"System.Security.Cryptography",
-				"System.Text",
-				"System.Threading"
-				};
 
-				foreach (var import in imports)
+
+				var usings = GetUsings();
+				foreach (var usingStatement in usings)
 				{
-					scriptOptions = scriptOptions.WithImports(import);
+					scriptOptions = scriptOptions.WithImports(usingStatement);
 				}
 
 				var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptCode, scriptOptions);
