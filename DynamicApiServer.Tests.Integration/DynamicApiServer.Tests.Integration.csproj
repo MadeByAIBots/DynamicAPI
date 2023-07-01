@@ -4,9 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <BaseOutputPath>$(SolutionDir)bin</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(SolutionDir)obj</BaseIntermediateOutputPath>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="6.11.0" />

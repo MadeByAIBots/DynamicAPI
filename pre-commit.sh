@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Run the build script
-bash build.sh || echo "Build failed"
+bash build.sh
 
-bash validate.sh || echo "Validation failed"
+bash validate.sh 
 
-bash GenerateOpenAPISpec.sh || echo "Failed to generate open API spec"
+bash GenerateOpenAPISpec.sh
 
 # Run the test script
-bash test.sh || echo "Test(s) failed"
+bash test.sh
 
 # Exit with the status of the last command (to prevent the commit if the tests failed)
 exit $?
