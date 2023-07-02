@@ -1,28 +1,33 @@
 {
+    "description": "Deletes a specified line from a file. The line to be deleted is identified by its line number and hash, which can be obtained using the 'file read lines' endpoint. This operation is irreversible, so use with caution.",
     "path": "/file-line-delete",
     "executor": "csharp-script",
     "method": "post",
     "args": [
         {
             "name": "workingDirectory",
+"description": "The absolute path to the directory where the file is located.",
             "type": "json",
             "source": "body",
             "required": true
         },
         {
             "name": "filePath",
+            "description": "The relative path of the file from which a line will be deleted.",
             "type": "json",
             "source": "body",
             "required": true
         },
         {
             "name": "lineNumber",
+            "description": "The line number of the line to be deleted. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.",
             "type": "json",
             "source": "body",
             "required": true
         },
         {
             "name": "lineHash",
+            "description": "The hash of the line to be deleted for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.",
             "type": "json",
             "source": "body",
             "required": true
@@ -31,7 +36,7 @@
     "responses": [
         {
             "statusCode": 200,
-            "description": "Line deleted successfully"
+            "description": "Line deleted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it's correct."
         },
         {
             "statusCode": 400,

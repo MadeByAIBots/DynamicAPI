@@ -1,4 +1,5 @@
 {
+    "description": "Replaces a specified line in a file with new content. The line to be replaced is identified by its line number and hash, which can be obtained using the 'file read lines' endpoint. This operation is irreversible, so use with caution.",
   "path": "/file-line-replace",
   "executor": "csharp-script",
   "method": "post",
@@ -7,25 +8,25 @@
       "name": "workingDirectory",
       "type": "json",
       "source": "body",
-      "description": "The base path where the file is located."
+"description": "The absolute path to the directory where the file is located."
     },
     {
       "name": "filePath",
       "type": "json",
       "source": "body",
-      "description": "The path of the file to replace a line in, relative to the working directory."
+            "description": "The relative path of the file in which a line will be replaced."
     },
     {
       "name": "lineNumber",
       "type": "json",
       "source": "body",
-      "description": "The line number to replace."
+            "description": "The line number of the line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy."
     },
     {
       "name": "lineHash",
       "type": "json",
       "source": "body",
-      "description": "The line hash, to verify it's the correct line."
+            "description": "The hash of the line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint."
     },
     {
       "name": "newContent",
