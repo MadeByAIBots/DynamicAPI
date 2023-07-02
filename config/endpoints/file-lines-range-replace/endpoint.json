@@ -1,0 +1,61 @@
+{
+  "path": "/file-lines-range-replace",
+  "description": "Replaces a range of lines in a file with new content. The range is identified by the start and end line numbers and their hashes, which can be obtained using the 'file read lines' endpoint. The new content is provided as a string with lines separated by newline characters.",
+  "executor": "csharp-script",
+  "args": [
+    {
+      "name": "workingDirectory",
+      "type": "json",
+      "source": "body",
+      "description": "The absolute path to the directory where the file is located."
+    },
+    {
+      "name": "filePath",
+      "type": "json",
+      "source": "body",
+      "description": "The relative path of the file in which a line will be replaced."
+    },
+    {
+      "name": "startLineNumber",
+      "type": "json",
+      "source": "body",
+      "description": "The line number of the start line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy."
+    },
+    {
+      "name": "endLineNumber",
+      "type": "json",
+      "source": "body",
+      "description": "The line number of the end line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy."
+    },
+    {
+      "name": "startLineHash",
+      "type": "json",
+      "source": "body",
+      "description": "The hash of the start line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint."
+    },
+    {
+      "name": "endLineHash",
+      "type": "json",
+      "source": "body",
+      "description": "The hash of the end line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint."
+    },
+    {
+      "name": "newContents",
+      "type": "json",
+      "source": "body",
+      "description": "The new content to replace the old content with."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "The operation was successful. The response body contains the new content of the file.",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "The operation failed due to a bad request. The response body contains an error message explaining the reason for the failure.",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "script": "FileLinesRangeReplaceScript.csx",
+  "args": {
+    "workingDirectory": "string",
+    "filePath": "string",
+    "startLineNumber": "string",
+    "endLineNumber": "string",
+    "startLineHash": "string",
+    "endLineHash": "string",
+    "newContents": "string"
+  }
+}
