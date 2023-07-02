@@ -1,0 +1,31 @@
+{
+  "path": "/run-python-code",
+  "executor": "bash",
+  "method": "post",
+  "args": [
+    {
+      "name": "pythonCode",
+      "type": "json",
+      "source": "body",
+      "description": "The Python code snippet to execute."
+    },
+    {
+      "name": "workingDirectory",
+      "type": "json",
+      "source": "body",
+      "description": "The base working directory to execute the command in."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "A successful response",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "A bad request response",
+      "type": "string"
+    }
+  ]
+}
