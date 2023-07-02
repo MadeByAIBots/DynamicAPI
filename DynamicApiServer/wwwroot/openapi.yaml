@@ -33,6 +33,7 @@ paths:
           description: Bad request
   /file-line-replace:
     post:
+      description: 'Replaces a specified line in a file with new content. The line to be replaced is identified by its line number and hash, which can be obtained using the ''file read lines'' endpoint. This operation is irreversible, so use with caution.'
       operationId: fileLineReplace
       requestBody:
         description: request body
@@ -49,16 +50,16 @@ paths:
               properties:
                 workingDirectory:
                   type: string
-                  description: The base path where the file is located.
+                  description: The absolute path to the directory where the file is located.
                 filePath:
                   type: string
-                  description: 'The path of the file to replace a line in, relative to the working directory.'
+                  description: The relative path of the file in which a line will be replaced.
                 lineNumber:
                   type: string
-                  description: The line number to replace.
+                  description: The line number of the line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
                 lineHash:
                   type: string
-                  description: 'The line hash, to verify it''s the correct line.'
+                  description: The hash of the line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
                 newContent:
                   type: string
                   description: The new content to replace the old content with.
@@ -413,6 +414,7 @@ paths:
           description: Bad request
   /file-line-delete:
     post:
+      description: 'Deletes a specified line from a file. The line to be deleted is identified by its line number and hash, which can be obtained using the ''file read lines'' endpoint. This operation is irreversible, so use with caution.'
       operationId: fileLineDelete
       requestBody:
         description: request body
@@ -428,15 +430,19 @@ paths:
               properties:
                 workingDirectory:
                   type: string
+                  description: The absolute path to the directory where the file is located.
                 filePath:
                   type: string
+                  description: The relative path of the file from which a line will be deleted.
                 lineNumber:
                   type: string
+                  description: The line number of the line to be deleted. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
                 lineHash:
                   type: string
+                  description: The hash of the line to be deleted for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
       responses:
         '200':
-          description: Line deleted successfully
+          description: 'Line deleted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it''s correct.'
         '400':
           description: 'Error: The file does not exist or the ''lineNumber'' parameter is out of range.'
   /file-search-names:
