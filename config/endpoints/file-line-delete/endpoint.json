@@ -6,7 +6,7 @@
     "args": [
         {
             "name": "workingDirectory",
-"description": "The absolute path to the directory where the file is located.",
+            "description": "The absolute path to the directory where the file is located.",
             "type": "json",
             "source": "body",
             "required": true
@@ -36,11 +36,13 @@
     "responses": [
         {
             "statusCode": 200,
-            "description": "Line deleted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it's correct."
+            "description": "Line deleted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it's correct.",
+            "type": "json"
         },
         {
             "statusCode": 400,
-            "description": "Error: The file does not exist or the 'lineNumber' parameter is out of range."
+            "description": "Error: The file does not exist or the 'lineNumber' parameter is out of range.",
+            "type": "string"
         }
     ]
 }

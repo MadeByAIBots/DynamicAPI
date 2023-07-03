@@ -1,4 +1,5 @@
 {
+"description": "Executes a simple C# program that prints 'Hello, World!' to the console.",
   "path": "/csharp-hello-world",
   "executor": "csharp",
   "method": "get",

@@ -6,7 +6,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 // Define the required fields
-string[] requiredFields = { "description", "path", "executor", "method", "args", "responses" };
+string[] requiredFields = {
+    "description",
+    "path",
+    "executor",
+    "method",
+    "responses"
+};
 string[] argsFields = { "name", "type", "source", "description" };
 string[] responsesFields = { "statusCode", "description", "type" };
 
@@ -37,6 +43,8 @@ Console.WriteLine($"ERROR: Missing required field '{field}' in {endpointName}");
         JArray argsArray = (JArray)jsonObj["args"];
         JArray responsesArray = (JArray)jsonObj["responses"];
 
+if (argsArray != null)
+{
         foreach (JObject arg in argsArray)
         {
             foreach (string field in argsFields)
@@ -47,6 +55,7 @@ Console.WriteLine($"ERROR: Missing required field '{field}' in 'args' of {endpoi
                 }
             }
         }
+}
 
         foreach (JObject response in responsesArray)
         {

@@ -1,4 +1,5 @@
 {
+"description": "Moves a file from a specified source path to a specified destination path within the working directory.",
   "path": "/file-move",
   "executor": "bash",
   "method": "post",

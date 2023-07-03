@@ -1,4 +1,5 @@
 {
+"description": "Prepends content to a file located at a specified path within a specified working directory.",
   "path": "/file-prepend",
   "executor": "csharp-script",
   "method": "post",

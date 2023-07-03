@@ -95,6 +95,7 @@ paths:
           description: Bad request
   /file-search-content:
     post:
+      description: Searches for files in a specified directory that match a specified query.
       operationId: fileSearchContent
       requestBody:
         description: request body
@@ -123,6 +124,7 @@ paths:
           description: Bad request
   /directory-copy:
     post:
+      description: Copies a directory from a specified source path to a specified destination path within the working directory.
       operationId: directoryCopy
       requestBody:
         description: request body
@@ -225,6 +227,7 @@ paths:
           description: The operation failed due to a bad request. The response body contains an error message explaining the reason for the failure.
   /file-read-lines:
     post:
+      description: Reads the lines of a file located at a specified path within a specified working directory.
       operationId: fileReadLines
       requestBody:
         description: request body
@@ -286,6 +289,7 @@ paths:
           description: Bad request
   /file-copy:
     post:
+      description: Copies a file from a specified source path to a specified destination path within the working directory.
       operationId: fileCopy
       requestBody:
         description: request body
@@ -310,6 +314,7 @@ paths:
           description: Bad request
   /csharp-hello-world:
     get:
+      description: 'Executes a simple C# program that prints ''Hello, World!'' to the console.'
       operationId: csharpHelloWorld
       responses:
         '200':
@@ -318,6 +323,7 @@ paths:
           description: A bad request response
   /file-update:
     post:
+      description: Updates the content of a file located at a specified path within a specified working directory.
       operationId: fileUpdate
       requestBody:
         description: request body
@@ -346,6 +352,7 @@ paths:
           description: Bad request
   /file-move:
     post:
+      description: Moves a file from a specified source path to a specified destination path within the working directory.
       operationId: fileMove
       requestBody:
         description: request body
@@ -370,6 +377,7 @@ paths:
           description: Bad request
   /file-prepend:
     post:
+      description: Prepends content to a file located at a specified path within a specified working directory.
       operationId: filePrepend
       requestBody:
         description: request body
@@ -402,6 +410,7 @@ paths:
           description: Bad request
   /file-create:
     post:
+      description: Creates a new file at a specified path within a specified working directory and writes content to it.
       operationId: fileCreate
       requestBody:
         description: request body

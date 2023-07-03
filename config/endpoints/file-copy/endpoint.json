@@ -1,4 +1,5 @@
 {
+"description": "Copies a file from a specified source path to a specified destination path within the working directory.",
   "path": "/file-copy",
   "executor": "bash",
   "method": "post",
