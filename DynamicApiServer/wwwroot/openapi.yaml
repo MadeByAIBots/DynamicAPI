@@ -178,6 +178,51 @@ paths:
           description: Content appended successfully
         '400':
           description: Bad request
+  /file-lines-range-replace:
+    post:
+      description: 'Replaces a range of lines in a file with new content. The range is identified by the start and end line numbers and their hashes, which can be obtained using the ''file read lines'' endpoint. The new content is provided as a string with lines separated by newline characters.'
+      operationId: fileLinesRangeReplace
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePath
+                - startLineNumber
+                - endLineNumber
+                - startLineHash
+                - endLineHash
+                - newContents
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: The absolute path to the directory where the file is located.
+                filePath:
+                  type: string
+                  description: The relative path of the file in which a line will be replaced.
+                startLineNumber:
+                  type: string
+                  description: The line number of the start line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
+                endLineNumber:
+                  type: string
+                  description: The line number of the end line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
+                startLineHash:
+                  type: string
+                  description: The hash of the start line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
+                endLineHash:
+                  type: string
+                  description: The hash of the end line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
+                newContents:
+                  type: string
+                  description: The new content to replace the old content with.
+      responses:
+        '200':
+          description: The operation was successful. The response body contains the new content of the file.
+        '400':
+          description: The operation failed due to a bad request. The response body contains an error message explaining the reason for the failure.
   /file-read-lines:
     post:
       operationId: fileReadLines
@@ -550,6 +595,39 @@ paths:
           description: A successful response
         '400':
           description: A bad request response
+  /file-search-replace:
+    post:
+      description: Searches for a specified string in a file and replaces it with a new string. Use with caution.
+      operationId: fileSearchReplace
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePath
+                - searchQuery
+                - replacementString
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: The absolute path to the current working directory.
+                filePath:
+                  type: string
+                  description: The relative path of the file in which we'll search and replace.
+                searchQuery:
+                  type: string
+                  description: The string we're looking for in the file.
+                replacementString:
+                  type: string
+                  description: The string that will replace the searchQuery in the file.
+      responses:
+        '200':
+          description: Search and replace operation completed successfully
+        '400':
+          description: Bad request
   /file-read:
     post:
       operationId: fileRead
