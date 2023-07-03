@@ -5,3 +5,4 @@ run.pid
 *.security
 config.json
 DynamicApi.WorkingDirectory/Class1.cs
+*.txt
