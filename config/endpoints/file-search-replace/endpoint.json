@@ -1,0 +1,44 @@
+{
+  "description": "Searches for a specified string in a file and replaces it with a new string. Use with caution.",
+  "path": "/file-search-replace",
+  "executor": "csharp-script",
+  "method": "post",
+  "args": [
+    {
+      "name": "workingDirectory",
+      "type": "json",
+      "source": "body",
+      "description": "The absolute path to the current working directory."
+    },
+    {
+      "name": "filePath",
+      "type": "json",
+      "source": "body",
+      "description": "The relative path of the file in which we'll search and replace."
+    },
+    {
+      "name": "searchQuery",
+      "type": "json",
+      "source": "body",
+      "description": "The string we're looking for in the file."
+    },
+    {
+      "name": "replacementString",
+      "type": "json",
+      "source": "body",
+      "description": "The string that will replace the searchQuery in the file."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Search and replace operation completed successfully",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}
