@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using DynamicApiServer.Extensions;
@@ -11,9 +12,23 @@ namespace DynamicApiServer.Tests.Integration
         {
             services.AddApiServices();
             services.AddRouting();
+services.AddSingleton<TokenLoader>();
             services.AddLogging(loggingBuilder =>
             {
-                loggingBuilder.AddConsole();
+loggingBuilder.ClearProviders();
+var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+var logLevelString = configuration.GetSection("Logging:LogLevel:Default").Value;
+if (!Enum.TryParse<LogLevel>(logLevelString, out var logLevel))
+{
+    logLevel = LogLevel.Information;
+}
+Console.WriteLine($"Setting log level to {logLevel}");
+logLevel = LogLevel.Error;
+loggingBuilder.AddFilter(level => level >= logLevel);
+loggingBuilder.AddConsole();
+
+
+
             });
         }
 

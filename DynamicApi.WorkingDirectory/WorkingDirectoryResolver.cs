@@ -1,11 +1,17 @@
+using Microsoft.Extensions.Logging;
 using System.IO;
 
-namespace DynamicApiServer;
+namespace DynamicApi.WorkingDirectory;
 
 public class WorkingDirectoryResolver
 {
+public WorkingDirectoryResolver(ILoggerFactory loggerFactory)
+{
+    _logger = loggerFactory.CreateLogger<WorkingDirectoryResolver>();
+}
     private string _workingDirectory;
 
+private readonly ILogger<WorkingDirectoryResolver> _logger;
     public string WorkingDirectory()
     {
         if (_workingDirectory == null)
@@ -30,8 +36,8 @@ public class WorkingDirectoryResolver
             }
         }
 
-        Console.WriteLine("Found working directory:");
-        Console.WriteLine(directory);
+_logger.LogInformation("Found working directory:");
+_logger.LogInformation(directory);
 
         return directory;
     }

@@ -3,3 +3,5 @@ run.pid
 **/obj/
 *.log
 *.security
+config.json
+DynamicApi.WorkingDirectory/Class1.cs

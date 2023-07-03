@@ -10,6 +10,7 @@ namespace DynamicApiServer.Tests.Integration;
 
 public class IntegrationTestContext : IDisposable
 {
+private readonly WorkingDirectoryResolver _workingDirectoryResolver;
     public TestServer Server { get; }
     public HttpClient Client { get; }
     private TestEndpointManager _endpointManager;
@@ -22,6 +23,7 @@ public class IntegrationTestContext : IDisposable
         Server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>().UseContentRoot(app.Environment.ContentRootPath));
         Client = Server.CreateClient();
 
+_workingDirectoryResolver = Server.Services.GetRequiredService<WorkingDirectoryResolver>();
     }
 
     private void Configure(WebApplication app)
@@ -32,20 +34,18 @@ public class IntegrationTestContext : IDisposable
     public TestEndpointManager Endpoint()
     {
         // TODO: Clean up this function
-        var resolver = new WorkingDirectoryResolver();
+
+var resolver = _workingDirectoryResolver;
         var loggerFactory = Server.Services.GetRequiredService<ILoggerFactory>();
         // TODO: Remove hardcoded path
         _endpointManager = new TestEndpointManager(resolver.WorkingDirectory() + "/config/endpoints", loggerFactory);
         return _endpointManager;
     }
 
-    public void UseToken()
+public void UseToken()
     {
-        // TODO: Clean up
-        var resolver = new WorkingDirectoryResolver();
-        var config = Server.Services.GetRequiredService<ApiConfiguration>();
         var tokenLoader = Server.Services.GetRequiredService<TokenLoader>();
-        var token = tokenLoader.LoadToken(Path.Combine(resolver.WorkingDirectory(), config.TokenFilePath));
+        var token = tokenLoader.LoadToken();
 
         Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }

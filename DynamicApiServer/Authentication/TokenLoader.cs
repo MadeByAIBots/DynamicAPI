@@ -10,37 +10,65 @@ namespace DynamicApiServer.Authentication
         private readonly ApiConfiguration _config;
         private readonly WorkingDirectoryResolver _resolver;
 
-        public TokenLoader(ApiConfiguration config, WorkingDirectoryResolver resolver)
+        public TokenLoader(ApiConfiguration config, WorkingDirectoryResolver resolver, ILoggerFactory loggerFactory)
         {
             _resolver = resolver;
             _config = config;
-            _logger = new Logger<TokenLoader>(new LoggerFactory());
+            _logger = loggerFactory.CreateLogger<TokenLoader>();
         }
 
-        public TokenLoader(ApiConfiguration config, WorkingDirectoryResolver resolver, ILogger<TokenLoader> logger)
+private string GetTokenPath()
         {
-            _resolver = resolver;
-            _config = config;
-            _logger = logger;
+            try
+            {
+                var workingDirectory = _resolver.WorkingDirectory();
+                if (workingDirectory == null)
+                {
+                    _logger.LogError("Working directory is null.");
+                    throw new ArgumentNullException(nameof(workingDirectory));
+                }
+
+                if (_config.TokenFilePath == null)
+                {
+                    _logger.LogError("Token file path from configuration is null.");
+                    throw new ArgumentNullException(nameof(_config.TokenFilePath));
+                }
+
+                var tokenFilePath = Path.Combine(workingDirectory, _config.TokenFilePath);
+                _logger.LogInformation("Token path: " + tokenFilePath);
+
+                if (string.IsNullOrEmpty(_config.TokenFilePath))
+                {
+                    _logger.LogError("Token file path is not set in the configuration.");
+                    throw new InvalidOperationException("Token file path is not set in the configuration.");
+                }
+
+                if (!File.Exists(tokenFilePath))
+                {
+                    _logger.LogError($"Token file does not exist at {tokenFilePath}.");
+                    throw new FileNotFoundException($"Token file does not exist at {tokenFilePath}.");
+                }
+
+                return tokenFilePath;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting the token file path.");
+                throw;
+            }
         }
 
         public string LoadToken()
         {
-            return LoadToken(Path.Combine(_resolver.WorkingDirectory(), _config.TokenFilePath));
-        }
-
-        public string LoadToken(string tokenFilePath)
-        {
-            _logger.LogInformation("Token path: " + tokenFilePath);
+            var tokenFilePath = GetTokenPath();
             try
             {
                 var token = File.ReadAllText(tokenFilePath).Trim();
-                _logger.LogInformation($"Successfully loaded token from {tokenFilePath}");
                 return token;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Failed to load token from {tokenFilePath}");
+                _logger.LogError(ex, "Error reading token from file.");
                 throw;
             }
         }

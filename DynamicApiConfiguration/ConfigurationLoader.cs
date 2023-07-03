@@ -1,23 +1,33 @@
+using DynamicApi.WorkingDirectory;
 using System;
 using System.IO;
 using System.Text.Json;
 
-namespace DynamicApiConfiguration;
-
-public class ConfigurationLoader
+namespace DynamicApiConfiguration
 {
-    public ApiConfiguration LoadConfiguration(string configPath)
+    public class ConfigurationLoader
     {
-        try
+        private readonly WorkingDirectoryResolver _workingDirectoryResolver;
+
+        public ConfigurationLoader(WorkingDirectoryResolver workingDirectoryResolver)
         {
-            var configJson = File.ReadAllText(configPath);
-            var config = JsonSerializer.Deserialize<ApiConfiguration>(configJson);
-            return config;
+            _workingDirectoryResolver = workingDirectoryResolver;
         }
-        catch (Exception ex)
+
+        public ApiConfiguration LoadConfiguration()
         {
-            Console.WriteLine($"[ERROR] Failed to load configuration: {ex.Message}");
-            return null;
+            var configPath = _workingDirectoryResolver.WorkingDirectory() + "/config.json";
+            try
+            {
+                var configJson = File.ReadAllText(configPath);
+                var config = JsonSerializer.Deserialize<ApiConfiguration>(configJson);
+                return config;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Failed to load configuration: {ex.Message}");
+                return null;
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -42,7 +43,7 @@ public class EndpointFileReader
             _logger.LogInformation($"Reading endpoint definition file '{file}'...");
 
             var content = File.ReadAllText(file);
-            var endpointDefinition = JsonConvert.DeserializeObject<EndpointDefinition>(content);
+var settings = new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = null } }; var endpointDefinition = JsonConvert.DeserializeObject<EndpointDefinition>(content, settings);
             if (endpointDefinition == null || string.IsNullOrEmpty(endpointDefinition.Method) || string.IsNullOrEmpty(endpointDefinition.Path))
             {
                 var message = $"Invalid data in file '{file}'.";

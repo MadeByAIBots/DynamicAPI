@@ -1,0 +1,28 @@
+{
+    "EndpointPath": "config/endpoints",
+    "Url": "http://localhost",
+    "Port": 5054,
+    "TokenFilePath": "auth-token.security",
+    "CSharpScript": {
+        "References": [
+            "System.Linq",
+            "System.Security.Cryptography",
+            "Microsoft.Extensions.Logging.dll",
+            "DynamicApiServer/bin/Debug/net7.0/*.dll"
+        ],
+        "Usings": [
+            "System",
+            "System.IO",
+            "System.Threading.Tasks",
+            "System.Collections.Generic",
+            "System.Text.RegularExpressions",
+            "DynamicApi.Contracts",
+            "DynamicApiServer.Definitions.EndpointDefinitions",
+            "DynamicApi.Utilities.Files",
+            "Microsoft.Extensions.Logging",
+            "System.Security.Cryptography",
+            "System.Text",
+            "System.Threading"
+        ]
+    }
+}

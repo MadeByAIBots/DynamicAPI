@@ -1,10 +1,7 @@
-using Microsoft.Extensions.DependencyInjection;
-using DynamicApiServer.Requests;
-using DynamicApiServer.Execution;
+using DynamicApi.Contracts;
 using DynamicApiConfiguration;
-using DynamicApiServer.Execution.Executors.Bash;
-using DynamicApiServer.Execution.Executors;
-using DynamicApiServer.Requests.Arguments;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace DynamicApiServer.Extensions
 {
@@ -12,32 +9,30 @@ namespace DynamicApiServer.Extensions
     {
         public static void AddApiServices(this IServiceCollection services)
         {
-            // TODO: Clean up this function
-            var resolver = new WorkingDirectoryResolver();
-
-            var configLoader = new ConfigurationLoader();
-            var config = configLoader.LoadConfiguration(resolver.WorkingDirectory() + "/config.json");
-
-            services.AddSingleton(config);
-
-            services.AddSingleton<TokenLoader>();
-
+services.AddSingleton<ConfigurationLoader>();
+services.AddSingleton(provider =>
+            {
+                var configLoader = provider.GetRequiredService<ConfigurationLoader>();
+                return configLoader.LoadConfiguration();
+            });
             services.AddSingleton<WorkingDirectoryResolver>();
+            services.AddSingleton<DynamicExecutionParameters>();
 
-            services.AddToken(resolver.WorkingDirectory() + "/" + config.TokenFilePath);
+            var provider = services.BuildServiceProvider();
+            var config = provider.GetRequiredService<ApiConfiguration>();
+            var resolver = provider.GetRequiredService<WorkingDirectoryResolver>();
+            var tokenFilePath = resolver.WorkingDirectory() + "/" + config.TokenFilePath;
 
-            services.AddSingleton<DynamicEndpointHandler>();
-            services.AddSingleton<EndpointArgumentExtractor>();
-
+services.AddSingleton<DynamicApiServer.Requests.DynamicEndpointHandler>();
+            services.AddSingleton<DynamicApiServer.Requests.Arguments.EndpointArgumentExtractor>();
             services.AddSingleton<EndpointLoader>();
             services.AddSingleton<EndpointService>();
-
-            services.AddSingleton<BashEndpointExecutor>();
-            services.AddSingleton<ExecutionHandler>();
-            services.AddSingleton<ExecutorFactory>();
+            services.AddSingleton<DynamicApiServer.Execution.Executors.Bash.BashEndpointExecutor>();
+            services.AddSingleton<DynamicApiServer.Execution.ExecutionHandler>();
+            services.AddSingleton<DynamicApiServer.Execution.Executors.ExecutorFactory>();
             services.AddSingleton<ExecutorDefinitionLoader>();
-
             services.AddSingleton<ProcessRunner>();
+            services.AddToken(tokenFilePath);
         }
     }
 }

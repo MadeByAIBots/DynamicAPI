@@ -1,3 +1,4 @@
+namespace DynamicApiServer.Utilities.Process;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
