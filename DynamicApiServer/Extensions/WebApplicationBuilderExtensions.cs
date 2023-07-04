@@ -10,9 +10,10 @@ namespace DynamicApiServer.Extensions
         {
             Console.WriteLine("[INFO] Registering services...");
 
+            var configuration = builder.Configuration;
             builder.Services.AddLogging(loggingBuilder =>
             {
-                loggingBuilder.AddConsole();
+                loggingBuilder.AddConfiguration(configuration.GetSection("Logging"));
             });
 
             Console.WriteLine("[INFO] Services registered.");

@@ -17,10 +17,7 @@ private readonly WorkingDirectoryResolver _workingDirectoryResolver;
 
     public IntegrationTestContext()
     {
-        var builder = WebApplication.CreateBuilder(new string[0]);
-        var app = builder.Build();
-        Configure(app);
-        Server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>().UseContentRoot(app.Environment.ContentRootPath));
+Server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
         Client = Server.CreateClient();
 
 _workingDirectoryResolver = Server.Services.GetRequiredService<WorkingDirectoryResolver>();

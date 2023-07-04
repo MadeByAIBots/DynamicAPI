@@ -8,28 +8,23 @@ namespace DynamicApiServer.Tests.Integration
 {
     public class TestStartup
     {
-        public void ConfigureServices(IServiceCollection services)
+        private readonly IConfiguration _configuration;
+
+        public TestStartup(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        
+        }
+    public void ConfigureServices(IServiceCollection services)
         {
             services.AddApiServices();
             services.AddRouting();
 services.AddSingleton<TokenLoader>();
-            services.AddLogging(loggingBuilder =>
-            {
-loggingBuilder.ClearProviders();
-var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
-var logLevelString = configuration.GetSection("Logging:LogLevel:Default").Value;
-if (!Enum.TryParse<LogLevel>(logLevelString, out var logLevel))
+services.AddLogging(loggingBuilder =>
 {
-    logLevel = LogLevel.Information;
-}
-Console.WriteLine($"Setting log level to {logLevel}");
-logLevel = LogLevel.Error;
-loggingBuilder.AddFilter(level => level >= logLevel);
-loggingBuilder.AddConsole();
-
-
-
-            });
+    loggingBuilder.ClearProviders();
+    loggingBuilder.AddConfiguration(_configuration.GetSection("Logging"));
+});
         }
 
         public void Configure(IApplicationBuilder app)
