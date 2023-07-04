@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
@@ -9,18 +11,28 @@ namespace GenerateOpenAPISpec
     {
         static void Main(string[] args)
         {
-            using var serviceProvider = new ServiceCollection()
-                .AddLogging(builder =>
-                {
-                    builder.AddConsole();
-                    builder.SetMinimumLevel(LogLevel.Debug);
-                })
-                .AddTransient<EndpointProcessor>()
-                .AddTransient<OperationProcessor>()
-                .AddTransient<ParameterProcessor>()
-                .AddTransient<DocumentGenerator>()
-                .AddTransient<OpenApiGenerator>()
-                .BuildServiceProvider();
+var host = Host.CreateDefaultBuilder()
+    .ConfigureAppConfiguration((hostingContext, config) =>
+    {
+        config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
+        config.AddJsonFile("GenerateOpenAPISpec/appsettings.json", optional: false, reloadOnChange: true);
+    })
+    .ConfigureServices((hostContext, services) =>
+    {
+        services.AddLogging(builder =>
+        {
+            builder.AddConfiguration(hostContext.Configuration.GetSection("Logging"));
+            builder.AddConsole();
+        });
+        services.AddSingleton<OpenApiGenerator>();
+services.AddSingleton<OperationProcessor>();
+services.AddSingleton<ParameterProcessor>();
+services.AddSingleton<DocumentGenerator>();
+services.AddSingleton<EndpointProcessor>();
+    })
+    .Build();
+
+var serviceProvider = host.Services;
 
             var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
             var endpointFileReaderLogger = serviceProvider.GetRequiredService<ILogger<EndpointFileReader>>();
@@ -46,6 +58,7 @@ namespace GenerateOpenAPISpec
                 File.WriteAllText(outputFile, openApiSpec);
 
                 logger.LogInformation("Application finished successfully.");
+Console.WriteLine("OpenAPI specification generated successfully.");
             }
             catch (Exception ex)
             {
@@ -54,3 +67,4 @@ namespace GenerateOpenAPISpec
         }
     }
 }
+
