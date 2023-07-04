@@ -15,3 +15,6 @@ global using System.Text.Json;
 global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Primitives;global using DynamicApi.WorkingDirectory;
 global using DynamicApiServer.Utilities.Process;
+global using Microsoft.AspNetCore.StaticFiles;
+using DynamicApi.Contracts;
+using DynamicApiServer.Extensions;

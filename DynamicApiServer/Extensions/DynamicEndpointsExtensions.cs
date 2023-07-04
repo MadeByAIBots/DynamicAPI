@@ -1,7 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using DynamicApiServer.Requests;
 
 namespace DynamicApiServer.Extensions
 {

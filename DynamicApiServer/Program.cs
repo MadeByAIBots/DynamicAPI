@@ -1,11 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System;
-using DynamicApiServer.Extensions;
-using DynamicApiServer.Definitions.ExecutorDefinitions;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
 
 Console.WriteLine("[INFO] Starting application...");
 

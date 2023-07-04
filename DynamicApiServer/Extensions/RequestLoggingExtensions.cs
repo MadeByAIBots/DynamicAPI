@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using System;
 
 namespace DynamicApiServer.Extensions
 {

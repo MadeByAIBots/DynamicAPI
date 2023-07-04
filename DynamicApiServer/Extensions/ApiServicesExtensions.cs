@@ -1,7 +1,3 @@
-using DynamicApi.Contracts;
-using DynamicApiConfiguration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace DynamicApiServer.Extensions
 {
@@ -16,7 +12,6 @@ services.AddSingleton(provider =>
                 return configLoader.LoadConfiguration();
             });
             services.AddSingleton<WorkingDirectoryResolver>();
-            services.AddSingleton<DynamicExecutionParameters>();
 
             var provider = services.BuildServiceProvider();
             var config = provider.GetRequiredService<ApiConfiguration>();
