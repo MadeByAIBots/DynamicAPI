@@ -9,7 +9,7 @@ public WorkingDirectoryResolver(ILoggerFactory loggerFactory)
 {
     _logger = loggerFactory.CreateLogger<WorkingDirectoryResolver>();
 }
-    private string _workingDirectory;
+    private string? _workingDirectory;
 
 private readonly ILogger<WorkingDirectoryResolver> _logger;
     public string WorkingDirectory()
