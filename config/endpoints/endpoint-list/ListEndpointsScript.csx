@@ -6,9 +6,9 @@ using DynamicApi.Contracts;
 using DynamicApiServer.Definitions.EndpointDefinitions;
 using System.Text.Json;
 
-public class ListEndpointsScriptEndpoint : IDynamicEndpointExecutor
+public class ListEndpointsScriptEndpoint : DynamicEndpointExecutorBase
 {
-    public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
+    public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
         var directories = Directory.GetDirectories(parameters.Resolver.WorkingDirectory() + "/" + parameters.ApiConfig.EndpointPath);
         var endpoints = new List<object>();
@@ -28,10 +28,6 @@ public class ListEndpointsScriptEndpoint : IDynamicEndpointExecutor
             }
         }
 
-        var json = JsonSerializer.Serialize(endpoints);
-        return Task.FromResult(new EndpointExecutionResult
-        {
-            Body = json
-        });
+        return Success(endpoints);
     }
 }
