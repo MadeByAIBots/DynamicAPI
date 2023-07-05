@@ -1,0 +1,38 @@
+{
+  "description": "Sends the contents of multiple files to OpenAI's Davinci model, along with instructions on what to do with them, and receives a response.",
+  "path": "/ai-bot-send-files",
+  "executor": "csharp-script",
+  "method": "post",
+  "args": [
+    {
+      "name": "files",
+      "type": "json",
+      "source": "body",
+      "description": "A semicolon-separated list of file paths to send to the Davinci model. The content of these files will be read and sent as a message to the AI model."
+    },
+    {
+      "name": "message",
+      "type": "json",
+      "source": "body",
+      "description": "A detailed instruction for the AI model, such as 'identify problems', 'summarize', 'provide suggestions', etc. The AI model will process the content of the files based on this instruction."
+    },
+    {
+      "name": "workingDirectory",
+      "type": "json",
+      "source": "body",
+      "description": "The base path where the files are located. All file paths should be relative to this directory."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Files sent successfully",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}

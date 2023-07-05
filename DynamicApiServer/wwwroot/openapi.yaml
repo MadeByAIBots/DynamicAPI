@@ -371,6 +371,35 @@ paths:
           description: File updated successfully
         '400':
           description: Bad request
+  /ai-bot-send-files:
+    post:
+      description: 'Sends the contents of multiple files to OpenAI''s Davinci model, along with instructions on what to do with them, and receives a response.'
+      operationId: aiBotSendFiles
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - files
+                - message
+                - workingDirectory
+              type: object
+              properties:
+                files:
+                  type: string
+                  description: A semicolon-separated list of file paths to send to the Davinci model. The content of these files will be read and sent as a message to the AI model.
+                message:
+                  type: string
+                  description: 'A detailed instruction for the AI model, such as ''identify problems'', ''summarize'', ''provide suggestions'', etc. The AI model will process the content of the files based on this instruction.'
+                workingDirectory:
+                  type: string
+                  description: The base path where the files are located. All file paths should be relative to this directory.
+      responses:
+        '200':
+          description: Files sent successfully
+        '400':
+          description: Bad request
   /file-move:
     post:
       description: Moves a file from a specified source path to a specified destination path within the working directory.
