@@ -14,12 +14,7 @@ namespace DynamicApiServer.Extensions
 			);
 
 			services.AddSingleton<WorkingDirectoryResolver>();
-
-			var provider = services.BuildServiceProvider();
-			var config = provider.GetRequiredService<ApiConfiguration>();
-			var resolver = provider.GetRequiredService<WorkingDirectoryResolver>();
-			var tokenFilePath = resolver.WorkingDirectory() + "/" + config.TokenFilePath;
-
+			services.AddSingleton<TokenLoader>();
 			services.AddSingleton<DynamicApiServer.Requests.DynamicEndpointHandler>();
 			services.AddSingleton<DynamicApiServer.Requests.Arguments.EndpointArgumentExtractor>();
 			services.AddSingleton<EndpointLoader>();
@@ -29,7 +24,6 @@ namespace DynamicApiServer.Extensions
 			services.AddSingleton<DynamicApiServer.Execution.Executors.ExecutorFactory>();
 			services.AddSingleton<ExecutorDefinitionLoader>();
 			services.AddSingleton<ProcessRunner>();
-			services.AddToken(tokenFilePath);
 		}
 	}
 }
