@@ -1,0 +1,26 @@
+{
+  "description": "Sends a message to OpenAI's Davinci model and receives a response.",
+  "path": "/ai-bot-message",
+  "executor": "csharp-script",
+  "method": "post",
+  "args": [
+    {
+      "name": "message",
+      "type": "json",
+      "source": "body",
+      "description": "The message to send to the Davinci model."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Message sent successfully",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}

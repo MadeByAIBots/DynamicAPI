@@ -180,6 +180,27 @@ paths:
           description: Content appended successfully
         '400':
           description: Bad request
+  /ai-bot-message:
+    post:
+      description: Sends a message to OpenAI's Davinci model and receives a response.
+      operationId: aiBotMessage
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - message
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: The message to send to the Davinci model.
+      responses:
+        '200':
+          description: Message sent successfully
+        '400':
+          description: Bad request
   /file-lines-range-replace:
     post:
       description: 'Replaces a range of lines in a file with new content. The range is identified by the start and end line numbers and their hashes, which can be obtained using the ''file read lines'' endpoint. The new content is provided as a string with lines separated by newline characters.'
