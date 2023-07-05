@@ -24,6 +24,7 @@ namespace DynamicApiServer.Tests.Integration
 			{
 				loggingBuilder.ClearProviders();
 				loggingBuilder.AddConfiguration(_configuration.GetSection("Logging"));
+				loggingBuilder.AddConsole();
 			});
 		}
 

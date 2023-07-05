@@ -1,4 +1,7 @@
 
+using DynamicApiServer.Execution.Executors.CSharp;
+using DynamicApiServer.Execution.Executors.CSharpScript;
+
 namespace DynamicApiServer.Extensions
 {
 	public static class ApiServicesExtensions
@@ -24,6 +27,15 @@ namespace DynamicApiServer.Extensions
 			services.AddSingleton<DynamicApiServer.Execution.Executors.ExecutorFactory>();
 			services.AddSingleton<ExecutorDefinitionLoader>();
 			services.AddSingleton<ProcessRunner>();
+
+			services.AddSingleton<CSharpEndpointExecutor>();
+			services.AddSingleton<CSharpScriptEndpointExecutor>();
+			services.AddSingleton<BashEndpointExecutor>();
+
+			services.AddSingleton<CSharpScriptLocator>();
+			services.AddSingleton<CSharpScriptCompiler>();
+			services.AddSingleton<CSharpScriptResultHandler>();
+
 		}
 	}
 }

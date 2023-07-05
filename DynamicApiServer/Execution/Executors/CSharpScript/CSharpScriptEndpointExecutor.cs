@@ -1,15 +1,12 @@
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using DynamicApiServer.Definitions.EndpointDefinitions;
-using DynamicApiServer.Definitions.ExecutorDefinitions;
 using DynamicApi.Contracts;
-using DynamicApiConfiguration;
-using System.Diagnostics;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.CSharp.Scripting.Hosting;
 using System.Reflection;
-using DynamicApi.Contracts;
+using Microsoft.CodeAnalysis.Emit;
 
 namespace DynamicApiServer.Execution.Executors.CSharpScript
 {
@@ -17,7 +14,205 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 	{
 		private readonly ILogger<CSharpScriptEndpointExecutor> _logger;
 		private readonly ILoggerFactory _loggerFactory;
+		private readonly ApiConfiguration _apiConfiguration;
+		private readonly WorkingDirectoryResolver _workingDirectoryResolver;
+		private readonly CSharpScriptLocator _scriptLocator;
+		private readonly CSharpScriptCompiler _scriptCompiler;
+		private readonly CSharpScriptResultHandler _resultHandler;
 
+
+		public CSharpScriptEndpointExecutor(
+		ILoggerFactory loggerFactory,
+		ApiConfiguration apiConfiguration,
+		WorkingDirectoryResolver workingDirectoryResolver,
+			CSharpScriptLocator scriptLocator,
+			CSharpScriptCompiler scriptCompiler,
+			CSharpScriptResultHandler resultHandler)
+		{
+			_loggerFactory = loggerFactory;
+			_logger = loggerFactory.CreateLogger<CSharpScriptEndpointExecutor>();
+			_apiConfiguration = apiConfiguration;
+			_workingDirectoryResolver = workingDirectoryResolver;
+			_scriptLocator = scriptLocator;
+			_scriptCompiler = scriptCompiler;
+			_resultHandler = resultHandler;
+		}
+
+		public async Task<string> ExecuteCommand(EndpointDefinition endpointDefinition, IExecutorDefinition executorConfig, Dictionary<string, string> args)
+		{
+			_logger.LogInformation("ExecuteCommand called with EndpointDefinition: {0}, ExecutorDefinition: {1}, args: {2}", endpointDefinition, executorConfig, args);
+
+			try
+			{
+				var csharpExecutorConfig = (CSharpScriptExecutorDefinition)executorConfig;
+				string scriptPath = _scriptLocator.LocateScript(csharpExecutorConfig.Script, endpointDefinition.FolderName);
+
+				var scriptOptions = Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default;
+
+				var references = GetReferences();
+				foreach (var reference in references)
+				{
+					scriptOptions = scriptOptions.AddReferences(reference);
+				}
+				_logger.LogInformation("Adding references");
+
+
+
+				var usings = GetUsings();
+				foreach (var usingStatement in usings)
+				{
+					scriptOptions = scriptOptions.WithImports(usingStatement);
+				}
+
+
+				var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(File.ReadAllText(scriptPath), scriptOptions);
+				var result = await ProcessScript(script, args);
+
+				return result.ToString();
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Failed to execute C# script.");
+				return $"Error: {ex.Message}";
+			}
+		}
+
+		private async Task<string> ProcessScript(Script script, Dictionary<string, string> args)
+
+		{
+			var compilation = script.GetCompilation();
+
+			using (var ms = new MemoryStream())
+			{
+				var emitResult = compilation.Emit(ms);
+				if (!emitResult.Success)
+				{
+					return await HandleCompilationFailure(emitResult);
+				}
+
+				var assembly = GetAssemblyFromMemoryStream(ms);
+				var type = GetTypeFromAssembly(assembly);
+
+				var instance = GetClassInstanceFromType(type);
+
+				var method = GetMethodFromType(type);
+
+				_logger.LogInformation("Executing script method...");
+				var result = await InvokeMethodOnScript(instance, method, args);
+				string output = result.Body;
+
+				_logger.LogInformation("Script executed. Output: {0}", output);
+
+				return output;
+			}
+
+			return String.Empty;
+		}
+
+		private async Task<EndpointExecutionResult> InvokeMethodOnScript(object instance, MethodInfo method, Dictionary<string, string> args)
+		{
+			return await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfiguration, _workingDirectoryResolver, _loggerFactory, args) });
+		}
+
+		private MethodInfo GetMethodFromType(Type type)
+		{
+			var method = type.GetMethod("ExecuteAsync");
+			return method;
+		}
+
+		private Type GetTypeFromAssembly(Assembly assembly)
+		{
+			_logger.LogInformation("Finding script class...");
+			var type = assembly.GetTypes().FirstOrDefault(t => t.GetInterfaces().Contains(typeof(IDynamicEndpointExecutor)));
+			return type;
+		}
+
+		private object GetClassInstanceFromType(Type type)
+		{
+			if (type == null)
+			{
+				_logger.LogError("No class found that implements IDynamicEndpointExecutor.");
+				return "Error: No class found that implements IDynamicEndpointExecutor.";
+			}
+			_logger.LogInformation("Script class found: {0}", type.Name);
+
+			_logger.LogInformation("Instantiating script class...");
+			var instance = Activator.CreateInstance(type);
+
+			return instance;
+		}
+
+		private Assembly GetAssemblyFromMemoryStream(MemoryStream ms)
+		{
+			ms.Seek(0, SeekOrigin.Begin);
+			var assembly = Assembly.Load(ms.ToArray());
+
+			_logger.LogInformation("Listing all types in the assembly...");
+			foreach (var t in assembly.GetTypes())
+			{
+				_logger.LogInformation("Found type: {0}", t.FullName);
+			}
+
+			return assembly;
+		}
+
+		private async Task<string> HandleCompilationFailure(EmitResult emitResult)
+		{
+			_logger.LogError("Compilation failed.");
+			foreach (var diagnostic in emitResult.Diagnostics)
+			{
+				var location = diagnostic.Location;
+				if (location.IsInSource)
+				{
+					var lineSpan = location.GetLineSpan(); // LineSpan includes the file path and the line number
+					var fileName = lineSpan.Path;
+					var lineNumber = lineSpan.StartLinePosition.Line;
+					var errorMessage = diagnostic.GetMessage();
+
+					_logger.LogError("Compilation failed in {0} at line {1}: {2}", fileName, lineNumber, errorMessage);
+				}
+				else
+				{
+					// If the location is not in source, it's a global issue, and we don't have a specific file or line number
+					var errorMessage = diagnostic.GetMessage();
+					_logger.LogError("Compilation failed: {0}", errorMessage);
+				}
+			}
+			return "Error: Compilation failed.";
+		}
+
+		private List<string> GetReferences()
+		{
+			var references = new List<string>();
+
+			_logger.LogInformation("Getting script references:");
+
+			foreach (var reference in _apiConfiguration.CSharpScript.References)
+			{
+				if (IsAssemblyName(reference))
+				{
+					_logger.LogInformation(reference);
+					references.Add(reference);
+				}
+				else if (IsFilePathWithWildcard(reference))
+				{
+					var resolvedDirectory = ResolvePath(reference);
+					var matchingFiles = ListFiles(resolvedDirectory, GetWildcardPattern(reference));
+
+					foreach (var matchingFile in matchingFiles)
+					{
+						_logger.LogInformation(matchingFile);
+					}
+					references.AddRange(matchingFiles);
+				}
+				else // IsFilePathWithoutWildcard(reference)
+				{
+					var resolvedPath = ResolvePath(reference);
+					references.Add(resolvedPath);
+				}
+			}
+			return references;
+		}
 		private bool IsAssemblyName(string reference)
 		{
 			return !reference.Contains('/') && !reference.Contains('*');
@@ -40,159 +235,12 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 
 		private string ResolvePath(string reference)
 		{
-			return Path.Combine(_resolver.WorkingDirectory(), reference);
+			return Path.Combine(_workingDirectoryResolver.WorkingDirectory(), reference);
 		}
-		private List<string> GetReferences()
-		{
-			var references = new List<string>();
 
-			foreach (var reference in _apiConfig.CSharpScript.References)
-			{
-				if (IsAssemblyName(reference))
-				{
-					references.Add(reference);
-				}
-				else if (IsFilePathWithWildcard(reference))
-				{
-					var resolvedDirectory = ResolvePath(reference);
-					var matchingFiles = ListFiles(resolvedDirectory, GetWildcardPattern(reference));
-
-					references.AddRange(matchingFiles);
-				}
-				else // IsFilePathWithoutWildcard(reference)
-				{
-					var resolvedPath = ResolvePath(reference);
-					references.Add(resolvedPath);
-				}
-			}
-			return references;
-		}
 		private List<string> GetUsings()
 		{
-			return _apiConfig.CSharpScript.Usings;
+			return _apiConfiguration.CSharpScript.Usings.ToList();
 		}
-		private readonly ApiConfiguration _apiConfig;
-		private readonly CSharpScriptUtilities _utilities;
-		private readonly WorkingDirectoryResolver _resolver;
-
-		public CSharpScriptEndpointExecutor(ApiConfiguration apiConfig, WorkingDirectoryResolver resolver, CSharpScriptUtilities utilities, ILoggerFactory loggerFactory)
-		{
-			_resolver = resolver;
-			_utilities = utilities;
-			_apiConfig = apiConfig;
-			_loggerFactory = loggerFactory;
-			_logger = loggerFactory.CreateLogger<CSharpScriptEndpointExecutor>();
-			_logger.LogInformation("CSharpScriptEndpointExecutor initialized with ApiConfiguration: {0}", _apiConfig);
-		}
-
-		public async Task<string> ExecuteCommand(EndpointDefinition endpointDefinition, IExecutorDefinition executorConfig, Dictionary<string, string> args)
-		{
-			_logger.LogInformation("ExecuteCommand called with EndpointDefinition: {0}, ExecutorDefinition: {1}, args: {2}", endpointDefinition, executorConfig, args);
-
-			try
-			{
-				_logger.LogInformation("Validating input...");
-				_utilities.ValidateInput(executorConfig, args);
-				_logger.LogInformation("Input validated.");
-
-				_logger.LogInformation("Finding script...");
-				var csharpScriptExecutorConfig = executorConfig as CSharpScriptExecutorDefinition;
-				string scriptPath = _utilities.FindScript(csharpScriptExecutorConfig.Script, endpointDefinition.FolderName, _apiConfig);
-				_logger.LogInformation("Script found at path: {0}", scriptPath);
-
-				_logger.LogInformation("Validating script...");
-				_utilities.ValidateScript(scriptPath);
-				_logger.LogInformation("Script validated.");
-
-				_logger.LogInformation("Compiling script...");
-				string scriptCode = File.ReadAllText(scriptPath);
-
-				var scriptOptions = Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default;
-
-				var references = GetReferences();
-				foreach (var reference in references)
-				{
-					scriptOptions = scriptOptions.AddReferences(reference);
-				}
-				_logger.LogInformation("Adding references");
-
-
-
-				var usings = GetUsings();
-				foreach (var usingStatement in usings)
-				{
-					scriptOptions = scriptOptions.WithImports(usingStatement);
-				}
-
-				var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptCode, scriptOptions);
-				var compilation = script.GetCompilation();
-
-				using (var ms = new MemoryStream())
-				{
-					var emitResult = compilation.Emit(ms);
-					if (!emitResult.Success)
-					{
-						_logger.LogError("Compilation failed.");
-						foreach (var diagnostic in emitResult.Diagnostics)
-						{
-							var location = diagnostic.Location;
-							if (location.IsInSource)
-							{
-								var lineSpan = location.GetLineSpan(); // LineSpan includes the file path and the line number
-								var fileName = lineSpan.Path;
-								var lineNumber = lineSpan.StartLinePosition.Line;
-								var errorMessage = diagnostic.GetMessage();
-
-								_logger.LogError("Compilation failed in {0} at line {1}: {2}", fileName, lineNumber, errorMessage);
-							}
-							else
-							{
-								// If the location is not in source, it's a global issue, and we don't have a specific file or line number
-								var errorMessage = diagnostic.GetMessage();
-								_logger.LogError("Compilation failed: {0}", errorMessage);
-							}
-						}
-						return "Error: Compilation failed.";
-					}
-					ms.Seek(0, SeekOrigin.Begin);
-					var assembly = Assembly.Load(ms.ToArray());
-
-					_logger.LogInformation("Listing all types in the assembly...");
-					foreach (var t in assembly.GetTypes())
-					{
-						_logger.LogInformation("Found type: {0}", t.FullName);
-					}
-
-					_logger.LogInformation("Finding script class...");
-					var type = assembly.GetTypes().FirstOrDefault(t => t.GetInterfaces().Contains(typeof(IDynamicEndpointExecutor)));
-					if (type == null)
-					{
-						_logger.LogError("No class found that implements IDynamicEndpointExecutor.");
-						return "Error: No class found that implements IDynamicEndpointExecutor.";
-					}
-					_logger.LogInformation("Script class found: {0}", type.Name);
-
-					_logger.LogInformation("Instantiating script class...");
-					var instance = Activator.CreateInstance(type);
-
-					_logger.LogInformation("Executing script method...");
-					var method = type.GetMethod("ExecuteAsync");
-					var result = await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfig, _resolver, _loggerFactory, args) });
-					string output = result.Body;
-
-					_logger.LogInformation("Script executed. Output: {0}", output);
-
-					return output;
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.LogError(ex, "Failed to execute C# script.");
-				return $"Error: {ex.Message}";
-			}
-		}
-
-
-
 	}
 }

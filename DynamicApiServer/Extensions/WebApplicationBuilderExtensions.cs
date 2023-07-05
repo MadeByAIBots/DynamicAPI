@@ -11,6 +11,9 @@ namespace DynamicApiServer.Extensions
 			builder.Services.AddLogging(loggingBuilder =>
 			{
 				loggingBuilder.AddConfiguration(configuration.GetSection("Logging"));
+				loggingBuilder.SetMinimumLevel(LogLevel.Information);
+				loggingBuilder.AddConsole
+				();
 			});
 
 			Console.WriteLine("[INFO] Services registered.");
