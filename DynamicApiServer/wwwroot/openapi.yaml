@@ -560,7 +560,6 @@ paths:
               required:
                 - command
                 - workingDirectory
-                - maxLines
               type: object
               properties:
                 command:

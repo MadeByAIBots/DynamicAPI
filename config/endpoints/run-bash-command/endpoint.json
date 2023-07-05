@@ -19,6 +19,7 @@
       "name": "maxLines",
       "type": "json",
       "source": "body",
+"required": false,
       "description": "The maximum number of output lines, defaulting to 10."
     }
   ],
