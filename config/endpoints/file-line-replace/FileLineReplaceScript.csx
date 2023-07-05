@@ -9,7 +9,7 @@ public class FileLineReplaceScriptEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var workingDirectory = parameters.Parameters["workingDirectory"];
+var workingDirectory = parameters.GetRequiredString("workingDirectory");
         var filePath = parameters.Parameters["filePath"];
         var lineNumber = Convert.ToInt32(parameters.Parameters["lineNumber"]);
         var newContent = parameters.Parameters["newContent"];
