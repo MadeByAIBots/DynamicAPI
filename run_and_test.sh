@@ -40,3 +40,6 @@ curl -X GET http://localhost:$PORT/file-read-lines \
   "workingDirectory": "/root/workspace/DynamicAPI",
   "filePath": "build.sh"
 }'
+
+echo ""
+echo "Finished Test"

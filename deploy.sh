@@ -24,7 +24,7 @@ then
   git pull || echo "Pull failed"
 
   # Run the application
-  bash run.sh
+  bash run_and_test.sh
 else
   echo "Tests failed. Aborting deployment."
 fi
