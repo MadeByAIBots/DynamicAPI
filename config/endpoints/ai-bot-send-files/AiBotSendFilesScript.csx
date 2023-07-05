@@ -17,10 +17,12 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
 
         var workingDirectory = parameters.GetRequiredString("workingDirectory");
         var filePaths = parameters.GetRequiredString("files").Split(';');
-        var messageContent = "";
+        var messageContentToBot = "";
 
         foreach (var path in filePaths)
         {
+            var message = parameters.GetRequiredString("message");
+            messageContentToBot += message + "\n\n\n";
             var absolutePath = Path.Combine(workingDirectory, path);
 
             if (!File.Exists(absolutePath))
@@ -30,7 +32,7 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
 
             try
             {
-                messageContent += path + "\n\n\n" + File.ReadAllText(absolutePath).Trim() + "\n\n\n";
+                messageContentToBot += absolutePath + "\n" + File.ReadAllText(absolutePath).Trim() + "\n\n\n";
             }
             catch (Exception e)
             {
@@ -39,8 +41,8 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         }
 
         var messageBackendProvider = new OpenAIBackendProvider("https://api.openai.com", apiKey);
-        var message = new Message(messageContent);
-        var response = await messageBackendProvider.SendAndReceive(message);
+        var messageToBot = new Message(messageContentToBot);
+        var response = await messageBackendProvider.SendAndReceive(messageToBot);
         if (string.IsNullOrEmpty(response.Content))
         {
             return Fail("No response received from OpenAI API.");
