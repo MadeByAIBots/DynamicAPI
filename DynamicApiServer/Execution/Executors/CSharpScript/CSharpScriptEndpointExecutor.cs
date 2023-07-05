@@ -18,6 +18,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 		private readonly WorkingDirectoryResolver _workingDirectoryResolver;
 		private readonly CSharpScriptLocator _scriptLocator;
 		private readonly CSharpScriptCompiler _scriptCompiler;
+		private readonly CSharpScriptReflector _scriptReflector;
 		private readonly CSharpScriptResultHandler _resultHandler;
 
 
@@ -27,6 +28,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 		WorkingDirectoryResolver workingDirectoryResolver,
 			CSharpScriptLocator scriptLocator,
 			CSharpScriptCompiler scriptCompiler,
+			CSharpScriptReflector scriptReflector,
 			CSharpScriptResultHandler resultHandler)
 		{
 			_loggerFactory = loggerFactory;
@@ -35,6 +37,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 			_workingDirectoryResolver = workingDirectoryResolver;
 			_scriptLocator = scriptLocator;
 			_scriptCompiler = scriptCompiler;
+			_scriptReflector = scriptReflector;
 			_resultHandler = resultHandler;
 		}
 
@@ -47,22 +50,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 				var csharpExecutorConfig = (CSharpScriptExecutorDefinition)executorConfig;
 				string scriptPath = _scriptLocator.LocateScript(csharpExecutorConfig.Script, endpointDefinition.FolderName);
 
-				var scriptOptions = Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default;
-
-				var references = GetReferences();
-				foreach (var reference in references)
-				{
-					scriptOptions = scriptOptions.AddReferences(reference);
-				}
-				_logger.LogInformation("Adding references");
-
-
-
-				var usings = GetUsings();
-				foreach (var usingStatement in usings)
-				{
-					scriptOptions = scriptOptions.WithImports(usingStatement);
-				}
+				var scriptOptions = CreateScriptOptions();
 
 
 				var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(File.ReadAllText(scriptPath), scriptOptions);
@@ -77,7 +65,28 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 			}
 		}
 
-		private async Task<string> ProcessScript(Script script, Dictionary<string, string> args)
+		private ScriptOptions CreateScriptOptions()
+		{
+			var scriptOptions = Microsoft.CodeAnalysis.Scripting.ScriptOptions.Default;
+
+			var references = GetReferences();
+			foreach (var reference in references)
+			{
+				scriptOptions = scriptOptions.AddReferences(reference);
+			}
+
+
+			var usings = GetUsings();
+			foreach (var usingStatement in usings)
+			{
+				scriptOptions = scriptOptions.WithImports(usingStatement);
+			}
+
+			return scriptOptions;
+
+		}
+
+		private async Task<string> ProcessScript(Script script, Dictionary<string, string> endpointParameters)
 
 		{
 			var compilation = script.GetCompilation();
@@ -90,15 +99,12 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 					return await HandleCompilationFailure(emitResult);
 				}
 
-				var assembly = GetAssemblyFromMemoryStream(ms);
-				var type = GetTypeFromAssembly(assembly);
+				var assembly = _scriptReflector.GetAssemblyFromMemoryStream(ms);
+				var type = _scriptReflector.GetTypeFromAssembly(assembly);
+				var instance = _scriptReflector.GetClassInstanceFromType(type);
+				var method = _scriptReflector.GetMethodFromType(type);
 
-				var instance = GetClassInstanceFromType(type);
-
-				var method = GetMethodFromType(type);
-
-				_logger.LogInformation("Executing script method...");
-				var result = await InvokeMethodOnScript(instance, method, args);
+				var result = await InvokeMethodOnScript(instance, method, endpointParameters);
 				string output = result.Body;
 
 				_logger.LogInformation("Script executed. Output: {0}", output);
@@ -109,51 +115,13 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 			return String.Empty;
 		}
 
-		private async Task<EndpointExecutionResult> InvokeMethodOnScript(object instance, MethodInfo method, Dictionary<string, string> args)
+		private async Task<EndpointExecutionResult> InvokeMethodOnScript(object instance, MethodInfo method, Dictionary<string, string> endpointParameters)
 		{
-			return await (Task<EndpointExecutionResult>)method.Invoke(instance, new object[] { new DynamicExecutionParameters(_apiConfiguration, _workingDirectoryResolver, _loggerFactory, args) });
-		}
+			_logger.LogInformation("Executing script method...");
 
-		private MethodInfo GetMethodFromType(Type type)
-		{
-			var method = type.GetMethod("ExecuteAsync");
-			return method;
-		}
+			var invokeArguments = new object[] { new DynamicExecutionParameters(_apiConfiguration, _workingDirectoryResolver, _loggerFactory, endpointParameters) };
 
-		private Type GetTypeFromAssembly(Assembly assembly)
-		{
-			_logger.LogInformation("Finding script class...");
-			var type = assembly.GetTypes().FirstOrDefault(t => t.GetInterfaces().Contains(typeof(IDynamicEndpointExecutor)));
-			return type;
-		}
-
-		private object GetClassInstanceFromType(Type type)
-		{
-			if (type == null)
-			{
-				_logger.LogError("No class found that implements IDynamicEndpointExecutor.");
-				return "Error: No class found that implements IDynamicEndpointExecutor.";
-			}
-			_logger.LogInformation("Script class found: {0}", type.Name);
-
-			_logger.LogInformation("Instantiating script class...");
-			var instance = Activator.CreateInstance(type);
-
-			return instance;
-		}
-
-		private Assembly GetAssemblyFromMemoryStream(MemoryStream ms)
-		{
-			ms.Seek(0, SeekOrigin.Begin);
-			var assembly = Assembly.Load(ms.ToArray());
-
-			_logger.LogInformation("Listing all types in the assembly...");
-			foreach (var t in assembly.GetTypes())
-			{
-				_logger.LogInformation("Found type: {0}", t.FullName);
-			}
-
-			return assembly;
+			return await (Task<EndpointExecutionResult>)method.Invoke(instance, invokeArguments);
 		}
 
 		private async Task<string> HandleCompilationFailure(EmitResult emitResult)

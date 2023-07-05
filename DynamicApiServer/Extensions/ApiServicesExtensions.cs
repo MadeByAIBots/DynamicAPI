@@ -34,6 +34,7 @@ namespace DynamicApiServer.Extensions
 
 			services.AddSingleton<CSharpScriptLocator>();
 			services.AddSingleton<CSharpScriptCompiler>();
+			services.AddSingleton<CSharpScriptReflector>();
 			services.AddSingleton<CSharpScriptResultHandler>();
 
 		}
