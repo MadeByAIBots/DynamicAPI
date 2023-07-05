@@ -560,6 +560,7 @@ paths:
               required:
                 - command
                 - workingDirectory
+                - maxLines
               type: object
               properties:
                 command:
@@ -568,6 +569,9 @@ paths:
                 workingDirectory:
                   type: string
                   description: The base working directory to execute the command in.
+                maxLines:
+                  type: string
+                  description: 'The maximum number of output lines, defaulting to 10.'
       responses:
         '200':
           description: A successful response

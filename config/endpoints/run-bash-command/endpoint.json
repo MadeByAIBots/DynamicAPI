@@ -14,6 +14,12 @@
       "type": "json",
       "source": "body",
       "description": "The base working directory to execute the command in."
+    },
+    {
+      "name": "maxLines",
+      "type": "json",
+      "source": "body",
+      "description": "The maximum number of output lines, defaulting to 10."
     }
   ],
   "responses": [
