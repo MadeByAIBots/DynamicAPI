@@ -135,7 +135,22 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 						_logger.LogError("Compilation failed.");
 						foreach (var diagnostic in emitResult.Diagnostics)
 						{
-							_logger.LogError(diagnostic.ToString());
+							var location = diagnostic.Location;
+							if (location.IsInSource)
+							{
+								var lineSpan = location.GetLineSpan(); // LineSpan includes the file path and the line number
+								var fileName = lineSpan.Path;
+								var lineNumber = lineSpan.StartLinePosition.Line;
+								var errorMessage = diagnostic.GetMessage();
+
+								_logger.LogError("Compilation failed in {0} at line {1}: {2}", fileName, lineNumber, errorMessage);
+							}
+							else
+							{
+								// If the location is not in source, it's a global issue, and we don't have a specific file or line number
+								var errorMessage = diagnostic.GetMessage();
+								_logger.LogError("Compilation failed: {0}", errorMessage);
+							}
 						}
 						return "Error: Compilation failed.";
 					}

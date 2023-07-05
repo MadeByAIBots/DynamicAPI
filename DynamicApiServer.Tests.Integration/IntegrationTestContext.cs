@@ -10,17 +10,17 @@ namespace DynamicApiServer.Tests.Integration;
 
 public class IntegrationTestContext : IDisposable
 {
-private readonly WorkingDirectoryResolver _workingDirectoryResolver;
+    private readonly WorkingDirectoryResolver _workingDirectoryResolver;
     public TestServer Server { get; }
     public HttpClient Client { get; }
     private TestEndpointManager _endpointManager;
 
     public IntegrationTestContext()
     {
-Server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
+        Server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
         Client = Server.CreateClient();
 
-_workingDirectoryResolver = Server.Services.GetRequiredService<WorkingDirectoryResolver>();
+        _workingDirectoryResolver = Server.Services.GetRequiredService<WorkingDirectoryResolver>();
     }
 
     private void Configure(WebApplication app)
@@ -32,14 +32,14 @@ _workingDirectoryResolver = Server.Services.GetRequiredService<WorkingDirectoryR
     {
         // TODO: Clean up this function
 
-var resolver = _workingDirectoryResolver;
+        var resolver = _workingDirectoryResolver;
         var loggerFactory = Server.Services.GetRequiredService<ILoggerFactory>();
         // TODO: Remove hardcoded path
         _endpointManager = new TestEndpointManager(resolver.WorkingDirectory() + "/config/endpoints", loggerFactory);
         return _endpointManager;
     }
 
-public void UseToken()
+    public void UseToken()
     {
         var tokenLoader = Server.Services.GetRequiredService<TokenLoader>();
         var token = tokenLoader.LoadToken();

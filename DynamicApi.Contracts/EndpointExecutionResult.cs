@@ -2,8 +2,8 @@ namespace DynamicApi.Contracts;
 
 public class EndpointExecutionResult
 {
-    public bool IsSuccess { get; private set; }
-    public string Body { get; private set; }
+    public bool IsSuccess { get; set; }
+    public string Body { get; set; }
 
     public EndpointExecutionResult WithIsSuccess(bool isSuccess)
     {

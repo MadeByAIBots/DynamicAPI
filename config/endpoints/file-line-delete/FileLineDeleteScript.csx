@@ -6,9 +6,9 @@ using DynamicApi.Contracts;
 using DynamicApiServer.Definitions.EndpointDefinitions;
 using DynamicApi.Utilities.Files;
 
-public class FileLineDeleteScriptEndpoint : IDynamicEndpointExecutor
+public class FileLineDeleteScriptEndpoint : DynamicEndpointExecutorBase
 {
-	public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
+	public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
 	{
 		var workingDirectory = parameters.Parameters["workingDirectory"];
 		var filePath = parameters.Parameters["filePath"];
@@ -19,11 +19,7 @@ public class FileLineDeleteScriptEndpoint : IDynamicEndpointExecutor
 
 		if (!File.Exists(fullPath))
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = $"Error: The file '{fullPath}' does not exist.",
-				//StatusCode = 400
-			});
+			return Fail($"Error: The file '{fullPath}' does not exist.");
 		}
 
 		var lines = new List<string>(File.ReadAllLines(fullPath));
@@ -32,27 +28,16 @@ public class FileLineDeleteScriptEndpoint : IDynamicEndpointExecutor
 		var existingLineHash = HashUtils.GenerateSimpleHash(existingLine);
 		if (existingLineHash != providedHash)
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: Invalid hash. Read the lines to find out the correct hash and line number.",
-			});
+			return Fail("Error: Invalid hash. Read the lines to find out the correct hash and line number.");
 		}
 		if (lineNumber < 1 || lineNumber > lines.Count)
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: The 'lineNumber' parameter is out of range.",
-				//StatusCode = 400
-			});
+			return Fail("Error: The 'lineNumber' parameter is out of range.");
 		}
 
 		lines.RemoveAt(lineNumber - 1);
 		File.WriteAllLines(fullPath, lines);
 
-		return Task.FromResult(new EndpointExecutionResult
-		{
-			Body = "Line deleted successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered(),
-			//StatusCode = 200
-		});
+		return Success("Line deleted successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered());
 	}
 }
