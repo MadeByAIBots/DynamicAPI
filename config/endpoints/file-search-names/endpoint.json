@@ -1,6 +1,7 @@
 {
   "path": "/file-search-names",
   "executor": "bash",
+  "description": "Searches for a provided string in file names, and returns the files that match. NOTE: This does not search file content.",
   "method": "post",
   "args": [
     {

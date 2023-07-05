@@ -1,5 +1,5 @@
 {
-"description": "Searches for files in a specified directory that match a specified query.",
+  "description": "Searches for files in a specified directory with the content matching a specified query. NOTE: This does not search file names.",
   "path": "/file-search-content",
   "executor": "bash",
   "method": "post",

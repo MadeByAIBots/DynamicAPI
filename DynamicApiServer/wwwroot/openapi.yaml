@@ -95,7 +95,7 @@ paths:
           description: Bad request
   /file-search-content:
     post:
-      description: Searches for files in a specified directory that match a specified query.
+      description: 'Searches for files in a specified directory with the content matching a specified query. NOTE: This does not search file names.'
       operationId: fileSearchContent
       requestBody:
         description: request body
@@ -501,6 +501,7 @@ paths:
           description: 'Error: The file does not exist or the ''lineNumber'' parameter is out of range.'
   /file-search-names:
     post:
+      description: 'Searches for a provided string in file names, and returns the files that match. NOTE: This does not search file content.'
       operationId: fileSearchNames
       requestBody:
         description: request body
