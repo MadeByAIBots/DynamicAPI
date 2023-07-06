@@ -7,10 +7,10 @@ using NUnit.Framework;
 
 namespace DynamicApiServer.Tests.Integration.Endpoints.General
 {
-    public class ExecuteEndpointTests
+    public class RunBashCommandEndpointTests
     {
         [Test]
-        public async Task TestExecuteEndpoint()
+        public async Task TestRunBashCommandEndpoint()
         {
             using var context = new IntegrationTestContext();
             context.UseToken();

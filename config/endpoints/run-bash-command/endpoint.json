@@ -1,6 +1,6 @@
 {
   "path": "/run-bash-command",
-  "executor": "bash",
+  "executor": "csharp-script",
   "method": "post",
   "args": [
     {
