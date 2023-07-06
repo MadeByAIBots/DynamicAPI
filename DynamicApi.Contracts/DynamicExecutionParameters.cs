@@ -3,10 +3,10 @@ namespace DynamicApi.Contracts;
 public class DynamicExecutionParameters
 {
     public ApiConfiguration ApiConfig { get; set; }
-    public WorkingDirectoryResolver Resolver { get;set;}
+    public WorkingDirectoryResolver Resolver { get; set; }
     public Dictionary<string, string> Parameters { get; set; }
 
-    public ILoggerFactory LoggerFactory { get;set;}
+    public ILoggerFactory LoggerFactory { get; set; }
 
     public DynamicExecutionParameters(ApiConfiguration apiConfig, WorkingDirectoryResolver resolver, ILoggerFactory loggerFactory, Dictionary<string, string> parameters)
     {
@@ -15,48 +15,70 @@ public class DynamicExecutionParameters
         Parameters = parameters;
         Resolver = resolver;
     }
-public string GetRequiredString(string paramName)
-{
-    if (Parameters.ContainsKey(paramName) && Parameters[paramName] is string stringValue)
+    public string GetRequiredString(string paramName)
     {
-        return stringValue;
+        if (Parameters.ContainsKey(paramName) && Parameters[paramName] is string stringValue)
+        {
+            return stringValue;
+        }
+        else
+        {
+            throw new ArgumentException($"Required parameter '{paramName}' is missing or not a string.");
+        }
     }
-    else
+    public string GetString(string paramName)
     {
-        throw new ArgumentException($"Required parameter '{paramName}' is missing or not a string.");
+        if (Parameters.ContainsKey(paramName) && Parameters[paramName] is string stringValue)
+        {
+            return stringValue;
+        }
+        else
+        {
+            return string.Empty;
+        }
     }
-}
-public string GetString(string paramName)
-{
-    if (Parameters.ContainsKey(paramName) && Parameters[paramName] is string stringValue)
+    public int GetRequiredInt32(string paramName)
     {
-        return stringValue;
+        if (Parameters.ContainsKey(paramName) && int.TryParse(Parameters[paramName]?.ToString(), out var intValue))
+        {
+            return intValue;
+        }
+        else
+        {
+            throw new ArgumentException($"Required parameter '{paramName}' is missing or not an integer.");
+        }
     }
-    else
+    public int GetInt32(string paramName)
     {
-        return string.Empty;
+        if (Parameters.ContainsKey(paramName) && int.TryParse(Parameters[paramName]?.ToString(), out var intValue))
+        {
+            return intValue;
+        }
+        else
+        {
+            return 0;
+        }
     }
-}
-public int GetRequiredInt32(string paramName)
-{
-    if (Parameters.ContainsKey(paramName) && int.TryParse(Parameters[paramName]?.ToString(), out var intValue))
+    public bool GetRequiredBool(string paramName)
     {
-        return intValue;
+        if (Parameters.ContainsKey(paramName) && bool.TryParse(Parameters[paramName]?.ToString(), out var boolValue))
+        {
+            return boolValue;
+        }
+        else
+        {
+            throw new ArgumentException($"Required parameter '{paramName}' is missing or not a bool.");
+        }
     }
-    else
+    public bool GetBool(string paramName)
     {
-        throw new ArgumentException($"Required parameter '{paramName}' is missing or not an integer.");
+        if (Parameters.ContainsKey(paramName) && bool.TryParse(Parameters[paramName]?.ToString(), out var boolValue))
+        {
+            return boolValue;
+        }
+        else
+        {
+            return false;
+        }
     }
-}
-public int GetInt32(string paramName)
-{
-    if (Parameters.ContainsKey(paramName) && int.TryParse(Parameters[paramName]?.ToString(), out var intValue))
-    {
-        return intValue;
-    }
-    else
-    {
-        return 0;
-    }
-}
 }
