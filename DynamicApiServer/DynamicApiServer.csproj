@@ -4,7 +4,7 @@
     <ProjectReference Include="..\Definitions\EndpointDefinitions\EndpointDefinitions.csproj" />
     <ProjectReference Include="..\Definitions\ExecutorDefinitions\ExecutorDefinitions.csproj" />
     <ProjectReference Include="..\Utilities\Process\Process.csproj" />
-    <ProjectReference Include="..\DynamicApiConfiguration\DynamicApiConfiguration.csproj" />
+    <ProjectReference Include="..\DynamicApi.Configuration\DynamicApi.Configuration.csproj" />
     <ProjectReference Include="..\DynamicApi.Contracts\DynamicApi.Contracts.csproj" />
     <ProjectReference Include="..\Utilities\Files\DynamicApi.Utilities.Files.csproj" />
   </ItemGroup>

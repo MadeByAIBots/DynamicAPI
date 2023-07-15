@@ -3,7 +3,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using System;
 global using DynamicApiServer.Requests;
 global using DynamicApiServer.Execution;
-global using DynamicApiConfiguration;
+global using DynamicApi.Configuration;
 global using DynamicApiServer.Execution.Executors.Bash;
 global using DynamicApiServer.Execution.Executors;
 global using DynamicApiServer.Requests.Arguments;

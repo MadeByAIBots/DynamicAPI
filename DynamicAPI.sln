@@ -9,13 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApiServer.Tests.Inte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Contracts", "DynamicApi.Contracts\DynamicApi.Contracts.csproj", "{4BAB51AD-9C8E-43EF-A8EC-5C1BDD6A437A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApiConfiguration", "DynamicApiConfiguration\DynamicApiConfiguration.csproj", "{EE0806AC-05B8-4295-8C56-E03E8D431698}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Configuration", "DynamicApi.Configuration\DynamicApi.Configuration.csproj", "{EE0806AC-05B8-4295-8C56-E03E8D431698}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{B72EDB17-25B7-4CBC-A66D-A4DB6D8A7C84}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Utilities.Files", "Utilities\Files\DynamicApi.Utilities.Files.csproj", "{E35D8253-61C3-4D9C-8470-56AA3A8817CC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Process", "Utilities\Process\Process.csproj", "{79C91703-CCD7-4DF9-81DE-AF4DFE67445D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Configuration", "DynamicApi.Servers.Configuration\DynamicApi.Servers.Configuration.csproj", "{EF0E455F-7516-4E00-9A94-437C7E54E633}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Data", "DynamicApi.Servers.Data\DynamicApi.Servers.Data.csproj", "{08ACFFD0-56D3-439E-89EB-0928BEF1F0B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Data.Tests.Unit", "DynamicApi.Servers.Data.Tests.Unit\DynamicApi.Servers.Data.Tests.Unit.csproj", "{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +56,18 @@ Global
 		{79C91703-CCD7-4DF9-81DE-AF4DFE67445D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79C91703-CCD7-4DF9-81DE-AF4DFE67445D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79C91703-CCD7-4DF9-81DE-AF4DFE67445D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF0E455F-7516-4E00-9A94-437C7E54E633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF0E455F-7516-4E00-9A94-437C7E54E633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF0E455F-7516-4E00-9A94-437C7E54E633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF0E455F-7516-4E00-9A94-437C7E54E633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08ACFFD0-56D3-439E-89EB-0928BEF1F0B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08ACFFD0-56D3-439E-89EB-0928BEF1F0B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08ACFFD0-56D3-439E-89EB-0928BEF1F0B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08ACFFD0-56D3-439E-89EB-0928BEF1F0B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E35D8253-61C3-4D9C-8470-56AA3A8817CC} = {B72EDB17-25B7-4CBC-A66D-A4DB6D8A7C84}

@@ -1,6 +1,6 @@
 global using DynamicApi.Contracts;
 global using DynamicApi.WorkingDirectory;
-global using DynamicApiConfiguration;
+global using DynamicApi.Configuration;
 global using DynamicApiServer.Authentication;
 global using DynamicApiServer.Definitions.EndpointDefinitions;
 global using DynamicApiServer.Definitions.ExecutorDefinitions;

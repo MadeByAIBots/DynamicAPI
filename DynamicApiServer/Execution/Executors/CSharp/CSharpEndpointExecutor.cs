@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 using DynamicApiServer.Definitions.ExecutorDefinitions;
 using DynamicApiServer.Definitions.EndpointDefinitions;
 using DynamicApi.Contracts;
-using DynamicApiConfiguration;
+using DynamicApi.Configuration;
 
 namespace DynamicApiServer.Execution.Executors.CSharp
 {

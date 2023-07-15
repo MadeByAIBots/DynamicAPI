@@ -1,4 +1,4 @@
-namespace DynamicApiConfiguration;
+namespace DynamicApi.Configuration;
 
 public class CSharpScriptConfiguration
 {

@@ -3,7 +3,7 @@ using System;
 using System.IO;
 using System.Text.Json;
 
-namespace DynamicApiConfiguration
+namespace DynamicApi.Configuration
 {
     public class ConfigurationLoader
     {

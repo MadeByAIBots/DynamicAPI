@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../DynamicApi.WorkingDirectory/DynamicApi.WorkingDirectory.csproj" />
-<ProjectReference Include="../DynamicApiConfiguration/DynamicApiConfiguration.csproj" />
+<ProjectReference Include="../DynamicApi.Configuration/DynamicApi.Configuration.csproj" />
   </ItemGroup>
 
 </Project>

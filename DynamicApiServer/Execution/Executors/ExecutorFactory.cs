@@ -1,7 +1,7 @@
 using DynamicApiServer.Execution.Executors.Bash;
 using DynamicApiServer.Execution.Executors.CSharp;
 using DynamicApiServer.Execution.Executors.CSharpScript;
-using DynamicApiConfiguration;
+using DynamicApi.Configuration;
 
 namespace DynamicApiServer.Execution.Executors;
 

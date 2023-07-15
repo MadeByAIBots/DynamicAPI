@@ -20,12 +20,7 @@ namespace DynamicApiServer.Tests.Integration
 			services.AddApiServices();
 			services.AddRouting();
 			services.AddSingleton<TokenLoader>();
-			services.AddLogging(loggingBuilder =>
-			{
-				loggingBuilder.ClearProviders();
-				loggingBuilder.AddConfiguration(_configuration.GetSection("Logging"));
-				loggingBuilder.AddConsole();
-			});
+services.ConfigureLoggingServices();
 		}
 
 		public void Configure(IApplicationBuilder app)
