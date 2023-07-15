@@ -41,7 +41,7 @@ public class DocumentGenerator
             },
             Paths = openApiPaths
         };
-        document.Servers.Add(new OpenApiServer{Url="https://dynamicapi.madebyaibots.com"});
+        document.Servers.Add(new OpenApiServer{Url="https://dynamicapi-laptop.madebyaibots.com"});
 
         var writer = new StringWriter();
         var yamlWriter = new OpenApiYamlWriter(writer);
