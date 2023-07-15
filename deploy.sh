@@ -3,6 +3,9 @@
 # Run the tests
 bash test.sh
 
+sourcePath=$PWD
+destinationPath="../../deploy/live/DynamicAPI"
+
 # Check if the tests passed
 if [ $? -eq 0 ]
 then
@@ -11,14 +14,14 @@ then
   bash stop.sh
 
   # Check if the deployment directory exists
-  if [ ! -d "/root/deploy/live/DynamicAPI/.git" ]
+  if [ ! -d "$destinationPath/.git" ]
   then
     # Clone the repository
-    git clone /root/workspace/DynamicAPI /root/deploy/live/DynamicAPI
+    git clone $sourcePath $destinationPath
   fi
 
   # Change to the deployment directory
-  cd /root/deploy/live/DynamicAPI
+  cd $destinationPath
 
   # Pull the latest changes
   git pull || echo "Pull failed"

@@ -25,7 +25,7 @@ curl -X GET http://localhost:$PORT/file-read \
 -H "Authorization: Bearer $authToken" \
 -H 'Content-Type: application/json' \
 -d '{
-  "workingDirectory": "/root/workspace/DynamicAPI",
+  "workingDirectory": "~/workspace/DynamicAPI",
   "filePath": "build.sh"
 }'
 
@@ -37,7 +37,7 @@ curl -X GET http://localhost:$PORT/file-read-lines \
 -H "Authorization: Bearer $authToken" \
 -H 'Content-Type: application/json' \
 -d '{
-  "workingDirectory": "/root/workspace/DynamicAPI",
+  "workingDirectory": "~/workspace/DynamicAPI",
   "filePath": "build.sh"
 }'
 

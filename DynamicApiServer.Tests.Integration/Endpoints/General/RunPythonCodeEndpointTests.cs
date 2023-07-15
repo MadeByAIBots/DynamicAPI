@@ -15,9 +15,12 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
             using var context = new IntegrationTestContext();
             context.UseToken();
 
+            var resolver = context.Server.Services.GetRequiredService<WorkingDirectoryResolver>();
+            var workingDirectory = resolver.WorkingDirectory();
+
             // Create the request content
             var content = new StringContent(
-                "{\"pythonCode\": \"print('hello')\", \"workingDirectory\": \"/root\"}",
+                "{\"pythonCode\": \"print('hello')\", \"workingDirectory\": \"" + workingDirectory + "\"}",
                 Encoding.UTF8,
                 "application/json"
             );

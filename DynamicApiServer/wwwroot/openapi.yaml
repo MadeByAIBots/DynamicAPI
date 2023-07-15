@@ -31,10 +31,10 @@ paths:
           description: Directory created successfully
         '400':
           description: Bad request
-  /file-line-replace:
+  /file-create:
     post:
-      description: 'Replaces a specified line in a file with new content. The line to be replaced is identified by its line number and hash, which can be obtained using the ''file read lines'' endpoint. This operation is irreversible, so use with caution.'
-      operationId: fileLineReplace
+      description: Creates a new file at a specified path within a specified working directory and writes content to it.
+      operationId: fileCreate
       requestBody:
         description: request body
         content:
@@ -43,60 +43,56 @@ paths:
               required:
                 - workingDirectory
                 - filePath
-                - lineNumber
-                - lineHash
-                - newContent
+                - content
               type: object
               properties:
                 workingDirectory:
                   type: string
-                  description: The absolute path to the directory where the file is located.
+                  description: The base path where the file will be created.
                 filePath:
                   type: string
-                  description: The relative path of the file in which a line will be replaced.
-                lineNumber:
+                  description: 'The path of the file to be created, relative to the working directory.'
+                content:
                   type: string
-                  description: The line number of the line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
-                lineHash:
-                  type: string
-                  description: The hash of the line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
-                newContent:
-                  type: string
-                  description: The new content to replace the old content with.
+                  description: The content to write to the file.
       responses:
         '200':
-          description: Line replaced successfully
+          description: File created successfully
         '400':
           description: Bad request
-  /directory-move:
+  /ai-bot-send-files:
     post:
-      description: Moves a directory from a specified source path to a specified destination path within the working directory.
-      operationId: directoryMove
+      description: 'Sends the contents of multiple files to OpenAI''s Davinci model, along with instructions on what to do with them, and receives a response.'
+      operationId: aiBotSendFiles
       requestBody:
         description: request body
         content:
           application/json:
             schema:
               required:
-                - sourcePath
-                - destinationPath
+                - files
+                - message
+                - workingDirectory
               type: object
               properties:
-                sourcePath:
+                files:
                   type: string
-                  description: The absolute path of the directory to be moved.
-                destinationPath:
+                  description: A semicolon-separated list of file paths to send to the Davinci model. The content of these files will be read and sent as a message to the AI model.
+                message:
                   type: string
-                  description: The absolute path where the directory should be moved to.
+                  description: 'A detailed instruction for the AI model, such as ''identify problems'', ''summarize'', ''provide suggestions'', etc. The AI model will process the content of the files based on this instruction.'
+                workingDirectory:
+                  type: string
+                  description: The base path where the files are located. All file paths should be relative to this directory.
       responses:
         '200':
-          description: Directory moved successfully
+          description: Files sent successfully
         '400':
           description: Bad request
-  /file-search-content:
+  /file-prepend:
     post:
-      description: 'Searches for files in a specified directory with the content matching a specified query. NOTE: This does not search file names.'
-      operationId: fileSearchContent
+      description: Prepends content to a file located at a specified path within a specified working directory.
+      operationId: filePrepend
       requestBody:
         description: request body
         content:
@@ -104,22 +100,80 @@ paths:
             schema:
               required:
                 - workingDirectory
-                - query
-                - recursive
+                - filePath
+                - content
+                - addNewline
               type: object
               properties:
                 workingDirectory:
                   type: string
-                  description: The base path where the search should start.
+                  description: The base path where the file is located.
+                filePath:
+                  type: string
+                  description: 'The path of the file to prepend to, relative to the working directory.'
+                content:
+                  type: string
+                  description: The content to prepend.
+                addNewline:
+                  type: string
+                  description: Optional. Whether to add a newline character between the existing content and the new content. Defaults to true.
+      responses:
+        '200':
+          description: Content prepended successfully
+        '400':
+          description: Bad request
+  /directory-search-names:
+    post:
+      description: Searches for directories within a specified path in the working directory.
+      operationId: directorySearchNames
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - searchPath
+                - query
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
+                searchPath:
+                  type: string
+                  description: The relative path from the working directory where the search should start.
                 query:
                   type: string
-                  description: The search query. Use * wildcards the same way you would use in grep.
-                recursive:
-                  type: string
-                  description: Whether to search within subdirectories.
+                  description: The query for the directory names to search for. This can include wildcards for more flexible searching.
       responses:
         '200':
           description: Search completed successfully
+        '400':
+          description: Bad request
+  /file-read-lines:
+    post:
+      description: Reads the lines of a file located at a specified path within a specified working directory.
+      operationId: fileReadLines
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePath
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: The base path where the file is located.
+                filePath:
+                  type: string
+                  description: 'The path of the file to be read, relative to the working directory.'
+      responses:
+        '200':
+          description: File read successfully
         '400':
           description: Bad request
   /directory-copy:
@@ -147,10 +201,19 @@ paths:
           description: Directory copied successfully
         '400':
           description: Bad request
-  /file-append:
+  /csharp-hello-world:
+    get:
+      description: 'Executes a simple C# program that prints ''Hello, World!'' to the console.'
+      operationId: csharpHelloWorld
+      responses:
+        '200':
+          description: A successful response
+        '400':
+          description: A bad request response
+  /file-line-delete:
     post:
-      description: Appends specified content to a file.
-      operationId: fileAppend
+      description: 'Deletes a specified line from a file. The line to be deleted is identified by its line number and hash, which can be obtained using the ''file read lines'' endpoint. This operation is irreversible, so use with caution.'
+      operationId: fileLineDelete
       requestBody:
         description: request body
         content:
@@ -159,8 +222,42 @@ paths:
               required:
                 - workingDirectory
                 - filePath
-                - content
-                - addNewline
+                - lineNumber
+                - lineHash
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: The absolute path to the directory where the file is located.
+                filePath:
+                  type: string
+                  description: The relative path of the file from which a line will be deleted.
+                lineNumber:
+                  type: string
+                  description: The line number of the line to be deleted. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
+                lineHash:
+                  type: string
+                  description: The hash of the line to be deleted for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
+      responses:
+        '200':
+          description: 'Line deleted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it''s correct.'
+        '400':
+          description: 'Error: The file does not exist or the ''lineNumber'' parameter is out of range.'
+  /file-line-insert:
+    post:
+      description: 'Inserts a new line before a specified line in a file. NOTE: Use the ''file read lines'' endpoint to get the correct line number and hash. DO NOT GUESS OR ASSUME.'
+      operationId: fileLineInsert
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePath
+                - beforeLineNumber
+                - beforeLineHash
+                - newContent
               type: object
               properties:
                 workingDirectory:
@@ -168,37 +265,19 @@ paths:
                   description: 'The absolute path to the current working directory (e.g., project or repository root).'
                 filePath:
                   type: string
-                  description: The relative path of the file to append to.
-                content:
+                  description: The relative path of the file where a line will be inserted.
+                beforeLineNumber:
                   type: string
-                  description: The content to append to the file.
-                addNewline:
+                  description: The line number before which the new content will be inserted. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
+                beforeLineHash:
                   type: string
-                  description: Optional. Whether to add a newline character after the appended content. Defaults to true.
+                  description: The hash of the line to insert before for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
+                newContent:
+                  type: string
+                  description: The new content to insert.
       responses:
         '200':
-          description: Content appended successfully
-        '400':
-          description: Bad request
-  /ai-bot-message:
-    post:
-      description: Sends a message to OpenAI's Davinci model and receives a response.
-      operationId: aiBotMessage
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - message
-              type: object
-              properties:
-                message:
-                  type: string
-                  description: The message to send to the Davinci model.
-      responses:
-        '200':
-          description: Message sent successfully
+          description: 'Line inserted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it''s correct.'
         '400':
           description: Bad request
   /file-lines-range-replace:
@@ -246,68 +325,33 @@ paths:
           description: The operation was successful. The response body contains the new content of the file.
         '400':
           description: The operation failed due to a bad request. The response body contains an error message explaining the reason for the failure.
-  /file-read-lines:
+  /run-bash-command:
     post:
-      description: Reads the lines of a file located at a specified path within a specified working directory.
-      operationId: fileReadLines
+      operationId: runBashCommand
       requestBody:
         description: request body
         content:
           application/json:
             schema:
               required:
+                - command
                 - workingDirectory
-                - filePath
               type: object
               properties:
+                command:
+                  type: string
+                  description: The bash command to execute.
                 workingDirectory:
                   type: string
-                  description: The base path where the file is located.
-                filePath:
+                  description: The base working directory to execute the command in.
+                maxLines:
                   type: string
-                  description: 'The path of the file to be read, relative to the working directory.'
+                  description: 'The maximum number of output lines, defaulting to 10.'
       responses:
         '200':
-          description: File read successfully
+          description: A successful response
         '400':
-          description: Bad request
-  /file-line-insert:
-    post:
-      description: 'Inserts a new line before a specified line in a file. NOTE: Use the ''file read lines'' endpoint to get the correct line number and hash. DO NOT GUESS OR ASSUME.'
-      operationId: fileLineInsert
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - filePath
-                - beforeLineNumber
-                - beforeLineHash
-                - newContent
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
-                filePath:
-                  type: string
-                  description: The relative path of the file where a line will be inserted.
-                beforeLineNumber:
-                  type: string
-                  description: The line number before which the new content will be inserted. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
-                beforeLineHash:
-                  type: string
-                  description: The hash of the line to insert before for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
-                newContent:
-                  type: string
-                  description: The new content to insert.
-      responses:
-        '200':
-          description: 'Line inserted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it''s correct.'
-        '400':
-          description: Bad request
+          description: A bad request response
   /file-copy:
     post:
       description: Copies a file from a specified source path to a specified destination path within the working directory.
@@ -333,96 +377,78 @@ paths:
           description: File copied successfully
         '400':
           description: Bad request
-  /csharp-hello-world:
-    get:
-      description: 'Executes a simple C# program that prints ''Hello, World!'' to the console.'
-      operationId: csharpHelloWorld
+  /run-python-code:
+    post:
+      operationId: runPythonCode
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - pythonCode
+                - workingDirectory
+              type: object
+              properties:
+                pythonCode:
+                  type: string
+                  description: The Python code snippet to execute.
+                workingDirectory:
+                  type: string
+                  description: The base working directory to execute the command in.
       responses:
         '200':
           description: A successful response
         '400':
           description: A bad request response
-  /file-update:
+  /ai-bot-message:
     post:
-      description: Updates the content of a file located at a specified path within a specified working directory.
-      operationId: fileUpdate
+      description: Sends a message to OpenAI's Davinci model and receives a response.
+      operationId: aiBotMessage
       requestBody:
         description: request body
         content:
           application/json:
             schema:
               required:
-                - workingDirectory
-                - filePath
-                - content
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: The base path where the file is located.
-                filePath:
-                  type: string
-                  description: 'The path of the file to be updated, relative to the working directory.'
-                content:
-                  type: string
-                  description: The content to update the file with.
-      responses:
-        '200':
-          description: File updated successfully
-        '400':
-          description: Bad request
-  /ai-bot-send-files:
-    post:
-      description: 'Sends the contents of multiple files to OpenAI''s Davinci model, along with instructions on what to do with them, and receives a response.'
-      operationId: aiBotSendFiles
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - files
                 - message
-                - workingDirectory
               type: object
               properties:
-                files:
-                  type: string
-                  description: A semicolon-separated list of file paths to send to the Davinci model. The content of these files will be read and sent as a message to the AI model.
                 message:
                   type: string
-                  description: 'A detailed instruction for the AI model, such as ''identify problems'', ''summarize'', ''provide suggestions'', etc. The AI model will process the content of the files based on this instruction.'
-                workingDirectory:
-                  type: string
-                  description: The base path where the files are located. All file paths should be relative to this directory.
+                  description: The message to send to the Davinci model.
       responses:
         '200':
-          description: Files sent successfully
+          description: Message sent successfully
         '400':
           description: Bad request
-  /file-move:
+  /file-search-content:
     post:
-      description: Moves a file from a specified source path to a specified destination path within the working directory.
-      operationId: fileMove
+      description: 'Searches for files in a specified directory with the content matching a specified query. NOTE: This does not search file names.'
+      operationId: fileSearchContent
       requestBody:
         description: request body
         content:
           application/json:
             schema:
               required:
-                - sourcePath
-                - destinationPath
+                - workingDirectory
+                - query
+                - recursive
               type: object
               properties:
-                sourcePath:
+                workingDirectory:
                   type: string
-                  description: The source file path.
-                destinationPath:
+                  description: The base path where the search should start.
+                query:
                   type: string
-                  description: The destination file path.
+                  description: The search query. Use * wildcards the same way you would use in grep.
+                recursive:
+                  type: string
+                  description: Whether to search within subdirectories.
       responses:
         '200':
-          description: File moved successfully
+          description: Search completed successfully
         '400':
           description: Bad request
   /file-read-multiple:
@@ -447,180 +473,6 @@ paths:
       responses:
         '200':
           description: The combined content of the files.
-  /file-prepend:
-    post:
-      description: Prepends content to a file located at a specified path within a specified working directory.
-      operationId: filePrepend
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - filePath
-                - content
-                - addNewline
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: The base path where the file is located.
-                filePath:
-                  type: string
-                  description: 'The path of the file to prepend to, relative to the working directory.'
-                content:
-                  type: string
-                  description: The content to prepend.
-                addNewline:
-                  type: string
-                  description: Optional. Whether to add a newline character between the existing content and the new content. Defaults to true.
-      responses:
-        '200':
-          description: Content prepended successfully
-        '400':
-          description: Bad request
-  /file-create:
-    post:
-      description: Creates a new file at a specified path within a specified working directory and writes content to it.
-      operationId: fileCreate
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - filePath
-                - content
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: The base path where the file will be created.
-                filePath:
-                  type: string
-                  description: 'The path of the file to be created, relative to the working directory.'
-                content:
-                  type: string
-                  description: The content to write to the file.
-      responses:
-        '200':
-          description: File created successfully
-        '400':
-          description: Bad request
-  /directory-search-names:
-    post:
-      description: Searches for directories within a specified path in the working directory.
-      operationId: directorySearchNames
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - searchPath
-                - query
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
-                searchPath:
-                  type: string
-                  description: The relative path from the working directory where the search should start.
-                query:
-                  type: string
-                  description: The query for the directory names to search for. This can include wildcards for more flexible searching.
-      responses:
-        '200':
-          description: Search completed successfully
-        '400':
-          description: Bad request
-  /file-line-delete:
-    post:
-      description: 'Deletes a specified line from a file. The line to be deleted is identified by its line number and hash, which can be obtained using the ''file read lines'' endpoint. This operation is irreversible, so use with caution.'
-      operationId: fileLineDelete
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - filePath
-                - lineNumber
-                - lineHash
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: The absolute path to the directory where the file is located.
-                filePath:
-                  type: string
-                  description: The relative path of the file from which a line will be deleted.
-                lineNumber:
-                  type: string
-                  description: The line number of the line to be deleted. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
-                lineHash:
-                  type: string
-                  description: The hash of the line to be deleted for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
-      responses:
-        '200':
-          description: 'Line deleted successfully. The result includes the updated file lines with line numbers and hashes. IMPORTANT: Check this output to ensure it''s correct.'
-        '400':
-          description: 'Error: The file does not exist or the ''lineNumber'' parameter is out of range.'
-  /file-search-names:
-    post:
-      description: 'Searches for a provided string in file names, and returns the files that match. NOTE: This does not search file content.'
-      operationId: fileSearchNames
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - fileName
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: The base path where the search should start.
-                fileName:
-                  type: string
-                  description: The name of the file to search for. Use * wildcards the same way you would with 'find' bash command.
-      responses:
-        '200':
-          description: Search completed successfully
-        '400':
-          description: Bad request
-  /directory-list:
-    post:
-      description: Lists the contents of a specified directory within the working directory.
-      operationId: directoryList
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - workingDirectory
-                - directoryPath
-              type: object
-              properties:
-                workingDirectory:
-                  type: string
-                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
-                directoryPath:
-                  type: string
-                  description: The relative path of the directory to be listed within the working directory.
-      responses:
-        '200':
-          description: Directory listed successfully
-        '400':
-          description: Bad request
   /ai-bot-send-file-paths:
     post:
       description: Lists all files in a directory and sends their paths to the bot along with a message.
@@ -654,65 +506,68 @@ paths:
           description: Files listed and sent successfully
         '400':
           description: Bad request
-  /run-bash-command:
+  /file-append:
     post:
-      operationId: runBashCommand
+      description: Appends specified content to a file.
+      operationId: fileAppend
       requestBody:
         description: request body
         content:
           application/json:
             schema:
               required:
-                - command
                 - workingDirectory
+                - filePath
+                - content
+                - addNewline
               type: object
               properties:
-                command:
-                  type: string
-                  description: The bash command to execute.
                 workingDirectory:
                   type: string
-                  description: The base working directory to execute the command in.
-                maxLines:
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
+                filePath:
                   type: string
-                  description: 'The maximum number of output lines, defaulting to 10.'
+                  description: The relative path of the file to append to.
+                content:
+                  type: string
+                  description: The content to append to the file.
+                addNewline:
+                  type: string
+                  description: Optional. Whether to add a newline character after the appended content. Defaults to true.
       responses:
         '200':
-          description: A successful response
+          description: Content appended successfully
         '400':
-          description: A bad request response
-  /run-python-code:
+          description: Bad request
+  /file-update:
     post:
-      operationId: runPythonCode
+      description: Updates the content of a file located at a specified path within a specified working directory.
+      operationId: fileUpdate
       requestBody:
         description: request body
         content:
           application/json:
             schema:
               required:
-                - pythonCode
                 - workingDirectory
+                - filePath
+                - content
               type: object
               properties:
-                pythonCode:
-                  type: string
-                  description: The Python code snippet to execute.
                 workingDirectory:
                   type: string
-                  description: The base working directory to execute the command in.
+                  description: The base path where the file is located.
+                filePath:
+                  type: string
+                  description: 'The path of the file to be updated, relative to the working directory.'
+                content:
+                  type: string
+                  description: The content to update the file with.
       responses:
         '200':
-          description: A successful response
+          description: File updated successfully
         '400':
-          description: A bad request response
-  /endpoint-list:
-    get:
-      operationId: endpointList
-      responses:
-        '200':
-          description: A successful response
-        '400':
-          description: A bad request response
+          description: Bad request
   /file-search-replace:
     post:
       description: Searches for a specified string in a file and replaces it with a new string. Use with caution.
@@ -746,6 +601,14 @@ paths:
           description: Search and replace operation completed successfully
         '400':
           description: Bad request
+  /endpoint-list:
+    get:
+      operationId: endpointList
+      responses:
+        '200':
+          description: A successful response
+        '400':
+          description: A bad request response
   /file-read:
     post:
       operationId: fileRead
@@ -768,5 +631,142 @@ paths:
       responses:
         '200':
           description: File read successfully
+        '400':
+          description: Bad request
+  /file-line-replace:
+    post:
+      description: 'Replaces a specified line in a file with new content. The line to be replaced is identified by its line number and hash, which can be obtained using the ''file read lines'' endpoint. This operation is irreversible, so use with caution.'
+      operationId: fileLineReplace
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePath
+                - lineNumber
+                - lineHash
+                - newContent
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: The absolute path to the directory where the file is located.
+                filePath:
+                  type: string
+                  description: The relative path of the file in which a line will be replaced.
+                lineNumber:
+                  type: string
+                  description: The line number of the line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy.
+                lineHash:
+                  type: string
+                  description: The hash of the line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint.
+                newContent:
+                  type: string
+                  description: The new content to replace the old content with.
+      responses:
+        '200':
+          description: Line replaced successfully
+        '400':
+          description: Bad request
+  /file-move:
+    post:
+      description: Moves a file from a specified source path to a specified destination path within the working directory.
+      operationId: fileMove
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - sourcePath
+                - destinationPath
+              type: object
+              properties:
+                sourcePath:
+                  type: string
+                  description: The source file path.
+                destinationPath:
+                  type: string
+                  description: The destination file path.
+      responses:
+        '200':
+          description: File moved successfully
+        '400':
+          description: Bad request
+  /directory-move:
+    post:
+      description: Moves a directory from a specified source path to a specified destination path within the working directory.
+      operationId: directoryMove
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - sourcePath
+                - destinationPath
+              type: object
+              properties:
+                sourcePath:
+                  type: string
+                  description: The absolute path of the directory to be moved.
+                destinationPath:
+                  type: string
+                  description: The absolute path where the directory should be moved to.
+      responses:
+        '200':
+          description: Directory moved successfully
+        '400':
+          description: Bad request
+  /directory-list:
+    post:
+      description: Lists the contents of a specified directory within the working directory.
+      operationId: directoryList
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - directoryPath
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: 'The absolute path to the current working directory (e.g., project or repository root).'
+                directoryPath:
+                  type: string
+                  description: The relative path of the directory to be listed within the working directory.
+      responses:
+        '200':
+          description: Directory listed successfully
+        '400':
+          description: Bad request
+  /file-search-names:
+    post:
+      description: 'Searches for a provided string in file names, and returns the files that match. NOTE: This does not search file content.'
+      operationId: fileSearchNames
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - fileName
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: The base path where the search should start.
+                fileName:
+                  type: string
+                  description: The name of the file to search for. Use * wildcards the same way you would with 'find' bash command.
+      responses:
+        '200':
+          description: Search completed successfully
         '400':
           description: Bad request
