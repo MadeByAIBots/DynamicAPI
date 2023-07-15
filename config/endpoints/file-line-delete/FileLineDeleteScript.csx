@@ -26,7 +26,7 @@ public class FileLineDeleteScriptEndpoint : DynamicEndpointExecutorBase
 
 		var existingLine = lines[lineNumber - 1];
 		var existingLineHash = HashUtils.GenerateSimpleHash(existingLine);
-		if (existingLineHash != providedHash)
+		if (existingLineHash.ToLower() != providedHash.ToLower())
 		{
 			return Fail("Error: Invalid hash. Read the lines to find out the correct hash and line number.");
 		}

@@ -41,7 +41,7 @@ public class FileLinesRangeReplaceScriptEndpoint : IDynamicEndpointExecutor
         var endLine = lines[endLineNumber - 1];
         var startLineHashCheck = HashUtils.GenerateSimpleHash(startLine);
         var endLineHashCheck = HashUtils.GenerateSimpleHash(endLine);
-        if (startLineHashCheck != startLineHash || endLineHashCheck != endLineHash)
+        if (startLineHashCheck.ToLower() != startLineHash.ToLower() || endLineHashCheck.ToLower() != endLineHash.ToLower())
         {
             return Task.FromResult(new EndpointExecutionResult
             {

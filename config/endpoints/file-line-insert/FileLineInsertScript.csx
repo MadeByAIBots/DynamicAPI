@@ -79,7 +79,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
 
 		// Hash check
 		var generatedHash = DynamicApi.Utilities.Files.HashUtils.GenerateSimpleHash(lines[beforeLineNumber - 1]);
-		if (generatedHash != lineHash)
+		if (generatedHash.ToLower() != lineHash.ToLower())
 		{
 			return Task.FromResult(new EndpointExecutionResult
 			{
