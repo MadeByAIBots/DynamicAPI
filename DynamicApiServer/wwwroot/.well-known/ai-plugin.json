@@ -13,9 +13,9 @@
   },
   "api": {
     "type": "openapi",
-    "url": "https://dynamicapi.madebyaibots.com/openapi.yaml"
+    "url": "https://dynamicapi-laptop.madebyaibots.com/openapi.yaml"
   },
-  "logo_url": "https://dynamicapi.madebyaibots.com/logo.png",
+  "logo_url": "https://dynamicapi-laptop.madebyaibots.com/logo.png",
   "contact_email": "madebyaibots@gmail.com",
   "legal_info_url": "http://example.com/legal"
 }
