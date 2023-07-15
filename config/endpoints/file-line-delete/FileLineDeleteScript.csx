@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using DynamicApi.Contracts;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
 public class FileLineDeleteScriptEndpoint : DynamicEndpointExecutorBase

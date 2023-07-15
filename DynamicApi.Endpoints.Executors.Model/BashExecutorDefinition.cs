@@ -1,4 +1,4 @@
-namespace DynamicApiServer.Definitions.ExecutorDefinitions
+namespace DynamicApi.Endpoints.Executors.Model
 {
     public class BashExecutorDefinition : IExecutorDefinition
     {

@@ -1,7 +1,7 @@
-using DynamicApiServer.Definitions.ExecutorDefinitions;
+using DynamicApi.Endpoints.Executors.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 
 public interface IEndpointExecutor
 {

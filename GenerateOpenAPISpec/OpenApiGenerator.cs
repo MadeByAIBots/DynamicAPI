@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using Microsoft.OpenApi.Models;
 
 public class OpenApiGenerator

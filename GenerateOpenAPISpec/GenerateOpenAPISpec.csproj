@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Definitions\EndpointDefinitions\EndpointDefinitions.csproj" />
+    <ProjectReference Include="..\DynamicApi.Endpoints.Model\DynamicApi.Endpoints.Model.csproj" />
   </ItemGroup>
 
 </Project>

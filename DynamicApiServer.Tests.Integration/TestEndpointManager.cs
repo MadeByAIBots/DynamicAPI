@@ -1,8 +1,8 @@
 using System;
 using System.IO;
 using System.Text.Json;
-using DynamicApiServer.Definitions.EndpointDefinitions;
-using DynamicApiServer.Definitions.ExecutorDefinitions;
+using DynamicApi.Endpoints.Model;
+using DynamicApi.Endpoints.Executors.Model;
 using Microsoft.Extensions.Logging;
 
 namespace DynamicApiServer.Tests.Integration;
@@ -69,10 +69,10 @@ public class TestEndpointManager : IDisposable
         // Determine the file name based on the type of the object
         string fileName = "endpoint.json";
 
-            // Set the temporary endpoint path/name to the endpoint definition because a unique ID is appended to the name it starts with so that it's unique for testing
-            var endpointDefinition = (EndpointDefinition)contentObj;
-            endpointDefinition.Path = "/" + _endpointName.TrimStart('/');
-            endpointDefinition.FolderName = _endpointName;
+        // Set the temporary endpoint path/name to the endpoint definition because a unique ID is appended to the name it starts with so that it's unique for testing
+        var endpointDefinition = (EndpointDefinition)contentObj;
+        endpointDefinition.Path = "/" + _endpointName.TrimStart('/');
+        endpointDefinition.FolderName = _endpointName;
 
         // Serialize the object to a JSON string
         string content = JsonSerializer.Serialize(contentObj);
@@ -86,7 +86,7 @@ public class TestEndpointManager : IDisposable
     {
         // Determine the file name based on the type of the object
         string fileName = "bash.json";
-        
+
         // Serialize the object to a JSON string
         string content = JsonSerializer.Serialize(contentObj);
 
@@ -100,7 +100,7 @@ public class TestEndpointManager : IDisposable
     {
         // Determine the file name based on the type of the object
         string fileName = "csharp-script.json";
-        
+
         // Serialize the object to a JSON string
         string content = JsonSerializer.Serialize(contentObj);
 

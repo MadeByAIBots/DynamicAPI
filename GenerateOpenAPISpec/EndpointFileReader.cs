@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using Microsoft.Extensions.Logging;
 
 public class EndpointFileReader
@@ -43,7 +43,7 @@ public class EndpointFileReader
             _logger.LogInformation($"Reading endpoint definition file '{file}'...");
 
             var content = File.ReadAllText(file);
-var settings = new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = null } }; var endpointDefinition = JsonConvert.DeserializeObject<EndpointDefinition>(content, settings);
+            var settings = new JsonSerializerSettings { ContractResolver = new DefaultContractResolver { NamingStrategy = null } }; var endpointDefinition = JsonConvert.DeserializeObject<EndpointDefinition>(content, settings);
             if (endpointDefinition == null || string.IsNullOrEmpty(endpointDefinition.Method) || string.IsNullOrEmpty(endpointDefinition.Path))
             {
                 var message = $"Invalid data in file '{file}'.";

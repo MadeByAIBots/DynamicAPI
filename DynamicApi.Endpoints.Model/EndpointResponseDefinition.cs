@@ -1,4 +1,4 @@
-namespace DynamicApiServer.Definitions.EndpointDefinitions
+namespace DynamicApi.Endpoints.Model
 {
     public class EndpointResponseDefinition
     {

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 using DynamicApiServer.Execution;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using DynamicApiServer.Requests.Arguments;
 
 

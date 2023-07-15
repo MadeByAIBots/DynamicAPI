@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DynamicApiServer.Definitions.EndpointDefinitions
+namespace DynamicApi.Endpoints.Model
 {
     public class EndpointDefinition
     {

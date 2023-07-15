@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using Microsoft.Extensions.Logging;
 
 public class OperationProcessor
@@ -23,7 +23,7 @@ public class OperationProcessor
             throw new ArgumentNullException(nameof(endpointDefinition));
         }
 
-var operation = new OpenApiOperation { Description = endpointDefinition.Description };
+        var operation = new OpenApiOperation { Description = endpointDefinition.Description };
 
         // Set the operationId property of the operation.
         operation.OperationId = ConvertEndpointNameToOperationId(endpointDefinition.Path);

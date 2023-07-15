@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using DynamicApiServer.Definitions.ExecutorDefinitions;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Executors.Model;
+using DynamicApi.Endpoints.Model;
 
 namespace DynamicApiServer.Execution.Executors.Bash
 {

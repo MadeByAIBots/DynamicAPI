@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.OpenApi.Models;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using Microsoft.Extensions.Logging;
 
 public class ParameterProcessor
@@ -43,7 +43,7 @@ public class ParameterProcessor
 
             if (arg.Source.ToLower() == "body")
             {
-requestBodyProperties.Add(arg.Name, new OpenApiSchema { Type = MapTypeToOpenApiType(arg.Type), Description = arg.Description });
+                requestBodyProperties.Add(arg.Name, new OpenApiSchema { Type = MapTypeToOpenApiType(arg.Type), Description = arg.Description });
                 if (arg.Required)
                 {
                     requiredProperties.Add(arg.Name);
@@ -54,7 +54,7 @@ requestBodyProperties.Add(arg.Name, new OpenApiSchema { Type = MapTypeToOpenApiT
                 parameters.Add(new OpenApiParameter
                 {
                     Name = arg.Name,
-Description = arg.Description,
+                    Description = arg.Description,
                     Required = true,
                     In = MapSourceToIn(arg.Source),
                     Schema = new OpenApiSchema { Type = MapTypeToOpenApiType(arg.Type) }

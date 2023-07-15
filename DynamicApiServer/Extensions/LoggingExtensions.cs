@@ -12,11 +12,11 @@ namespace DynamicApiServer.Extensions
             {
                 var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
-var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-var appSettingsPath = environmentName != null ? $"appsettings.{environmentName}.json" : "appsettings.json";
+                var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                var appSettingsPath = environmentName != null ? $"appsettings.{environmentName}.json" : "appsettings.json";
 
-Console.WriteLine($"Environment: {environmentName ?? "Not set"}");
-Console.WriteLine($"AppSettings Path: {appSettingsPath}");
+                Console.WriteLine($"Environment: {environmentName ?? "Not set"}");
+                Console.WriteLine($"AppSettings Path: {appSettingsPath}");
                 services.AddLogging(loggingBuilder =>
                 {
                     loggingBuilder.ClearProviders();

@@ -1,6 +1,6 @@
 using System;
 using Microsoft.OpenApi.Models;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using Microsoft.Extensions.Logging;
 
 public class EndpointProcessor

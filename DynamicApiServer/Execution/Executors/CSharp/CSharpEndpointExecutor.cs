@@ -5,8 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using DynamicApiServer.Definitions.ExecutorDefinitions;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Executors.Model;
+using DynamicApi.Endpoints.Model;
 using DynamicApi.Contracts;
 using DynamicApi.Configuration;
 

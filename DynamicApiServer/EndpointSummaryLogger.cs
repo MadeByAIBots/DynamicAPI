@@ -1,4 +1,4 @@
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using System;
 using System.Collections.Generic;
 

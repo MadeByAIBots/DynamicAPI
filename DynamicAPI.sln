@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Data", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Data.Tests.Unit", "DynamicApi.Servers.Data.Tests.Unit\DynamicApi.Servers.Data.Tests.Unit.csproj", "{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Endpoints.Model", "DynamicApi.Endpoints.Model\DynamicApi.Endpoints.Model.csproj", "{E6D8E651-806E-40A2-A791-30C4C4475DDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Endpoints.Executors.Model", "DynamicApi.Endpoints.Executors.Model\DynamicApi.Endpoints.Executors.Model.csproj", "{A6B20D2D-AEF7-4C0B-9BF7-AF7CA8A33C6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,14 @@ Global
 		{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6D8E651-806E-40A2-A791-30C4C4475DDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6D8E651-806E-40A2-A791-30C4C4475DDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6D8E651-806E-40A2-A791-30C4C4475DDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6D8E651-806E-40A2-A791-30C4C4475DDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6B20D2D-AEF7-4C0B-9BF7-AF7CA8A33C6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B20D2D-AEF7-4C0B-9BF7-AF7CA8A33C6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B20D2D-AEF7-4C0B-9BF7-AF7CA8A33C6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B20D2D-AEF7-4C0B-9BF7-AF7CA8A33C6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E35D8253-61C3-4D9C-8470-56AA3A8817CC} = {B72EDB17-25B7-4CBC-A66D-A4DB6D8A7C84}

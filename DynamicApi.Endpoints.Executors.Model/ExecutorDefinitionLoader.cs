@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 
-namespace DynamicApiServer.Definitions.ExecutorDefinitions
+namespace DynamicApi.Endpoints.Executors.Model
 {
     public class ExecutorDefinitionLoader
     {

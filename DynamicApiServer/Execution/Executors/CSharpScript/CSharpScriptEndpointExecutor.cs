@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp.Scripting;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using DynamicApi.Contracts;
 using System.Reflection;
 using Microsoft.CodeAnalysis.Emit;

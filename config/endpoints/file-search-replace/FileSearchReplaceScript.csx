@@ -3,7 +3,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DynamicApi.Contracts;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 
 public class FileSearchReplaceScriptEndpoint : IDynamicEndpointExecutor
 {

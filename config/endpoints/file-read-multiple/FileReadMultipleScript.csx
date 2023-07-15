@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicApi.Contracts;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
 public class FileReadMultipleScriptEndpoint : DynamicEndpointExecutorBase

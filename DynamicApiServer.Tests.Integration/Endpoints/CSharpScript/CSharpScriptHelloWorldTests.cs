@@ -2,8 +2,8 @@ using FluentAssertions;
 using NUnit.Framework;
 using System.Net;
 using System.Threading.Tasks;
-using DynamicApiServer.Definitions.EndpointDefinitions;
-using DynamicApiServer.Definitions.ExecutorDefinitions;
+using DynamicApi.Endpoints.Model;
+using DynamicApi.Endpoints.Executors.Model;
 using System.Net.Http;
 
 namespace DynamicApiServer.Tests.Integration

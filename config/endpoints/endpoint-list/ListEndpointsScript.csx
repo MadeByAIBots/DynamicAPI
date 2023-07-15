@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DynamicApi.Contracts;
-using DynamicApiServer.Definitions.EndpointDefinitions;
+using DynamicApi.Endpoints.Model;
 using System.Text.Json;
 
 public class ListEndpointsScriptEndpoint : DynamicEndpointExecutorBase
