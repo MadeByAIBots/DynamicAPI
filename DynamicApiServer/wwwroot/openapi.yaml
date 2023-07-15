@@ -445,7 +445,7 @@ paths:
                   type: string
                   description: The semicolon-separated list of file paths to read.
       responses:
-        '0':
+        '200':
           description: The combined content of the files.
   /file-prepend:
     post:

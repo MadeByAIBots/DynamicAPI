@@ -1,8 +1,8 @@
 {
-"path": "/file-read-multiple",
+  "path": "/file-read-multiple",
   "executor": "csharp-script",
   "method": "post",
-"args": [
+  "args": [
     {
       "name": "workingDirectory",
       "type": "json",
@@ -18,9 +18,8 @@
   ],
   "responses": [
     {
-      "name": "output",
-      "type": "json",
-      "source": "body",
+      "statusCode": 200,
+      "type": "string",
       "description": "The combined content of the files."
     }
   ]
