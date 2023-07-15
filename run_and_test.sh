@@ -24,10 +24,10 @@ echo ""
 curl -X GET http://localhost:$PORT/file-read \
 -H "Authorization: Bearer $authToken" \
 -H 'Content-Type: application/json' \
--d '{
-  "workingDirectory": "~/workspace/DynamicAPI",
-  "filePath": "build.sh"
-}'
+-d "{
+  \"workingDirectory\": \"$PWD\",
+  \"filePath\": \"build.sh\"
+}"
 
 echo ""
 echo "Testing the file-read-lines endpoint"
@@ -36,10 +36,10 @@ echo ""
 curl -X GET http://localhost:$PORT/file-read-lines \
 -H "Authorization: Bearer $authToken" \
 -H 'Content-Type: application/json' \
--d '{
-  "workingDirectory": "~/workspace/DynamicAPI",
-  "filePath": "build.sh"
-}'
+-d "{
+  \"workingDirectory\": \"$PWD\",
+  \"filePath\": \"build.sh\"
+}"
 
 echo ""
 echo "Finished Test"
