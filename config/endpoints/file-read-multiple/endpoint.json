@@ -1,0 +1,27 @@
+{
+"path": "/file-read-multiple",
+  "executor": "csharp-script",
+  "method": "post",
+"args": [
+    {
+      "name": "workingDirectory",
+      "type": "json",
+      "source": "body",
+      "description": "The base path where the files are located."
+    },
+    {
+      "name": "filePaths",
+      "type": "json",
+      "source": "body",
+      "description": "The semicolon-separated list of file paths to read."
+    }
+  ],
+  "responses": [
+    {
+      "name": "output",
+      "type": "json",
+      "source": "body",
+      "description": "The combined content of the files."
+    }
+  ]
+}

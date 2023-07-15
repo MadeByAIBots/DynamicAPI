@@ -425,6 +425,28 @@ paths:
           description: File moved successfully
         '400':
           description: Bad request
+  /file-read-multiple:
+    post:
+      operationId: fileReadMultiple
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - workingDirectory
+                - filePaths
+              type: object
+              properties:
+                workingDirectory:
+                  type: string
+                  description: The base path where the files are located.
+                filePaths:
+                  type: string
+                  description: The semicolon-separated list of file paths to read.
+      responses:
+        '0':
+          description: The combined content of the files.
   /file-prepend:
     post:
       description: Prepends content to a file located at a specified path within a specified working directory.
