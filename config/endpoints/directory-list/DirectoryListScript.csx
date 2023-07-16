@@ -39,8 +39,16 @@ public class DirectoryContentRelativeScriptEndpoint : DynamicEndpointExecutorBas
 
         var relativeFiles = Array.ConvertAll(files, file => Path.GetRelativePath(workingDirectory, file));
         var relativeDirectories = Array.ConvertAll(directories, directory => Path.GetRelativePath(workingDirectory, directory));
-
-        var output = "Files:\n" + string.Join("\n", relativeFiles) + "\n\nDirectories:\n" + string.Join("\n", relativeDirectories);
+        
+        var relativeFilesString = string.Join("\n", relativeFiles).Trim();
+        if (String.IsNullOrEmpty(relativeFilesString))
+        relativeFilesString = "[none]";
+        
+        var relativeDirectoriesString = string.Join("\n", relativeDirectories).Trim();
+        if (String.IsNullOrEmpty(relativeDirectoriesString))
+        relativeDirectoriesString = "[none]";
+       
+        var output = "Files:\n" + relativeFilesString + "\n\nDirectories:\n" + relativeDirectoriesString;
 
         return Success(output);
     }
