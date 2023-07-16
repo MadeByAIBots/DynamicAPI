@@ -21,7 +21,8 @@
       "name": "recursive",
       "type": "json",
       "source": "body",
-      "description": "Whether to list directories recursively."
+      "description": "Whether to list directories recursively.",
+      "required": false
     }
   ],
   "responses": [

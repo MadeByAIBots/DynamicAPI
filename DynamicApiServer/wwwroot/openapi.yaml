@@ -731,7 +731,6 @@ paths:
             schema:
               required:
                 - workingDirectory
-                - recursive
               type: object
               properties:
                 workingDirectory:
