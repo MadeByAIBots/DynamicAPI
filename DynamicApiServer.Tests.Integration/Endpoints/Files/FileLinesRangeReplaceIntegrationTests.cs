@@ -31,7 +31,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			// Exercise
 			var startLineNumber = 2;
 			var endLineNumber = 4;
-var newContents = "New Line 2\\nNew Line 3\\nNew Line 4";
+			var newContents = "New Line 2\\nNew Line 3\\nNew Line 4";
 			var response = await context.Client.PostAsync($"/file-lines-range-replace", new StringContent("{ \"workingDirectory\": \"" + workingDirectory + "\", \"filePath\": \"" + filePath + "\", \"startLineNumber\": \"" + startLineNumber + "\", \"endLineNumber\": \"" + endLineNumber + "\", \"startLineHash\": \"" + startLineHash + "\", \"endLineHash\": \"" + endLineHash + "\", \"newContents\": \"" + newContents + "\" }", Encoding.UTF8, "application/json"));
 
 			// Verify
@@ -42,7 +42,7 @@ var newContents = "New Line 2\\nNew Line 3\\nNew Line 4";
 
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Line(s) replaced successfully\nNew file content:\n" + expectedLines.ToNumbered());
+			responseContent.Trim().Should().Be("New file content:\n\n" + expectedLines.ToNumbered() + "\n\nLine(s) replaced successfully");
 
 			var updatedContent = await File.ReadAllTextAsync(Path.Combine(workingDirectory, filePath));
 			updatedContent.Trim().Should().Be(string.Join('\n', expectedLines));

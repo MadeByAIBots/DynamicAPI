@@ -6,35 +6,29 @@ using DynamicApi.Contracts;
 using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
-public class FileLinesRangeReplaceScriptEndpoint : IDynamicEndpointExecutor
+public class FileLinesRangeReplaceScriptEndpoint : DynamicEndpointExecutorBase
 {
-    public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
+    public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var workingDirectory = parameters.Parameters["workingDirectory"];
-        var filePath = parameters.Parameters["filePath"];
-        var startLineNumber = Convert.ToInt32(parameters.Parameters["startLineNumber"]);
-        var endLineNumber = Convert.ToInt32(parameters.Parameters["endLineNumber"]);
-        var newContents = parameters.Parameters["newContents"];
-        var startLineHash = parameters.Parameters["startLineHash"];
-        var endLineHash = parameters.Parameters["endLineHash"];
+        var workingDirectory = parameters.GetRequiredString("workingDirectory");
+        var filePath = parameters.GetRequiredString("filePath");
+        var startLineNumber = parameters.GetRequiredInt32("startLineNumber");
+        var endLineNumber = parameters.GetRequiredInt32("endLineNumber");
+        var newContents = parameters.GetRequiredString("newContents");
+        var startLineHash = parameters.GetRequiredString("startLineHash");
+        var endLineHash = parameters.GetRequiredString("endLineHash");
 
         var fullPath = Path.Combine(workingDirectory, filePath);
 
         if (!File.Exists(fullPath))
         {
-            return Task.FromResult(new EndpointExecutionResult
-            {
-                Body = $"Error: The file '{fullPath}' does not exist.",
-            });
+            return Fail($"Error: The file '{fullPath}' does not exist.");
         }
 
         var lines = File.ReadAllLines(fullPath);
         if (startLineNumber < 1 || startLineNumber > lines.Length || endLineNumber < 1 || endLineNumber > lines.Length)
         {
-            return Task.FromResult(new EndpointExecutionResult
-            {
-                Body = $"Error: Invalid line numbers. The file has {lines.Length} lines.",
-            });
+            return Fail($"Error: Invalid line numbers. The file has {lines.Length} lines.");
         }
 
         var startLine = lines[startLineNumber - 1];
@@ -43,10 +37,7 @@ public class FileLinesRangeReplaceScriptEndpoint : IDynamicEndpointExecutor
         var endLineHashCheck = HashUtils.GenerateSimpleHash(endLine);
         if (startLineHashCheck.ToLower() != startLineHash.ToLower() || endLineHashCheck.ToLower() != endLineHash.ToLower())
         {
-            return Task.FromResult(new EndpointExecutionResult
-            {
-                Body = "Error: Invalid hash. Read the lines to find out the correct hash and line number.",
-            });
+            return Fail(File.ReadAllText(fullPath).ToNumbered() + "\n\nError: Line hashes and line numbers do not match. Verify and try again.");
         }
 
         // Remove the specified range of lines
@@ -59,9 +50,6 @@ public class FileLinesRangeReplaceScriptEndpoint : IDynamicEndpointExecutor
 
         File.WriteAllLines(fullPath, lines);
 
-        return Task.FromResult(new EndpointExecutionResult
-        {
-            Body = "Line(s) replaced successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered(),
-        });
+        return Success("New file content:\n\n" + File.ReadAllText(fullPath).ToNumbered() + "\n\nLine(s) replaced successfully");
     }
 }

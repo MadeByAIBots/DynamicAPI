@@ -32,12 +32,12 @@ public class FileLineReplaceScriptEndpoint : DynamicEndpointExecutorBase
                 var existingLineHash = HashUtils.GenerateSimpleHash(existingLine);
                 if (existingLineHash.ToLower() != providedHash.ToLower())
                 {
-                        return Fail("Error: Invalid hash. Read the lines to find out the correct hash and line number.");
+			        return Fail(File.ReadAllText(fullPath).ToNumbered() + "\n\nError: Line hash and line number do not match. Verify and try again.");
                 }
 
                 lines[lineNumber - 1] = newContent;
                 File.WriteAllLines(fullPath, lines);
 
-                return Success("Line replaced successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered());
+                return Success("New file content:\n\n" + File.ReadAllText(fullPath).ToNumbered() + "\n\nLine replaced successfully");
         }
 }

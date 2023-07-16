@@ -42,7 +42,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			// Verify
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().StartWith("Line deleted successfully\nNew file content:\n" + expectedLines.ToNumbered().Trim());
+			responseContent.Trim().Should().StartWith("New file content:\n\n" + expectedLines.ToNumbered().Trim() + "\n\nLine deleted successfully");
 
 			var updatedFileContent = await File.ReadAllTextAsync(fileFullPath);
 			var expectedFileContent = string.Join('\n', expectedLines);

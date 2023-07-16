@@ -38,7 +38,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Line replaced successfully\nNew file content:\n" + expectedLines.ToNumbered());
+			responseContent.Trim().Should().Be("New file content:\n\n" + expectedLines.ToNumbered() + "\n\nLine replaced successfully");
 
 			var updatedContent = await File.ReadAllTextAsync(Path.Combine(workingDirectory, filePath));
 			updatedContent.Trim().Should().Be(string.Join('\n', expectedLines));
@@ -57,7 +57,8 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			var workingDirectory = Path.GetTempPath();
 			var filePath = Path.GetRandomFileName();
 			var initialContent = "Line 1\nLine 2\nLine 3";
-			await File.WriteAllTextAsync(Path.Combine(workingDirectory, filePath), initialContent);
+			var fullPath = Path.Combine(workingDirectory, filePath);
+			await File.WriteAllTextAsync(fullPath, initialContent);
 
 			var lineHash = "INVALID";
 
@@ -69,7 +70,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 			// Verify
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Error: Invalid hash. Read the lines to find out the correct hash and line number.");
+			responseContent.Trim().Should().Be(File.ReadAllText(fullPath).ToNumbered() + "\n\nError: Line hash and line number do not match. Verify and try again.");
 
 			//var updatedContent = await File.ReadAllTextAsync(Path.Combine(workingDirectory, filePath));
 			//updatedContent.Trim().Should().Be("Line 1\n" + newContent + "\nLine 3");
