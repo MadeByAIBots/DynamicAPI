@@ -22,11 +22,21 @@ namespace DynamicApiServer.Execution
 
         public async Task<string> ExecuteCommand(EndpointDefinition endpointDefinition, Dictionary<string, string> args)
         {
-            var executorDefinition = _endpointService.GetExecutorDefinition(endpointDefinition);
-            var executor = _executorFactory.CreateExecutor(endpointDefinition.Executor);
-            var output = await executor.ExecuteCommand(endpointDefinition, executorDefinition, args);
-            _logger.LogInformation($"Output: {output}");
-            return output;
+            try
+            {
+
+                var executorDefinition = _endpointService.GetExecutorDefinition(endpointDefinition);
+                var executor = _executorFactory.CreateExecutor(endpointDefinition.Executor);
+                var output = await executor.ExecuteCommand(endpointDefinition, executorDefinition, args);
+                _logger.LogInformation($"Output: {output}");
+                return output;
+            }
+        
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                return e.ToString();
+            }
         }
     }
 }
