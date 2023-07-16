@@ -22,7 +22,7 @@ namespace DynamicApiServer.Requests.Arguments
             {
                 try
                 {
-                    _logger.LogInformation($"Starting extraction of argument: {argumentDefinition.Name}");
+                    _logger.LogDebug($"Starting extraction of argument: {argumentDefinition.Name}");
                     var argumentValue = await ExtractSingleArgument(requestInfo, argumentDefinition);
                     if (argumentValue == null)
                     {
@@ -31,7 +31,7 @@ namespace DynamicApiServer.Requests.Arguments
                     else
                     {
                         arguments[argumentDefinition.Name] = argumentValue;
-                        _logger.LogInformation($"Successfully extracted argument: {argumentDefinition.Name}");
+                        _logger.LogDebug($"Successfully extracted argument: {argumentDefinition.Name}");
                     }
                 }
                 catch (Exception ex)

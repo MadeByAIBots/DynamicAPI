@@ -26,7 +26,7 @@ public class RunBashCommandScriptEndpoint : DynamicEndpointExecutorBase
             // Limit the number of output lines if maxLines is set
             var outputLines = result.CombinedOutput.Split('\n');
             var limitedOutput = string.Join('\n', outputLines.Reverse().Take(maxLines).Reverse());
-
+            
             if (result.ExitCode != 0)
             {
                 return Fail($"Command execution failed with exit code {result.ExitCode}. Output: {limitedOutput}");

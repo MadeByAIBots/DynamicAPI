@@ -8,9 +8,9 @@ namespace DynamicApiServer.Extensions
     {
         public static IServiceCollection ConfigureLoggingServices(this IServiceCollection services)
         {
-            using (var serviceProvider = services.BuildServiceProvider())
-            {
-                var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+            // using (var serviceProvider = services.BuildServiceProvider())
+            // {
+            //     var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
                 var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
                 var appSettingsPath = environmentName != null ? $"appsettings.{environmentName}.json" : "appsettings.json";
@@ -20,10 +20,10 @@ namespace DynamicApiServer.Extensions
                 services.AddLogging(loggingBuilder =>
                 {
                     loggingBuilder.ClearProviders();
-                    loggingBuilder.AddConfiguration(configuration.GetSection("Logging"));
+            //        loggingBuilder.AddConfiguration(configuration.GetSection("Logging"));
                     loggingBuilder.AddConsole();
                 });
-            }
+            //}
 
             return services;
         }

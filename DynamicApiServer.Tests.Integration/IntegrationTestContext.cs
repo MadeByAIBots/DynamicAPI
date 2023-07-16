@@ -14,10 +14,14 @@ public class IntegrationTestContext : IDisposable
     public TestServer Server { get; }
     public HttpClient Client { get; }
     private TestEndpointManager _endpointManager;
+    public WebHostBuilder Builder { get; set; }
 
     public IntegrationTestContext()
     {
-        Server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
+        Builder = new WebHostBuilder();
+        Builder.UseStartup<TestStartup>();
+        
+        Server = new TestServer(Builder);
         Client = Server.CreateClient();
 
         _workingDirectoryResolver = Server.Services.GetRequiredService<WorkingDirectoryResolver>();

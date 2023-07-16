@@ -159,7 +159,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 			{
 				if (IsAssemblyName(reference))
 				{
-					_logger.LogInformation(reference);
+					//_logger.LogInformation(reference);
 					references.Add(reference);
 				}
 				else if (IsFilePathWithWildcard(reference))
@@ -167,10 +167,10 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 					var resolvedDirectory = ResolvePath(reference);
 					var matchingFiles = ListFiles(resolvedDirectory, GetWildcardPattern(reference));
 
-					foreach (var matchingFile in matchingFiles)
-					{
-						_logger.LogInformation(matchingFile);
-					}
+					// foreach (var matchingFile in matchingFiles)
+					// {
+					// 	_logger.LogInformation(matchingFile);
+					// }
 					references.AddRange(matchingFiles);
 				}
 				else // IsFilePathWithoutWildcard(reference)

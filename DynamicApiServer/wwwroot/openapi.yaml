@@ -731,7 +731,7 @@ paths:
             schema:
               required:
                 - workingDirectory
-                - directoryPath
+                - recursive
               type: object
               properties:
                 workingDirectory:
@@ -739,7 +739,10 @@ paths:
                   description: 'The absolute path to the current working directory (e.g., project or repository root).'
                 directoryPath:
                   type: string
-                  description: The relative path of the directory to be listed within the working directory.
+                  description: 'OPTIONAL: The relative path of the directory to be listed within the working directory.'
+                recursive:
+                  type: string
+                  description: Whether to list directories recursively.
       responses:
         '200':
           description: Directory listed successfully

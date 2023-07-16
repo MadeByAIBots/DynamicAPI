@@ -31,7 +31,6 @@ namespace DynamicApiServer.Execution
                 _logger.LogInformation($"Output: {output}");
                 return output;
             }
-        
             catch (Exception e)
             {
                 _logger.LogError(e.ToString());

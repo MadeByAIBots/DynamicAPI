@@ -20,11 +20,11 @@ namespace DynamicApiServer.Requests.Arguments
             try
             {
 
-                _logger.LogInformation($"Starting extraction of body argument: {argumentDefinition.Name}");
+                _logger.LogDebug($"Starting extraction of body argument: {argumentDefinition.Name}");
 
                 var body = await requestInfo.Body();
 
-                _logger.LogInformation("Body: " + body);
+                _logger.LogDebug("Body: " + body);
                 if (argumentDefinition.Type == "string")
                 {
                     return await ExtractPlainTextArgument(body, argumentDefinition);
@@ -60,7 +60,7 @@ namespace DynamicApiServer.Requests.Arguments
         private async Task<string> ExtractPlainTextArgument(string body, EndpointArgumentDefinition argumentDefinition)
         {
             // For plain text, the entire body is the argument value
-            _logger.LogInformation($"Successfully extracted body argument: {argumentDefinition.Name}");
+            _logger.LogDebug($"Successfully extracted body argument: {argumentDefinition.Name}");
             return body;
         }
 
@@ -72,7 +72,7 @@ namespace DynamicApiServer.Requests.Arguments
                 var jsonDocument = JsonDocument.Parse(body);
                 if (jsonDocument.RootElement.TryGetProperty(argumentDefinition.Name, out var jsonElement))
                 {
-                    _logger.LogInformation($"Successfully extracted body argument: {argumentDefinition.Name}");
+                    _logger.LogDebug($"Successfully extracted body argument: {argumentDefinition.Name}");
                     return jsonElement.GetString();
                 }
                 else

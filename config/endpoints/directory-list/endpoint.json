@@ -1,7 +1,7 @@
 {
   "description": "Lists the contents of a specified directory within the working directory.",
   "path": "/directory-list",
-  "executor": "bash",
+  "executor": "csharp-script",
   "method": "post",
   "args": [
     {
@@ -14,7 +14,14 @@
       "name": "directoryPath",
       "type": "json",
       "source": "body",
-      "description": "The relative path of the directory to be listed within the working directory."
+      "description": "OPTIONAL: The relative path of the directory to be listed within the working directory.",
+      "required": false
+    },
+    {
+      "name": "recursive",
+      "type": "json",
+      "source": "body",
+      "description": "Whether to list directories recursively."
     }
   ],
   "responses": [

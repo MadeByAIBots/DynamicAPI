@@ -54,10 +54,10 @@ namespace DynamicApiServer.Requests.Arguments
                         throw;
                     }
                 }
-                else
-                {
-                    _logger.LogWarning($"No matching argument definitions for source: {source}");
-                }
+                // else // TODO: Should this be removed? It's looping through possible sources not the sources specified in the endpoint config. There's no need to warn that a possible source hasn't been used.
+                // {
+                //     _logger.LogWarning($"No matching argument definitions for source: {source}");
+                // }
             }
 
             return arguments;

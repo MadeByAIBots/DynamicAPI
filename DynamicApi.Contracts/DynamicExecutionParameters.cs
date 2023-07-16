@@ -70,7 +70,7 @@ public class DynamicExecutionParameters
             throw new ArgumentException($"Required parameter '{paramName}' is missing or not a bool.");
         }
     }
-    public bool GetBool(string paramName)
+    public bool GetBool(string paramName, bool defaultValue = false)
     {
         if (Parameters.ContainsKey(paramName) && bool.TryParse(Parameters[paramName]?.ToString(), out var boolValue))
         {
@@ -78,7 +78,7 @@ public class DynamicExecutionParameters
         }
         else
         {
-            return false;
+            return defaultValue;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace DynamicApiServer.Requests.Arguments
         {
             try
             {
-                _logger.LogInformation($"Starting extraction of query argument: {argumentDefinition.Name}");
+                _logger.LogDebug($"Starting extraction of query argument: {argumentDefinition.Name}");
 
                 var values = requestInfo.Context.Request.Query[argumentDefinition.Name];
 
@@ -26,7 +26,7 @@ namespace DynamicApiServer.Requests.Arguments
                 }
                 else
                 {
-                    _logger.LogInformation($"Successfully extracted query argument: {argumentDefinition.Name}");
+                    _logger.LogDebug($"Successfully extracted query argument: {argumentDefinition.Name}");
                     return values[0];
                 }
             }
