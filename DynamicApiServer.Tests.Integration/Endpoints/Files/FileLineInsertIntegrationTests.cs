@@ -35,7 +35,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.Files
 
 			response.StatusCode.Should().Be(HttpStatusCode.OK);
 			var responseContent = await response.Content.ReadAsStringAsync();
-			responseContent.Trim().Should().Be("Line inserted successfully\nNew file content:\n" + expectedLines.ToArray().ToNumbered());
+			responseContent.Trim().Should().Be("New file content:\n\n" + expectedLines.ToArray().ToNumbered() + "\n\nLine inserted successfully");
 
 			var updatedLines = await File.ReadAllLinesAsync(Path.Combine(workingDirectory, filePath));
 			updatedLines[2].Should().Be("New line");

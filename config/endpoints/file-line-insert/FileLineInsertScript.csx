@@ -6,51 +6,35 @@ using DynamicApi.Contracts;
 using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
-public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
+public class FileLineInsertScriptEndpoint : DynamicEndpointExecutorBase
 {
-	public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
+	public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
 	{
-		var workingDirectory = parameters.Parameters["workingDirectory"];
-		var filePath = parameters.Parameters["filePath"];
-		var beforeLineNumber = int.Parse(parameters.Parameters["beforeLineNumber"]);
-		var lineHash = parameters.Parameters["beforeLineHash"];
-		var newContent = parameters.Parameters["newContent"];
+		var workingDirectory = parameters.GetRequiredString("workingDirectory");
+		var filePath = parameters.GetRequiredString("filePath");
+		var beforeLineNumber = parameters.GetRequiredInt32("beforeLineNumber");
+		var lineHash = parameters.GetRequiredString("beforeLineHash");
+		var newContent = parameters.GetRequiredString("newContent");
 
 		// Parameter checks
 		if (string.IsNullOrEmpty(workingDirectory))
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: The 'workingDirectory' parameter is null or empty.",
-				//StatusCode = 400
-			});
+		    return Fail("Error: The 'workingDirectory' parameter is null or empty.");
 		}
 
 		if (string.IsNullOrEmpty(filePath))
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: The 'filePath' parameter is null or empty.",
-				//StatusCode = 400
-			});
+			return Fail("Error: The 'filePath' parameter is null or empty.");
 		}
 
 		if (beforeLineNumber < 1)
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: The 'beforeLineNumber' parameter must be greater than 0.",
-				//StatusCode = 400
-			});
+			return Fail("Error: The 'beforeLineNumber' parameter must be greater than 0.");
 		}
 
 		if (string.IsNullOrEmpty(newContent))
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: The 'newContent' parameter is null or empty.",
-				//StatusCode = 400
-			});
+			return Fail("Error: The 'newContent' parameter is null or empty.");
 		}
 
 		var fullPath = Path.Combine(workingDirectory, filePath);
@@ -58,11 +42,7 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
 		// File existence check
 		if (!File.Exists(fullPath))
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = $"Error: The file '{fullPath}' does not exist.",
-				//StatusCode = 400
-			});
+			return Fail("Error: The file '{fullPath}' does not exist.");
 		}
 
 		var lines = new List<string>(File.ReadAllLines(fullPath));
@@ -70,33 +50,23 @@ public class FileLineInsertScriptEndpoint : IDynamicEndpointExecutor
 		// Check that beforeLineNumber is a valid line number in the file
 		if (beforeLineNumber > lines.Count + 1)
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = $"Error: The 'beforeLineNumber' parameter is greater than the number of lines in the file plus 1.",
-				//StatusCode = 400
-			});
+			return Fail("Error: The 'beforeLineNumber' parameter is greater than the number of lines in the file plus 1.");
 		}
 
 		// Hash check
 		var generatedHash = DynamicApi.Utilities.Files.HashUtils.GenerateSimpleHash(lines[beforeLineNumber - 1]);
 		if (generatedHash.ToLower() != lineHash.ToLower())
 		{
-			return Task.FromResult(new EndpointExecutionResult
-			{
-				Body = "Error: Invalid hash. Read the lines to find out the correct hash and line number.",
-			});
+			return Fail(File.ReadAllText(fullPath).ToNumbered() + "\n\nError: Line hash and line number do not match. Verify and try again.");
 		}
 
+        var beforeLineIndex = beforeLineNumber - 1;
 
 		// Subtract 1 from beforeLineNumber to get the correct index
-		lines.Insert(beforeLineNumber - 1, newContent);
+		lines.Insert(beforeLineIndex, newContent);
 
 		File.WriteAllLines(fullPath, lines);
 
-		return Task.FromResult(new EndpointExecutionResult
-		{
-			Body = "Line inserted successfully\nNew file content:\n" + File.ReadAllText(fullPath).ToNumbered(),
-			//StatusCode = 200
-		});
+		return Success("New file content:\n\n" + File.ReadAllText(fullPath).ToNumbered() + "\n\nLine inserted successfully");
 	}
 }
