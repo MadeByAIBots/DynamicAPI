@@ -377,30 +377,6 @@ paths:
           description: File copied successfully
         '400':
           description: Bad request
-  /run-python-code:
-    post:
-      operationId: runPythonCode
-      requestBody:
-        description: request body
-        content:
-          application/json:
-            schema:
-              required:
-                - pythonCode
-                - workingDirectory
-              type: object
-              properties:
-                pythonCode:
-                  type: string
-                  description: The Python code snippet to execute.
-                workingDirectory:
-                  type: string
-                  description: The base working directory to execute the command in.
-      responses:
-        '200':
-          description: A successful response
-        '400':
-          description: A bad request response
   /ai-bot-message:
     post:
       description: Sends a message to OpenAI's Davinci model and receives a response.
@@ -695,6 +671,31 @@ paths:
           description: File moved successfully
         '400':
           description: Bad request
+  /run-python-snippet:
+    post:
+      description: 'Executes the provided python snippet. NOTE: This is NOT to be used for executing python script files.'
+      operationId: runPythonSnippet
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - pythonSnippet
+                - workingDirectory
+              type: object
+              properties:
+                pythonSnippet:
+                  type: string
+                  description: The Python code snippet to execute.
+                workingDirectory:
+                  type: string
+                  description: The base working directory to execute the command in.
+      responses:
+        '200':
+          description: A successful response
+        '400':
+          description: A bad request response
   /directory-move:
     post:
       description: Moves a directory from a specified source path to a specified destination path within the working directory.

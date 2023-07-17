@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace DynamicApiServer.Tests.Integration.Endpoints.General
 {
-    public class RunPythonCodeEndpointTests
+    public class RunPythonSnippetEndpointTests
     {
         [Test]
         public async Task TestRunPythonCodeEndpoint()
@@ -20,13 +20,13 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.General
 
             // Create the request content
             var content = new StringContent(
-                "{\"pythonCode\": \"print('hello')\", \"workingDirectory\": \"" + workingDirectory + "\"}",
+                "{\"pythonSnippet\": \"print('hello')\", \"workingDirectory\": \"" + workingDirectory + "\"}",
                 Encoding.UTF8,
                 "application/json"
             );
 
             // Send a request to the endpoint
-            var response = await context.Client.PostAsync("/run-python-code", content);
+            var response = await context.Client.PostAsync("/run-python-snippet", content);
 
             // Read the response content
             var responseContent = await response.Content.ReadAsStringAsync();

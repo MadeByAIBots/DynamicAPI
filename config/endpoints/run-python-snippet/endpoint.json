@@ -1,10 +1,11 @@
 {
-  "path": "/run-python-code",
+  "path": "/run-python-snippet",
+  "description": "Executes the provided python snippet. NOTE: This is NOT to be used for executing python script files.",
   "executor": "bash",
   "method": "post",
   "args": [
     {
-      "name": "pythonCode",
+      "name": "pythonSnippet",
       "type": "json",
       "source": "body",
       "description": "The Python code snippet to execute."
