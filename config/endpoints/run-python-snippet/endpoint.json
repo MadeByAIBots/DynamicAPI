@@ -1,6 +1,6 @@
 {
   "path": "/run-python-snippet",
-  "description": "Executes the provided python snippet. NOTE: This is NOT to be used for executing python script files.",
+  "description": "Executes the provided python snippet. NOTES: 1) This is NOT to be used for executing python script files. 2) State such as variables are not preserved after snippet execution. You must include everything in the snippet that is required for execution, and execute it all at once.",
   "executor": "bash",
   "method": "post",
   "args": [
