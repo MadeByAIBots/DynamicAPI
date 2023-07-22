@@ -62,7 +62,7 @@ paths:
           description: Bad request
   /ai-bot-send-files:
     post:
-      description: 'Sends the contents of multiple files to OpenAI''s Davinci model, along with instructions on what to do with them, and receives a response.'
+      description: 'Sends the contents of multiple files to OpenAI''s Davinci model, along with instructions on what to do with them, and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell/send it. It cannot access the web or files unless you send them to it.'
       operationId: aiBotSendFiles
       requestBody:
         description: request body
@@ -379,7 +379,7 @@ paths:
           description: Bad request
   /ai-bot-message:
     post:
-      description: Sends a message to OpenAI's Davinci model and receives a response.
+      description: 'Sends a message to OpenAI''s Davinci model and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell it. It cannot access the web or files unless you send them to it.'
       operationId: aiBotMessage
       requestBody:
         description: request body
@@ -451,7 +451,7 @@ paths:
           description: The combined content of the files.
   /ai-bot-send-file-paths:
     post:
-      description: Lists all files in a directory and sends their paths to the bot along with a message.
+      description: 'Lists all files in a directory and sends their paths to the bot along with a message. NOTE: The model has absolutely no knowledge of anything except what you tell it. It cannot access the web or files unless you send them to it.'
       operationId: aiBotSendFilePaths
       requestBody:
         description: request body

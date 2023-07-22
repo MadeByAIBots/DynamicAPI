@@ -1,5 +1,5 @@
 {
-  "description": "Lists all files in a directory and sends their paths to the bot along with a message.",
+  "description": "Lists all files in a directory and sends their paths to the bot along with a message. NOTE: The model has absolutely no knowledge of anything except what you tell it. It cannot access the web or files unless you send them to it.",
   "path": "/ai-bot-send-file-paths",
   "executor": "csharp-script",
   "method": "post",

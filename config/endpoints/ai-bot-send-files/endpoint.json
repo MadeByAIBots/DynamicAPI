@@ -1,5 +1,5 @@
 {
-  "description": "Sends the contents of multiple files to OpenAI's Davinci model, along with instructions on what to do with them, and receives a response.",
+  "description": "Sends the contents of multiple files to OpenAI's Davinci model, along with instructions on what to do with them, and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell/send it. It cannot access the web or files unless you send them to it.",
   "path": "/ai-bot-send-files",
   "executor": "csharp-script",
   "method": "post",
