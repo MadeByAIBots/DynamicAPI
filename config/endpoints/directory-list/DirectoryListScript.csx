@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using DynamicApi.Contracts;
 using DynamicApi.Endpoints.Model;
@@ -34,8 +35,8 @@ public class DirectoryContentRelativeScriptEndpoint : DynamicEndpointExecutorBas
 
         logger.LogInformation($"Search option: {searchOption}");
         
-        var files = Directory.GetFiles(fullPath, "*", searchOption);
-        var directories = Directory.GetDirectories(fullPath, "*", searchOption);
+        var files = Directory.GetFiles(fullPath, "*", searchOption).OrderBy(f=>f).ToArray();
+        var directories = Directory.GetDirectories(fullPath, "*", searchOption).OrderBy(d=>d).ToArray();
 
         var relativeFiles = Array.ConvertAll(files, file => Path.GetRelativePath(workingDirectory, file));
         var relativeDirectories = Array.ConvertAll(directories, directory => Path.GetRelativePath(workingDirectory, directory));
