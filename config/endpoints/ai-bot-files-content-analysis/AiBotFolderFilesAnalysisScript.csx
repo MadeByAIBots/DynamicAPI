@@ -12,6 +12,15 @@ using Microsoft.Extensions.Logging;
 
 public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
 {
+    protected string[] IgnoreFolders { get;set; } = new string[]{
+        "obj",
+        "bin",
+        ".git"
+    };
+    
+    protected string[] IgnoreFiles { get;set; } = new string[]{
+    };
+
     public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
         var logger = parameters.LoggerFactory.CreateLogger<AiBotSendFilesScriptEndpoint>();
@@ -37,7 +46,7 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
              
              var relevantExtensionsString = String.Join('\n', relevantExtensions);
              
-             var filesWithExtensions = GetFilesWithExtensions(workingDirectory, relevantExtensions);
+             var filesWithExtensions = GetListOfFilePathsMatchingProvidedExtensions(workingDirectory, relevantExtensions);
              
              logger.LogInformation("File paths with matching extensions:\n" + String.Join('\n', filesWithExtensions));
              
@@ -129,9 +138,11 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         
         [Rules]
         - The output must have each extension on its own line, starting with a slash, as shown in the 'example output'. Otherwise it won't be possible to parse the extensions with code.
+        - NEVER include binaries/dlls or other files which cannot be read. Only include text based file extensions such as code, configs, etc.
         [/Rules]
          
         [Example Output] 
+        The file extensions relevant to the inquiry are...
         /.ext1 
         /.ext2
         [/Example Output]
@@ -176,12 +187,13 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         [Rules]
         - The output must have each file on its own line, starting with a slash, as shown in the 'example output'. Otherwise it won't be possible to parse the file paths with code.
         - DO INCLUDE files that MIGHT POSSIBLY be relevant.
-        - DON'T include files that are highly unlikely to be relevant.
+        - DON'T include files that are certainly not relevant.
         - It is better to include a file in the list which is not relevant, than to accidentally exclude a file that is relevant.
         [/Rules]
         
          Please explain your analysis and then afterwards output a list of relative file paths, with each one starting with a slash, so we can parse using code in the following format...
          [Example Output]
+         The files relevant to the inquiry are...
          /folder1/file1.txt
          /file2.txt
          [/Example Output]
@@ -235,14 +247,14 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
          - Rule: DO NOT include ANY IRRELEVANT files or information in the // Relevant section. This information can be included in the // Irrelevant section instead.
          
          [Example Output]
-         // Irrelevant to the inquiry
+         // Irrelevant to the inquiry (IMPORTANT: include/keep this line, and keep the double slash at the start)
          File: /folder1/irrelevant-file1.cs
          This file contains to the code to do XYZ but is not relevant to the inquiry.
          
          Class: IrrelevantClassName
          This class handles ABC but is not relevant to the inquiry.
                   
-         // Relevant to the inquiry
+         // Relevant answer/response to the inquiry (IMPORTANT: include/keep this line, and keep the double slash at the start)
          File: /folder1/relevant-file1.cs
          This file contains to the code to do XYZ and is relevant to the inquiry because...
           
@@ -267,34 +279,44 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
          return responseString;
     }
     
-    private string[] GetFilesWithExtensions(string rootPath, string[] extensions)
-    {
-        var files = new List<string>();
-        var directories = new Stack<string>();
-        directories.Push(rootPath);
-
-        while (directories.Count > 0)
-        {
-            string dirPath = directories.Pop();
-            try
-            {
-                files.AddRange(Directory.EnumerateFiles(dirPath, "*.*")
-                    .Where(file => extensions.Contains(Path.GetExtension(file).Trim('.')))
-                    .Select(file => Path.GetRelativePath(rootPath, file)));
-
-                foreach (var directory in Directory.GetDirectories(dirPath))
-                {
-                    directories.Push(directory);
-                }
-            }
-            catch (UnauthorizedAccessException)
-            {
-                Console.WriteLine($"Access denied to {dirPath}, skipping...");
-            }
-        }
-
-        return files.ToArray();
-    }
+    private string[] GetListOfFilePathsMatchingProvidedExtensions(string rootPath, string[] extensions, string prefix = "")
+     {
+                 var builder = new StringBuilder();
+                 
+                         var entries = Directory.EnumerateFileSystemEntries(rootPath)
+                             .Select(entry => new
+                             {
+                                 Path = entry,
+                                 IsDirectory = (File.GetAttributes(entry) & FileAttributes.Directory) != 0
+                             })
+                             .Where(entry => !IgnoreFolders.Any(folder => entry.Path.Contains($@"/{folder}/"))
+                                             && !IgnoreFiles.Contains(Path.GetFileName(entry.Path)))
+                             .ToList();
+                 
+                         for (int i = 0; i < entries.Count; i++)
+                         {
+                             var entry = entries[i];
+                 
+                             if (entry.IsDirectory)
+                             {
+                                 string newPrefix = prefix + (i == entries.Count - 1 ? "    " : "│   ");
+                                 string[] subTree = GetListOfFilePathsMatchingProvidedExtensions(entry.Path, extensions, newPrefix);
+                 
+                                 // Only append the directory and its subtree if the subtree is not empty
+                                 if (!string.IsNullOrWhiteSpace(subTree[0]))
+                                 {
+                                     builder.AppendLine($"{prefix}{(i == entries.Count - 1 ? "└── " : "├── ")}{Path.GetFileName(entry.Path)}");
+                                     builder.Append(subTree[0]);
+                                 }
+                             }
+                             else if (extensions.Contains(Path.GetExtension(entry.Path).Trim('.')))
+                             {
+                                 builder.AppendLine($"{prefix}{(i == entries.Count - 1 ? "└── " : "├── ")}{Path.GetFileName(entry.Path)}");
+                             }
+                         }
+                 
+                         return new string[] { builder.ToString() };
+     }
     
     public async Task<string> SendAndReceive(string content, string apiKey)
     {
@@ -314,7 +336,7 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         {
             if (line.TrimStart().StartsWith("/"))
             {
-                var ext = line.TrimStart('/').Trim().Trim('.').Trim().Trim('.');
+                var ext = line.Trim().TrimStart('/').Trim().Trim('.').Trim().Trim('.');
                 extensions.Add(ext);
             }
         }
@@ -374,11 +396,12 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         private string ExtractAnswerSectionFromAnswerResponse(string response)
         {
             const string answerMarker = "// Relevant";
-            int answerIndex = response.IndexOf(answerMarker, StringComparison.OrdinalIgnoreCase);
+            var lines = response.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            int answerLineIndex = Array.FindIndex(lines, line => line.Contains(answerMarker, StringComparison.OrdinalIgnoreCase));
     
-            if (answerIndex >= 0)
+            if (answerLineIndex >= 0 && answerLineIndex < lines.Length - 1)
             {
-                return response.Substring(answerIndex + answerMarker.Length).TrimStart();
+                return string.Join(Environment.NewLine, lines.Skip(answerLineIndex + 1));
             }
             else
             {

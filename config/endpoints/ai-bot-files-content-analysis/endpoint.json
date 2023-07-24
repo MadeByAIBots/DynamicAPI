@@ -1,6 +1,6 @@
 {
   "description": "Ask OpenAI's Davinci model questions about files in the working directory. This will perform a smart multi step analysis to identify the relevant files, and send them to another bot for analysis, to generate a response to your message.",
-  "path": "/ai-bot-folder-files-analysis",
+  "path": "/ai-bot-files-content-analysis",
   "executor": "csharp-script",
   "method": "post",
   "args": [

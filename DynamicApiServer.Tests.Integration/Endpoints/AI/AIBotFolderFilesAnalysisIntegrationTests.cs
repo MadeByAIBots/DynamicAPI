@@ -13,7 +13,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.AI
     public class AIBotFolderFilesAnalysisIntegrationTests
     {
         [Test]
-        public async Task TestDirectoryListEndpoint()
+        public async Task AskTheFilesEndpointTests()
         {
             using var context = new IntegrationTestContext();
             context.UseToken();
@@ -73,12 +73,17 @@ public static class ServiceCollectionExtensions
             await File.WriteAllTextAsync(filePath5, "Test content");
             
             var message = "Where can I find the code which configures logging for the application?";
-            
+           
+           // TODO: Remove if not needed. This is to test the endpoint on a real code base to ensure it doesn't hit the token limits
+           //var message = "What class is responsible for handling execution for the csharp script endpoint?";
+
+           // TODO: Remove if not needed. This is to test the endpoint on a real code base to ensure it doesn't hit the token limits
+            //workingDirectory = "/home/madebyaibots/workspace/DynamicAPI";
             // Exercise
             var payload = new { workingDirectory, message };//, directoryPath };
             var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
-            logger.LogInformation("Test exercise: Sent POST request to /ai-bot-folder-files-analysis");
-            var response = await context.Client.PostAsync("/ai-bot-folder-files-analysis", content);
+            logger.LogInformation("Test exercise: Sent POST request to /ai-bot-files-content-analysis");
+            var response = await context.Client.PostAsync("/ai-bot-files-content-analysis", content);
             
 
             // Verify
