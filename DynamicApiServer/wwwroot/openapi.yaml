@@ -201,6 +201,31 @@ paths:
           description: Directory copied successfully
         '400':
           description: Bad request
+  /ai-bot-folder-files-analysis:
+    post:
+      description: 'Ask OpenAI''s Davinci model questions about files in the working directory. This will perform a smart multi step analysis to identify the relevant files, and send them to another bot for analysis, to generate a response to your message.'
+      operationId: aiBotFolderFilesAnalysis
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              required:
+                - message
+                - workingDirectory
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 'A detailed instruction or question for the AI model, such as ''which file is responsible for...?'', ''identify problems'', ''summarize'', ''provide suggestions'', etc. The AI model will process the content of the files based on this instruction.'
+                workingDirectory:
+                  type: string
+                  description: The base path where the files are located. All file paths should be relative to this directory.
+      responses:
+        '200':
+          description: Successful response
+        '400':
+          description: Bad request
   /csharp-hello-world:
     get:
       description: 'Executes a simple C# program that prints ''Hello, World!'' to the console.'

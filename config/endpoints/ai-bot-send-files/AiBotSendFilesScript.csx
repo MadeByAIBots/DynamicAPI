@@ -19,10 +19,11 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         var filePaths = parameters.GetRequiredString("files").Split(';');
         var messageContentToBot = "";
 
+        var message = parameters.GetRequiredString("message");
+        messageContentToBot += message + "\n\n\n";
+            
         foreach (var path in filePaths)
         {
-            var message = parameters.GetRequiredString("message");
-            messageContentToBot += message + "\n\n\n";
             var absolutePath = Path.Combine(workingDirectory, path);
 
             if (!File.Exists(absolutePath))
