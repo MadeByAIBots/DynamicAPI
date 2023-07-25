@@ -67,15 +67,11 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
     .AddChatPersistenceJsonProvider(Directory.GetCurrentDirectory());
         
         var serviceProvider = serviceCollection.BuildServiceProvider();
-        
-        IMessageEngine messageEngine = serviceProvider.GetRequiredService<IMessageEngine>();
-    
-        var messageFactory = serviceProvider.GetRequiredService<IMessageFactory>();
-            
-        var inputMessage = messageFactory.CreateMessageSent(content);
-    
-        var responseMessage = await messageEngine.SendAndReceive(inputMessage);
 
-        return responseMessage.Body;
+        var chatEngine = serviceProvider.GetRequiredService<IChatEngine>();
+        var convo = chatEngine.CreateConversation();
+        var response = await chatEngine.SendAndReceive(convo, new MessageSent(content));
+
+        return response.Body;
     }
 }
