@@ -31,64 +31,34 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         }
 
         var workingDirectory = parameters.GetRequiredString("workingDirectory");
-        //var messageContentToBot = "";
 
-            var message = parameters.GetRequiredString("message");
-            //messageContentToBot += message + "\n\n\n";
+        var message = parameters.GetRequiredString("message");
+        
+        var allFileExtensions = GetAllFileExtensions(workingDirectory);
+        
+         var relevantExtensions = await GetRelevantFileExtensions(allFileExtensions, message, apiKey, logger);
+         
+         if (relevantExtensions.Count()==0)
+            return Fail("AI bot failed to identify any relevant file extensions.");
+         
+         var relevantExtensionsString = String.Join('\n', relevantExtensions);
+         
+         var filesWithExtensions = GetListOfFilePathsMatchingProvidedExtensions(workingDirectory, relevantExtensions);
+         
+         logger.LogInformation("File paths with matching extensions:\n" + String.Join('\n', filesWithExtensions));
+         
+         var relativeFilePaths = await GetRelevantFilePaths(message, filesWithExtensions, apiKey, logger);
+         
+         if (relativeFilePaths.Count()==0)
+            return Fail("AI bot failed to identify any relevant file paths.");
             
-            var allFileExtensions = GetAllFileExtensions(workingDirectory);
-            
-            //return Success(String.Join('\n', allFileExtensions));
-             var relevantExtensions = await GetRelevantFileExtensions(allFileExtensions, message, apiKey, logger);
-             
-             if (relevantExtensions.Count()==0)
-                return Fail("AI bot failed to identify any relevant file extensions.");
-             
-             var relevantExtensionsString = String.Join('\n', relevantExtensions);
-             
-             var filesWithExtensions = GetListOfFilePathsMatchingProvidedExtensions(workingDirectory, relevantExtensions);
-             
-             logger.LogInformation("File paths with matching extensions:\n" + String.Join('\n', filesWithExtensions));
-             
-             var relativeFilePaths = await GetRelevantFilePaths(message, filesWithExtensions, apiKey, logger);
-             
-             if (relativeFilePaths.Count()==0)
-                return Fail("AI bot failed to identify any relevant file paths.");
-                
-             var relativeFileContent = GetContentOfMultipleFiles(workingDirectory, relativeFilePaths);
-             
-             var answerResponse = await GetAnswerFromRelativeFiles(message, relativeFileContent, apiKey, logger);
-             
-             var answerSectionFromResponse = ExtractAnswerSectionFromAnswerResponse(answerResponse);
-             
-             return Success(answerSectionFromResponse);
-//         foreach (var path in filePaths)
-//         {
-//             var absolutePath = Path.Combine(workingDirectory, path);
-// 
-//             if (!File.Exists(absolutePath))
-//             {
-//                 return Fail($"File does not exist at path: {absolutePath}");
-//             }
-// 
-//             try
-//             {
-//                 messageContentToBot += absolutePath + "\n" + File.ReadAllText(absolutePath).Trim() + "\n\n\n";
-//             }
-//             catch (Exception e)
-//             {
-//                 return Fail($"Failed to read file at {absolutePath}: {e.Message}");
-//             }
-//         }
-
-//         var messageBackendProvider = new OpenAIBackendProvider("https://api.openai.com", apiKey);
-//         var messageToBot = new Message(messageContentToBot);
-//         var response = await messageBackendProvider.SendAndReceive(messageToBot);
-//         if (string.IsNullOrEmpty(response.Content))
-//         {
-//             return Fail("No response received from OpenAI API.");
-//         }
-//         return Success(response.Content);
+         var relativeFileContent = GetContentOfMultipleFiles(workingDirectory, relativeFilePaths, logger);
+         
+         var answerResponse = await GetAnswerFromRelativeFiles(message, relativeFileContent, apiKey, logger);
+         
+         var answerSectionFromResponse = ExtractAnswerSectionFromAnswerResponse(answerResponse);
+         
+         return Success(answerSectionFromResponse);
     }
     
     private string[] GetAllFileExtensions(string rootPath)
@@ -124,28 +94,28 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         var inquiryPromptSection = GenerateInquiryPromptSection(message);
         
         var fullContent = @$"
-        {inquiryPromptSection}
-        
-        Here is a list of file extensions found in the working directory...
-        
-        [File Extensions] 
-        {allFileExtensionsString}
-        [/File Extensions]
-        
-        What I would like you to do is figure out which file extensions (from the provided list) might be relevant to respond to the inquiry. Once we have the list, we will then read the file content, and send those files with the inquiry to another bot to get an answer. For example a question about code would mean we need to look at code files.
-        
-        Please explain your analysis and then afterwards output a list of extensions, with each one starting with a slash, so we can parse using code in the following format...
-        
-        [Rules]
-        - The output must have each extension on its own line, starting with a slash, as shown in the 'example output'. Otherwise it won't be possible to parse the extensions with code.
-        - NEVER include binaries/dlls or other files which cannot be read. Only include text based file extensions such as code, configs, etc.
-        [/Rules]
-         
-        [Example Output] 
-        The file extensions relevant to the inquiry are...
-        /.ext1 
-        /.ext2
-        [/Example Output]
+{inquiryPromptSection}
+
+Here is a list of file extensions found in the working directory...
+
+[File Extensions] 
+{allFileExtensionsString}
+[/File Extensions]
+
+What I would like you to do is figure out which file extensions (from the provided list) might be relevant to respond to the inquiry. Once we have the list, we will then read the file content, and send those files with the inquiry to another bot to get an answer. For example a question about code would mean we need to look at code files.
+
+Please explain your analysis and then afterwards output a list of extensions, with each one starting with a slash, so we can parse using code in the following format...
+
+[Rules]
+- The output must have each extension on its own line, starting with a double slash //, as shown in the 'example output'. Otherwise it won't be possible to parse the extensions with code.
+- NEVER include binaries/dlls or other files which cannot be read. Only include text based file extensions such as code, configs, etc.
+[/Rules]
+
+[Example Output] 
+The file extensions relevant to the inquiry are...
+// .ext1 
+// .ext2
+[/Example Output]
         ";
         
         
@@ -171,32 +141,54 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
          var inquiryPromptSection = GenerateInquiryPromptSection(message);
         
          var fullContent = @$"
-         {inquiryPromptSection}
-         
-         Here is a list of file paths found in the working directory... 
-         {allFilePathsString}
-         
-         [Instructions]
-         1) Analyse the inquiry and provide an explanation of what kinds of files, and file names, might provide relevant information.
-         2) Analyse each file name/path and provide an explanation of what it is likely to be for, and what it might possibly be for.
-         3) Identify which files might possibly be relevant to the inquiry.
-         4) Provide a list of possibly relevant files in the format below.
-         [/Instructions]
-         
-         
-        [Rules]
-        - The output must have each file on its own line, starting with a slash, as shown in the 'example output'. Otherwise it won't be possible to parse the file paths with code.
-        - DO INCLUDE files that MIGHT POSSIBLY be relevant.
-        - DON'T include files that are certainly not relevant.
-        - It is better to include a file in the list which is not relevant, than to accidentally exclude a file that is relevant.
-        [/Rules]
-        
-         Please explain your analysis and then afterwards output a list of relative file paths, with each one starting with a slash, so we can parse using code in the following format...
-         [Example Output]
-         The files relevant to the inquiry are...
-         /folder1/file1.txt
-         /file2.txt
-         [/Example Output]
+ {inquiryPromptSection}
+ 
+ Here is a list of file paths found in the working directory... 
+ {allFilePathsString}
+ 
+ [Instructions]
+ 1) Analyse the inquiry and provide an explanation of what kinds of files, and file names, might provide relevant information.
+ 2) Brainstorm where we might possibly find information/answers relevant to the inquiry
+ 3) Analyse the folder structure in relation to the inquiry, as this will often help to understand which files are relevant.
+ 4) Analyse each file name/path and provide an explanation of what it is likely to be for, and what it might possibly be for.
+ 5) Identify which files might possibly be relevant to the inquiry.
+ 6) Provide a list of possibly relevant files in the example output format below.
+ [/Instructions]
+ 
+ 
+[Rules]
+- The relevant output must have each relevant file on its own new line, starting with a double slash //, as shown in the 'example output'. Otherwise it won't be possible to parse the file paths with code.
+- DO INCLUDE ALL files that MIGHT POSSIBLY be relevant.
+- DON'T include files that are certainly not relevant.
+- It is better to include a file in the list which is not relevant, than to accidentally exclude a file that is relevant.
+- DO NOT include folders in your suggestions. ONLY include files. Files have extensions. If it does not have an extension do not include it in the list.
+- Ensure you include the full relative path to any file you suggest including parent folders
+- ONLY include files which are in the file list above. Do not guess or make up file names which do not exist. 
+- If it is a question about code then the files may not explicitly say what the project does. In this case try to pick code files that could be analysed to figure out the answer to the inquiry.
+[/Rules]
+
+ Please explain your analysis and then afterwards output a list of relative file paths, with each one starting with a slash, so we can parse using code in the following format...
+ [Example Output]
+ 1) Inquiry analysis: ...
+ (add analysis here)
+ 
+ 2) Brainstorming where we might find answers: ...
+ (add brainstorming here)
+ 
+ 3) Analysing folder structure: ...
+ (add analysis here)
+ 
+ 4) Analysing file names: ...
+ (add analysis here)
+ 
+ 5) Identifying possibly relevant file names: ...
+ (add analysis here)
+ 
+ 6) The files relevant to the inquiry are...
+ // /<folder1>/<file1>.txt
+ // /<file2>.txt
+ // /<folder3>/<subfolder1>/<file3>.txt
+ [/Example Output]
          ";
 
          logger.LogInformation($"Relevant file paths prompt: {fullContent}");
@@ -334,7 +326,7 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
 
         foreach (var line in lines)
         {
-            if (line.TrimStart().StartsWith("/"))
+            if (line.TrimStart().StartsWith("//"))
             {
                 var ext = line.Trim().TrimStart('/').Trim().Trim('.').Trim().Trim('.');
                 extensions.Add(ext);
@@ -351,9 +343,9 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
 
         foreach (var line in lines)
         {
-            if (line.TrimStart().StartsWith("/"))
+            if (line.TrimStart().Trim('-').Trim().StartsWith("//"))
             {
-                var filePath = line.TrimStart('/');
+                var filePath = line.TrimStart().Trim('-').Trim().TrimStart('/');
                 if (!filePaths.Contains(filePath))
                     filePaths.Add(filePath);
             }
@@ -371,13 +363,20 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
             ";
     }
     
-        private string GetContentOfMultipleFiles(string workingDirectory, string[] relativeFilePaths)
+        private string GetContentOfMultipleFiles(string workingDirectory, string[] relativeFilePaths, ILogger<AiBotSendFilesScriptEndpoint> logger)
         {
+            logger.LogInformation(
+            $@"Getting content of multiple files...
+            Relative file paths:
+            {String.Join('\n', relativeFilePaths)}
+            ");
+        
             var builder = new StringBuilder();
     
             foreach (var relativePath in relativeFilePaths)
             {
-                string fullPath = Path.Combine(workingDirectory, relativePath);
+                string fullPath = workingDirectory + "/" + relativePath.Trim().TrimStart('/').Trim();
+                logger.LogInformation("Loading file content: " + fullPath);
                 if (File.Exists(fullPath))
                 {
                     builder.AppendLine($"({relativePath})");

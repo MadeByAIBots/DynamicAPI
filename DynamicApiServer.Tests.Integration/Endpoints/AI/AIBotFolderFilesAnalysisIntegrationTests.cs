@@ -17,7 +17,8 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.AI
         {
             using var context = new IntegrationTestContext();
             context.UseToken();
-            var logger = context.Server.Services.GetRequiredService<ILogger<AIBotFolderFilesAnalysisIntegrationTests>>();
+            var logger = context.Server.Services
+                .GetRequiredService<ILogger<AIBotFolderFilesAnalysisIntegrationTests>>();
 
             // Set up
             var uniqueId = Guid.NewGuid().ToString();
@@ -32,7 +33,7 @@ namespace DynamicApiServer.Tests.Integration.Endpoints.AI
             var filePath1 = Path.Combine(workingDirectory, "file.txt");
             logger.LogInformation("Test setup: Created file at {0}", filePath1);
             await File.WriteAllTextAsync(filePath1, "Test content");
-            
+
             var filePath2 = Path.Combine(workingDirectory, "Program.cs");
             logger.LogInformation("Test setup: Created file at {0}", filePath2);
             await File.WriteAllTextAsync(filePath2, @"using System;
@@ -63,7 +64,7 @@ public static class ServiceCollectionExtensions
     }
 }");
 
-            
+
             var filePath4 = Path.Combine(workingDirectory, "test.log");
             logger.LogInformation("Test setup: Created file at {0}", filePath4);
             await File.WriteAllTextAsync(filePath4, "Test content");
@@ -71,33 +72,33 @@ public static class ServiceCollectionExtensions
             var filePath5 = Path.Combine(workingDirectory, "file.dll");
             logger.LogInformation("Test setup: Created file at {0}", filePath5);
             await File.WriteAllTextAsync(filePath5, "Test content");
-            
-            var message = "Where can I find the code which configures logging for the application?";
-           
-           // TODO: Remove if not needed. This is to test the endpoint on a real code base to ensure it doesn't hit the token limits
-           //var message = "What class is responsible for handling execution for the csharp script endpoint?";
 
-           // TODO: Remove if not needed. This is to test the endpoint on a real code base to ensure it doesn't hit the token limits
+            var message = "Where can I find the code which configures logging for the C# console application?";
+
+            // TODO: Remove if not needed. This is to test the endpoint on a real code base to ensure it doesn't hit the token limits
+            //message = "What class is responsible for handling execution for the csharp script endpoint?";
+            //message = "What does this project do?";
+
+            // TODO: Remove if not needed. This is to test the endpoint on a real code base to ensure it doesn't hit the token limits
             //workingDirectory = "/home/madebyaibots/workspace/DynamicAPI";
             // Exercise
-            var payload = new { workingDirectory, message };//, directoryPath };
+            var payload = new { workingDirectory, message }; //, directoryPath };
             var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
             logger.LogInformation("Test exercise: Sent POST request to /ai-bot-files-content-analysis");
             var response = await context.Client.PostAsync("/ai-bot-files-content-analysis", content);
-            
+
 
             // Verify
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var responseContent = await response.Content.ReadAsStringAsync();
             logger.LogInformation(responseContent);
             logger.LogInformation("Test verify: Response content is \n{0}", responseContent);
-            //responseContent.Should().Contain("subdirectory");
             responseContent.Should().Contain("ServicesExtensions.cs");
-            responseContent.Should().NotContain("Program.cs");
+            //responseContent.Should().NotContain("Program.cs");
             responseContent.Should().NotContain("file.dll");
 
             // Teardown
-            Directory.Delete(workingDirectory, true);
+            //Directory.Delete(workingDirectory, true);
         }
     }
 }
