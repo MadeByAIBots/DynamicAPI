@@ -46,7 +46,7 @@ class Program
     }
     ");
 
-            var filePath3 = Path.Combine(workingDirectory, "ServicesExtensions.cs");
+            var filePath3 = Path.Combine(workingDirectory, "ConfigServicesExtensions.cs");
             logger.LogInformation("Test setup: Created file at {0}", filePath3);
             await File.WriteAllTextAsync(filePath3, @"using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

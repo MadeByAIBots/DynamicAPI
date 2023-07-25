@@ -1,0 +1,26 @@
+{
+  "description": "Chat with an AI bot via OpenAI's API. The chat history will be preserved so it will remember previous messages.",
+  "path": "/ai-bot-chat",
+  "executor": "csharp-script",
+  "method": "post",
+  "args": [
+    {
+      "name": "message",
+      "type": "json",
+      "source": "body",
+      "description": "A very detailed, comprehensive message to the bot. NOTE: It does not know anything about the current workspace, or working directory, so you need to provide it with any information it needs."
+    }
+  ],
+  "responses": [
+    {
+      "statusCode": 200,
+      "description": "Successful response",
+      "type": "string"
+    },
+    {
+      "statusCode": 400,
+      "description": "Bad request",
+      "type": "string"
+    }
+  ]
+}
