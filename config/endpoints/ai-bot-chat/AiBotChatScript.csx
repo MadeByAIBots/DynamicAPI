@@ -52,19 +52,19 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
 
 
         var serviceCollection = new ServiceCollection()
-    .AddSingleton<IFileSystem, System.IO.Abstractions.FileSystem>()
-    .AddLogging(config=>
-    {
-        config.AddConsole();
-        config.SetMinimumLevel(LogLevel.Debug);
-    })
-    .AddMessageEngine()
-    .AddMessageFactory()
-    .AddMessageExtensions()
-    .AddOpenAIBackendProvider()
-    .AddChatEngine()
-    .AddConversationFactory()
-    .AddChatPersistenceJsonProvider(Directory.GetCurrentDirectory());
+            .AddSingleton<IFileSystem, System.IO.Abstractions.FileSystem>()
+            .AddLogging(config=>
+            {
+                config.AddConsole();
+                config.SetMinimumLevel(LogLevel.Debug);
+            })
+            .AddMessageEngine()
+            .AddMessageFactory()
+            .AddMessageExtensions()
+            .AddOpenAIBackendProvider()
+            .AddChatEngine()
+            .AddConversationFactory()
+            .AddChatPersistenceJsonProvider(Directory.GetCurrentDirectory());
         
         var serviceProvider = serviceCollection.BuildServiceProvider();
 

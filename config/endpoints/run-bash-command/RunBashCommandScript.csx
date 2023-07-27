@@ -49,7 +49,7 @@ public class RunBashCommandScriptEndpoint : DynamicEndpointExecutorBase
             process.StartInfo = new ProcessStartInfo
             {
                 FileName = "/bin/bash",
-                ArgumentList = { "-c", command },
+                ArgumentList = { "-lc", command },
                 WorkingDirectory = workingDirectory,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
