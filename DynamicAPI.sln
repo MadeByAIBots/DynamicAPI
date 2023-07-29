@@ -17,12 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Utilities.Files"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Process", "Utilities\Process\Process.csproj", "{79C91703-CCD7-4DF9-81DE-AF4DFE67445D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Configuration", "DynamicApi.Servers.Configuration\DynamicApi.Servers.Configuration.csproj", "{EF0E455F-7516-4E00-9A94-437C7E54E633}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Data", "DynamicApi.Servers.Data\DynamicApi.Servers.Data.csproj", "{08ACFFD0-56D3-439E-89EB-0928BEF1F0B4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Servers.Data.Tests.Unit", "DynamicApi.Servers.Data.Tests.Unit\DynamicApi.Servers.Data.Tests.Unit.csproj", "{D263F931-3162-4F15-B4D7-C6CEF5EC07B4}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Endpoints.Model", "DynamicApi.Endpoints.Model\DynamicApi.Endpoints.Model.csproj", "{E6D8E651-806E-40A2-A791-30C4C4475DDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.Endpoints.Executors.Model", "DynamicApi.Endpoints.Executors.Model\DynamicApi.Endpoints.Executors.Model.csproj", "{A6B20D2D-AEF7-4C0B-9BF7-AF7CA8A33C6E}"

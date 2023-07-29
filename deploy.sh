@@ -1,33 +1,44 @@
+# Variables
+HOST="localhost"
+RELEASE_ZIP="release.zip"
+TARGET_DIR="~/DynamicAPI"
 #!/bin/bash
 
-# Run the tests
-bash test.sh
 
-sourcePath=$PWD
-destinationPath="../../deploy/live/DynamicAPI"
 
-# Check if the tests passed
-if [ $? -eq 0 ]
-then
-  echo "Tests passed. Proceeding with deployment."
-
-  bash stop.sh
-
-  # Check if the deployment directory exists
-  if [ ! -d "$destinationPath/.git" ]
-  then
-    # Clone the repository
-    git clone $sourcePath $destinationPath
-  fi
-
-  # Change to the deployment directory
-  cd $destinationPath
-
-  # Pull the latest changes
-  git pull || echo "Pull failed"
-
-  # Run the application
-  bash run_and_test.sh
-else
-  echo "Tests failed. Aborting deployment."
+# Check SSH connection
+echo "Checking SSH connection to $HOST..."
+ssh -q $HOST exit
+if [ $? -ne 0 ]; then
+    echo "Error: Unable to establish SSH connection to $HOST"
+    exit 1
 fi
+
+echo "Starting the deployment process..."
+
+echo "Creating the release..."
+# Create Release
+./create-release.sh
+
+echo "Release created. Preparing the target directory..."
+# Prepare Target Directory and Transfer Release
+ssh -T $HOST << EOF
+  if [ -e "$TARGET_DIR" ] && [ ! -d "$TARGET_DIR" ]; then
+    echo "Removing existing file at $TARGET_DIR..."
+    rm -f $TARGET_DIR
+    echo "Creating directory $TARGET_DIR..."
+    mkdir -p $TARGET_DIR
+  elif [ ! -d "$TARGET_DIR" ]; then
+    echo "Creating directory $TARGET_DIR..."
+    mkdir -p $TARGET_DIR
+  fi
+EOF
+
+echo "Target directory prepared. Transferring the release..."
+rsync -avz $RELEASE_ZIP $HOST:$TARGET_DIR
+
+echo "Release transferred. Installing the release..."
+# Install Release
+ssh $HOST "cd $TARGET_DIR && unzip -qo $RELEASE_ZIP"
+
+echo "Release installed. Deployment completed."

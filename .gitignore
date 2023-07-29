@@ -6,3 +6,4 @@ run.pid
 config.json
 DynamicApi.WorkingDirectory/Class1.cs
 *.txt
+**/secrets.json
