@@ -147,6 +147,8 @@ The file extensions relevant to the inquiry are...
 
          var inquiryPromptSection = GenerateInquiryPromptSection(message);
         
+        // One of the challenges with this prompt is that the bot can make small mistakes which mean the files can't be loaded
+        // The prompt and requested output is intentionally verbose to try and force the bot to "think through" the issue and double check itself
          var fullContent = @$"
  {inquiryPromptSection}
  
@@ -159,7 +161,8 @@ The file extensions relevant to the inquiry are...
  3) Analyse the folder structure in relation to the inquiry, as this will often help to understand which files are relevant.
  4) Analyse each file name/path and provide an explanation of what it is likely to be for, and what it might possibly be for.
  5) Identify which files might possibly be relevant to the inquiry.
- 6) Provide a list of possibly relevant files in the example output format below.
+ 6) Provide a list of the full relative folder paths relevant to the inquiry (IMPORTANT: Make sure this is correct or it won't be possible to load the files). After writing out the folder, compare that path with the folder/file tree provided and determine whether it's correct. If not then output the correct path.
+ 7) Provide the FULL RELATIVE FILE PATHS to the relevant files in the example output format below.
  [/Instructions]
  
  
@@ -191,7 +194,17 @@ The file extensions relevant to the inquiry are...
  5) Identifying possibly relevant file names: ...
  (add analysis here)
  
- 6) The files relevant to the inquiry are...
+ 6) The folders containing files relevant to the inquiry are...
+ file1.txt is in folder1/subfolder1
+ ...double checking: Yes this is correct
+ file2.txt folder1/subfolder2/subsubfolder3
+ ...double checking: no this is not correct
+ file2.txt is in folder1/subfolder2/subsubfolder4
+ ...double checking: Yes this is correct
+ file3.txt is in folder3
+ ...double checking: Yes this is correct
+ 
+ 7) The full relative paths to the relevant files are... (ensure the relative paths are correct)
  // /<folder1>/<file1>.txt
  // /<file2>.txt
  // /<folder3>/<subfolder1>/<file3>.txt
@@ -270,62 +283,50 @@ The file extensions relevant to the inquiry are...
          
          logger.LogInformation($"Answer response:\n" + responseString);
          
-
-//          var relevantFilePaths = ExtractFilePathsFromText(responseString);
-//          
-//          logger.LogInformation($"Relevant file paths:\n{String.Join(' ', relevantFilePaths)}");
-//          
          return responseString;
     }
     
     private string[] GetListOfFilePathsMatchingProvidedExtensions(string rootPath, string[] extensions, string prefix = "")
      {
-                 var builder = new StringBuilder();
+         var builder = new StringBuilder();
                  
-                         var entries = Directory.EnumerateFileSystemEntries(rootPath)
-                             .Select(entry => new
-                             {
-                                 Path = entry,
-                                 IsDirectory = (File.GetAttributes(entry) & FileAttributes.Directory) != 0
-                             })
-                             .Where(entry => !IgnoreFolders.Any(folder => entry.Path.Contains($@"/{folder}/"))
-                                             && !IgnoreFiles.Contains(Path.GetFileName(entry.Path)))
-                             .ToList();
-                 
-                         for (int i = 0; i < entries.Count; i++)
-                         {
-                             var entry = entries[i];
-                 
-                             if (entry.IsDirectory)
-                             {
-                                 string newPrefix = prefix + (i == entries.Count - 1 ? "    " : "│   ");
-                                 string[] subTree = GetListOfFilePathsMatchingProvidedExtensions(entry.Path, extensions, newPrefix);
-                 
-                                 // Only append the directory and its subtree if the subtree is not empty
-                                 if (!string.IsNullOrWhiteSpace(subTree[0]))
-                                 {
-                                     builder.AppendLine($"{prefix}{(i == entries.Count - 1 ? "└── " : "├── ")}{Path.GetFileName(entry.Path)}");
-                                     builder.Append(subTree[0]);
-                                 }
-                             }
-                             else if (extensions.Contains(Path.GetExtension(entry.Path).Trim('.')))
-                             {
-                                 builder.AppendLine($"{prefix}{(i == entries.Count - 1 ? "└── " : "├── ")}{Path.GetFileName(entry.Path)}");
-                             }
-                         }
-                 
-                         return new string[] { builder.ToString() };
+         var entries = Directory.EnumerateFileSystemEntries(rootPath)
+             .Select(entry => new
+             {
+                 Path = entry,
+                 IsDirectory = (File.GetAttributes(entry) & FileAttributes.Directory) != 0
+             })
+             .Where(entry => !IgnoreFolders.Any(folder => entry.Path.Contains($@"/{folder}/"))
+                             && !IgnoreFiles.Contains(Path.GetFileName(entry.Path)))
+             .ToList();
+    
+         for (int i = 0; i < entries.Count; i++)
+         {
+             var entry = entries[i];
+    
+             if (entry.IsDirectory)
+             {
+                 string newPrefix = prefix + (i == entries.Count - 1 ? "    " : "│   ");
+                 string[] subTree = GetListOfFilePathsMatchingProvidedExtensions(entry.Path, extensions, newPrefix);
+    
+                 // Only append the directory and its subtree if the subtree is not empty
+                 if (!string.IsNullOrWhiteSpace(subTree[0]))
+                 {
+                     builder.AppendLine($"{prefix}{(i == entries.Count - 1 ? "└── " : "├── ")}{Path.GetFileName(entry.Path)}");
+                     builder.Append(subTree[0]);
+                 }
+             }
+             else if (extensions.Contains(Path.GetExtension(entry.Path).Trim('.')))
+             {
+                 builder.AppendLine($"{prefix}{(i == entries.Count - 1 ? "└── " : "├── ")}{Path.GetFileName(entry.Path)}");
+             }
+         }
+    
+         return new string[] { builder.ToString() };
      }
     
     public async Task<string> SendAndReceive(string content, string apiKey)
     {
-//         var messageBackendProvider = new OpenAIBackendProvider("https://api.openai.com", apiKey);
-//         var messageToBot = new Message(content);
-//         var response = await messageBackendProvider.SendAndReceive(messageToBot);
-//         
-//         return response.Content;
-
-
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddLogging();
         
