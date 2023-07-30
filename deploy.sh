@@ -4,6 +4,7 @@ RELEASE_ZIP="release.zip"
 TARGET_DIR="~/DynamicAPI"
 #!/bin/bash
 
+bash create-release.sh
 
 
 # Check SSH connection

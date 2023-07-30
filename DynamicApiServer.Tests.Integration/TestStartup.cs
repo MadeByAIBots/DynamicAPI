@@ -27,6 +27,7 @@ namespace DynamicApiServer.Tests.Integration
 		{
 			app.UseRequestLogging();
 			app.UseRouting();
+			app.UseInjectableStaticFiles();
 			app.UseDynamicEndpoints();
 			app.MapFallbackRoute();
 		}

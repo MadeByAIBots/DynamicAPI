@@ -9,7 +9,8 @@ If you want to change the config values...
 {
     "EndpointPath": "config/endpoints",
     "Url": "http://localhost",	
-    "Port": 5000,
+    "Port": 8888,
+    "ExternalUrl": "http://localhost:8888",
     "TokenFilePath": "auth-token.security",
     "CSharpScript": {
         "References": [

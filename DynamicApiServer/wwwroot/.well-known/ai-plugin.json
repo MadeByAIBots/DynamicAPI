@@ -8,14 +8,14 @@
     "type": "service_http",
     "authorization_type": "bearer",
     "verification_tokens":{
-      "openai":"ba41b7565c6c423c9a9383644321d30a"
+      "openai":"{{OPEN_AI_VERIFICATION_TOKEN}}"
     }
   },
   "api": {
     "type": "openapi",
-    "url": "https://dynamicapi-laptop.madebyaibots.com/openapi.yaml"
+    "url": "{{SERVER_URL}}/openapi.yaml"
   },
-  "logo_url": "https://dynamicapi-laptop.madebyaibots.com/logo.png",
+  "logo_url": "{{SERVER_URL}}/logo.png",
   "contact_email": "madebyaibots@gmail.com",
   "legal_info_url": "http://example.com/legal"
 }

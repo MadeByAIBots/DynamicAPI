@@ -4,7 +4,7 @@ info:
   description: 'DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality. Leveraging the power of ChatGPT, DynamicAPI aims to streamline the process of endpoint creation, making API development faster and more efficient.'
   version: 1.0.0
 servers:
-  - url: https://dynamicapi-laptop.madebyaibots.com
+  - url: '{{SERVER_URL}}'
 paths:
   /directory-create:
     post:

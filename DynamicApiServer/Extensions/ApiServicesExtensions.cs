@@ -27,6 +27,8 @@ namespace DynamicApiServer.Extensions
 			services.AddSingleton<DynamicApiServer.Execution.Executors.ExecutorFactory>();
 			services.AddSingleton<ExecutorDefinitionLoader>();
 			services.AddSingleton<ProcessRunner>();
+			
+			services.AddSingleton<InjectableStaticFileHandler>();
 
 			services.AddSingleton<CSharpEndpointExecutor>();
 			services.AddSingleton<CSharpScriptEndpointExecutor>();

@@ -5,13 +5,15 @@ namespace DynamicApi.WorkingDirectory;
 
 public class WorkingDirectoryResolver
 {
-public WorkingDirectoryResolver(ILoggerFactory loggerFactory)
-{
-    _logger = loggerFactory.CreateLogger<WorkingDirectoryResolver>();
-}
+    public WorkingDirectoryResolver(ILoggerFactory loggerFactory)
+    {
+        _logger = loggerFactory.CreateLogger<WorkingDirectoryResolver>();
+    }
+
     private string? _workingDirectory;
 
-private readonly ILogger<WorkingDirectoryResolver> _logger;
+    private readonly ILogger<WorkingDirectoryResolver> _logger;
+
     public string WorkingDirectory()
     {
         if (_workingDirectory == null)
@@ -36,8 +38,8 @@ private readonly ILogger<WorkingDirectoryResolver> _logger;
             }
         }
 
-_logger.LogInformation("Found working directory:");
-_logger.LogInformation(directory);
+        _logger.LogInformation("Found working directory:");
+        _logger.LogInformation(directory);
 
         return directory;
     }

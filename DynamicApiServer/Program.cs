@@ -15,7 +15,7 @@ Console.WriteLine("[INFO] Web application created and configured.");
 // Use the request logging middleware
 app.UseRequestLogging();
 
-app.UseCustomStaticFiles();
+app.UseInjectableStaticFiles();
 
 app.UseTokenValidation();
 
