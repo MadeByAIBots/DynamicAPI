@@ -29,7 +29,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <OutputPath>$(SolutionDir)build/bin/</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

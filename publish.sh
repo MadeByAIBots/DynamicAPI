@@ -1,4 +1,11 @@
 #!/bin/bash
 
-dotnet publish -o publish
-cp install.sh publish/
+publishDir="publish/"
+
+rm -r $publishDir
+
+dotnet publish -o $publishDir
+
+cp install.sh $publishDir
+cp config.json $publishDir
+cp generate-auth-token.sh $publishDir

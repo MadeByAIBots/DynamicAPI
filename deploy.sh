@@ -37,8 +37,12 @@ EOF
 echo "Target directory prepared. Transferring the release..."
 rsync -avz $RELEASE_ZIP $HOST:$TARGET_DIR
 
-echo "Release transferred. Installing the release..."
-# Install Release
+echo "Unzipping the release..."
 ssh $HOST "cd $TARGET_DIR && unzip -qo $RELEASE_ZIP"
+
+
+echo "Installing the release..."
+# Install Release
+ssh $HOST "cd $TARGET_DIR && bash install.sh"
 
 echo "Release installed. Deployment completed."

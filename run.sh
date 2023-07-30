@@ -1,10 +1,17 @@
 #!/bin/bash
 
-URL=$(jq -r '.Url' config.json)
-PORT=$(jq -r '.Port' config.json)
+# Check if config.override.json exists
+if [ -f "config.override.json" ]; then
+    CONFIG_FILE="config.override.json"
+else
+    CONFIG_FILE="config.json"
+fi
+
+URL=$(jq -r '.Url' $CONFIG_FILE)
+PORT=$(jq -r '.Port' $CONFIG_FILE)
 
 # Kill any dotnet process
-pkill dotnet
+bash stop.sh
 
 # Build the project
 (cd DynamicApiServer && dotnet build)
@@ -12,4 +19,4 @@ pkill dotnet
 # Run the project
 (dotnet run --project DynamicApiServer/DynamicApiServer.csproj --urls $URL:$PORT > run.log 2>&1 &)
 
-echo "The application is listening on $URL:$PORT"
+echo "The application is running... listening on $URL:$PORT"

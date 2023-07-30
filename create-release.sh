@@ -1,12 +1,18 @@
 #!/bin/bash
 
-# Define the name of the zip file
-zipfile="release.zip"
+# Store the current directory
+original_dir=$(pwd)
 
-# Define the directories and files to include
-include=(
-  "publish/*"
-)
+# Call the publish.sh script to build the project and publish the output
+./publish.sh
 
-# Create the zip file
-zip -r $zipfile ${include[@]}
+rm release.zip
+
+# Create the zip file with the contents of the publish directory at the root
+cd publish
+zip -r ../release.zip .
+
+# Move back to the original directory
+cd $original_dir
+
+echo "Release created."

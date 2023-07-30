@@ -3,7 +3,7 @@ run.pid
 **/obj/
 *.log
 *.security
-config.json
+config.override.json
 DynamicApi.WorkingDirectory/Class1.cs
 *.txt
 **/secrets.json
