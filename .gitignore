@@ -7,3 +7,5 @@ config.override.json
 DynamicApi.WorkingDirectory/Class1.cs
 *.txt
 **/secrets.json
+
+auth-token.security
