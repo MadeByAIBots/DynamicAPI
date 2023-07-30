@@ -4,6 +4,8 @@ run.pid
 *.log
 *.security
 config.override.json
-DynamicApi.WorkingDirectory/Class1.cs
+**/Class1.cs
 *.txt
 **/secrets.json
+*.zip
+
