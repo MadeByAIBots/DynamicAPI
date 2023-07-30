@@ -1,0 +1,21 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "DynamicAPI",
+  "name_for_model": "dynamic_api",
+  "description_for_human": "Dynamically generated API",
+  "description_for_model": "Dynamically generated API",
+  "auth": {
+    "type": "service_http",
+    "authorization_type": "bearer",
+    "verification_tokens":{
+      "openai":"{{OPEN_AI_VERIFICATION_TOKEN}}"
+    }
+  },
+  "api": {
+    "type": "openapi",
+    "url": "{{SERVER_URL}}/openapi.yaml"
+  },
+  "logo_url": "{{SERVER_URL}}/logo.png",
+  "contact_email": "madebyaibots@gmail.com",
+  "legal_info_url": "http://example.com/legal"
+}
