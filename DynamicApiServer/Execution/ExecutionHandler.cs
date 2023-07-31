@@ -29,6 +29,10 @@ namespace DynamicApiServer.Execution
                 var executor = _executorFactory.CreateExecutor(endpointDefinition.Executor);
                 var output = await executor.ExecuteCommand(endpointDefinition, executorDefinition, args);
                 _logger.LogInformation($"Output: {output}");
+
+                if (String.IsNullOrEmpty(output))
+                    output = "[Endpoint returned empty response]";
+                
                 return output;
             }
             catch (Exception e)
