@@ -11,6 +11,7 @@ public class WorkingDirectoryResolver
     }
 
     private string? _workingDirectory;
+    private string? _binariesDirectory;
 
     private readonly ILogger<WorkingDirectoryResolver> _logger;
 
@@ -18,28 +19,37 @@ public class WorkingDirectoryResolver
     {
         if (_workingDirectory == null)
         {
-            _workingDirectory = ResolveDirectory();
+            _workingDirectory = FindDirectoryContainingFileInCurrentOrAnyParent("config.json");
         }
 
         return _workingDirectory;
     }
+    
+    public string BinariesDirectory()
+    {
+        if (_binariesDirectory == null)
+        {
+            _binariesDirectory = FindDirectoryContainingFileInCurrentOrAnyParent("DynamicApiServer.dll");
+        }
 
-    private string ResolveDirectory()
+        return _binariesDirectory;
+    }
+
+    private string FindDirectoryContainingFileInCurrentOrAnyParent(string fileName)
     {
         var directory = Directory.GetCurrentDirectory();
 
-        while (!File.Exists(Path.Combine(directory, "config.json")))
+        while (!File.Exists(Path.Combine(directory, fileName)))
         {
             directory = Directory.GetParent(directory)?.FullName;
 
             if (directory == null)
             {
-                throw new FileNotFoundException("Could not find config.json file.");
+                throw new FileNotFoundException($"Could not find {fileName} file.");
             }
         }
 
-        _logger.LogInformation("Found working directory:");
-        _logger.LogInformation(directory);
+        _logger.LogInformation($"Found directory containing {fileName} file: {directory}");
 
         return directory;
     }

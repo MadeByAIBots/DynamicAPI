@@ -9,3 +9,4 @@ dotnet publish -o $publishDir
 cp install.sh $publishDir
 cp config.json $publishDir
 cp generate-auth-token.sh $publishDir
+cp config/ $publishDir/config/ -r

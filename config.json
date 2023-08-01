@@ -17,7 +17,7 @@ If you want to change the config values...
             "System.Linq",
             "System.Security.Cryptography",
             "Microsoft.Extensions.Logging.dll",
-            "DynamicApiServer/bin/Debug/net7.0/*.dll"
+            "*.dll"
         ],
         "Usings": [
             "System",

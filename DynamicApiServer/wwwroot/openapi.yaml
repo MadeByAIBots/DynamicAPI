@@ -89,6 +89,10 @@ paths:
           description: Files sent successfully
         '400':
           description: Bad request
+  /csharp-script-hello-world-test-0545d60b:
+    get:
+      operationId: csharpScriptHelloWorldTest0545d60b
+      responses: { }
   /file-prepend:
     post:
       description: Prepends content to a file located at a specified path within a specified working directory.

@@ -23,6 +23,8 @@ then
   # Change to the deployment directory
   cd $destinationPath
 
+  bash stop.sh
+
   # Pull the latest changes
   git pull || echo "Pull failed"
 

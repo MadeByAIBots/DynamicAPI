@@ -159,21 +159,25 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 			{
 				if (IsAssemblyName(reference))
 				{
-					//_logger.LogInformation(reference);
+					_logger.LogDebug(reference);
 					references.Add(reference);
 				}
 				else if (IsFilePathWithWildcard(reference))
 				{
 					var resolvedDirectory = ResolvePath(reference);
-					var matchingFiles = ListFiles(resolvedDirectory, GetWildcardPattern(reference));
 
-					// foreach (var matchingFile in matchingFiles)
-					// {
-					// 	_logger.LogInformation(matchingFile);
-					// }
-					references.AddRange(matchingFiles);
+					var binDirectory = _workingDirectoryResolver.BinariesDirectory();
+
+					var matchingFiles = ListFiles(binDirectory, reference);//ListFiles(resolvedDirectory, GetWildcardPattern(reference));
+
+					foreach (var matchingFile in matchingFiles)
+					{
+						_logger.LogDebug(matchingFile);
+					}
+					
+					references.AddRange(matchingFiles);	
 				}
-				else // IsFilePathWithoutWildcard(reference)
+				else
 				{
 					var resolvedPath = ResolvePath(reference);
 					references.Add(resolvedPath);
@@ -193,7 +197,7 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 
 		private List<string> ListFiles(string directory, string pattern)
 		{
-			return Directory.GetFiles(Path.GetDirectoryName(directory), Path.GetFileName(directory)).ToList();
+			return Directory.GetFiles(directory, pattern).ToList();
 		}
 
 		private string GetWildcardPattern(string reference)
