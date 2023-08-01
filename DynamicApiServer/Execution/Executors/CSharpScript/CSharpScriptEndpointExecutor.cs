@@ -164,11 +164,9 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 				}
 				else if (IsFilePathWithWildcard(reference))
 				{
-					var resolvedDirectory = ResolvePath(reference);
-
 					var binDirectory = _workingDirectoryResolver.BinariesDirectory();
 
-					var matchingFiles = ListFiles(binDirectory, reference);//ListFiles(resolvedDirectory, GetWildcardPattern(reference));
+					var matchingFiles = ListFiles(binDirectory, reference);
 
 					foreach (var matchingFile in matchingFiles)
 					{
