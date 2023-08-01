@@ -12,13 +12,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.6.0" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
     <PackageReference Include="TalkFlow.Chat.Core" Version="0.0.2.29-alpha" />
     <PackageReference Include="TalkFlow.Chat.Providers.Persistence.Json" Version="0.0.2.29-alpha" />
     <PackageReference Include="TalkFlow.Messages.Core" Version="0.0.2.29-alpha" />
     <PackageReference Include="TalkFlow.Messages.Providers.Backend.OpenAI" Version="0.0.2.29-alpha" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions" Version="19.2.29" />
-    <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="19.2.29" />
-    <PackageReference Include="Microsoft.NET.Build.Containers" Version="7.0.0" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions" Version="19.2.51" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="19.2.51" />
+    <PackageReference Include="Microsoft.NET.Build.Containers" Version="7.0.306" />
   </ItemGroup>
 
   <PropertyGroup>
