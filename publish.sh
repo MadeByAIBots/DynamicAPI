@@ -19,3 +19,4 @@ cp run.sh $publishDir -f
 cp run-async.sh $publishDir -f
 cp run-and-test.sh $publishDir -f
 cp test-running.sh $publishDir -f
+cp config_utils.sh $publishDir -f
