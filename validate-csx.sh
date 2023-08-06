@@ -4,7 +4,7 @@
 BASE_DIR="~/workspace/DynamicAPI"
 
 # Define the script to compile
-SCRIPT="$BASE_DIR/config/endpoints/endpoint-list/ListEndpointsScript.csx"
+SCRIPT="$BASE_DIR/endpoints/endpoint-list/ListEndpointsScript.csx"
 
 # Extract references from config.json
 REFERENCES=$(jq -r '.CSharpScript.References[]' $BASE_DIR/config.json)

@@ -1,5 +1,5 @@
 {
-    "EndpointPath": "config/endpoints",
+    "EndpointPath": "endpoints",
     "Url": "http://localhost",
     "Port": 5054,
     "TokenFilePath": "auth-token.security"

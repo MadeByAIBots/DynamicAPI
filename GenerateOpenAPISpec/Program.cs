@@ -42,7 +42,7 @@ namespace GenerateOpenAPISpec
 
             try
             {
-                var directory = "./config/endpoints";
+                var directory = "./endpoints";
                 logger.LogInformation($"Reading endpoint definitions from directory '{directory}'...");
 
                 var endpointFileReader = new EndpointFileReader(endpointFileReaderLogger);

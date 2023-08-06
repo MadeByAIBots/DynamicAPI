@@ -25,7 +25,7 @@ build_dotnet_projects_in_directory() {
 
 # Function to build all .NET endpoints
 build_all_dotnet_endpoints() {
-    for dir in config/endpoints/*/ ; do
+    for dir in endpoints/*/ ; do
         if [ -f ${dir}csharp.json ]; then
             build_dotnet_projects_in_directory $dir
         fi

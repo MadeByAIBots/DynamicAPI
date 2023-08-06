@@ -39,7 +39,7 @@ public class IntegrationTestContext : IDisposable
         var resolver = _workingDirectoryResolver;
         var loggerFactory = Server.Services.GetRequiredService<ILoggerFactory>();
         // TODO: Remove hardcoded path
-        _endpointManager = new TestEndpointManager(resolver.WorkingDirectory() + "/config/endpoints", loggerFactory);
+        _endpointManager = new TestEndpointManager(resolver.WorkingDirectory() + "/endpoints", loggerFactory);
         return _endpointManager;
     }
 

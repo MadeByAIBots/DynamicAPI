@@ -1,5 +1,5 @@
 {
-    "EndpointPath": "config/endpoints",
+    "EndpointPath": "endpoints",
     "Url": "http://localhost",	
     "Port": 8888,
     "ExternalUrl": "http://localhost:8888",
