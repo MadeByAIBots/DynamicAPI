@@ -36,7 +36,7 @@ public class DocumentGenerator
             Info = new OpenApiInfo
             {
                 Title = "DynamicAPI Self-Evolving Endpoints",
-                Description = "DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality. Leveraging the power of ChatGPT, DynamicAPI aims to streamline the process of endpoint creation, making API development faster and more efficient.",
+                Description = "DynamicAPI is a self-evolving API service that allows for the dynamic generation of endpoints from JSON files. With the ability to create, list, and execute endpoints, DynamicAPI provides a flexible and efficient solution for expanding API functionality. Leveraging the power of ChatGPT, DynamicAPI aims to streamline the process of endpoint creation, making API development faster and more efficient.\n\nInstructions:\nWhen a message is provided by the user, output the following headings with detailed information below each...\nAnalyse\nPlan\nReview plan\nExecute\nIMPORTANT: Only carry out an action AFTER confirming with the user.",
                 Version = "1.0.0"
             },
             Paths = openApiPaths
