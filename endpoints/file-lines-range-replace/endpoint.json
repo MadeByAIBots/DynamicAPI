@@ -2,7 +2,7 @@
   "method": "POST",
   "path": "/file-lines-range-replace",
   "description": "Replaces a range of lines in a file with new content. The range is identified by the start and end line numbers and their hashes, which can be obtained using the 'file read lines' endpoint. The new content is provided as a string with lines separated by newline characters.",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "args": [
     {
       "name": "workingDirectory",

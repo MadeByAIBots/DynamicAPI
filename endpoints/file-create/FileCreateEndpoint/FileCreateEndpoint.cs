@@ -4,33 +4,25 @@ using DynamicApi.Contracts;
 
 namespace FileCreateEndpoint;
 
-public class FileCreateEndpoint : IDynamicEndpointExecutor
+public class FileCreateEndpoint : DynamicEndpointExecutorBase
 {
-    public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
+    public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var workingDirectory = parameters.Parameters["workingDirectory"];
-        var filePath = parameters.Parameters["filePath"];
-        var content = parameters.Parameters["content"];
+        var workingDirectory = parameters.GetRequiredString("workingDirectory");
+        var filePath = parameters.GetRequiredString("filePath");
+        var content = parameters.GetRequiredString("content");
 
         var fullPath = Path.Combine(workingDirectory, filePath);
         var parentDirectory = Path.GetDirectoryName(fullPath);
 
         if (!Directory.Exists(parentDirectory))
         {
-            return Task.FromResult(new EndpointExecutionResult
-            {
-                Body = $"Error: The directory '{parentDirectory}' does not exist.",
-                //StatusCode = 400
-            });
+            return Fail($"Error: The directory '{parentDirectory}' does not exist.");
         }
 
         if (File.Exists(fullPath))
         {
-            return Task.FromResult(new EndpointExecutionResult
-            {
-                Body = $"Error: The file '{fullPath}' already exists.",
-                //StatusCode = 400
-            });
+            return Fail($"Error: The file '{fullPath}' already exists.");
         }
 
         try
@@ -39,17 +31,9 @@ public class FileCreateEndpoint : IDynamicEndpointExecutor
         }
         catch (Exception ex)
         {
-            return Task.FromResult(new EndpointExecutionResult
-            {
-                Body = $"Error: An error occurred while creating the file. Details: {ex.Message}",
-                //StatusCode = 500
-            });
+            return Fail($"Error: An error occurred while creating the file. Details: {ex.Message}");
         }
 
-        return Task.FromResult(new EndpointExecutionResult
-        {
-            Body = $"File created successfully at {fullPath}.",
-            //StatusCode = 200
-        });
+        return Success($"File created successfully at {fullPath}.");
     }
 }

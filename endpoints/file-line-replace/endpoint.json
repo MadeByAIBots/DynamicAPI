@@ -1,7 +1,7 @@
 {
     "description": "Replaces a specified line in a file with new content. The line to be replaced is identified by its line number and hash, which can be obtained using the 'file read lines' endpoint. This operation is irreversible, so use with caution.",
   "path": "/file-line-replace",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

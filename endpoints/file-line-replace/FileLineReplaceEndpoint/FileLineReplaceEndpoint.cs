@@ -1,11 +1,11 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Text;
 using DynamicApi.Contracts;
-using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
-public class FileLineReplaceScriptEndpoint : DynamicEndpointExecutorBase
+namespace FileLineReplaceEndpoint;
+
+public class FileLineReplaceEndpoint : DynamicEndpointExecutorBase
 {
         public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
         {
@@ -32,12 +32,14 @@ public class FileLineReplaceScriptEndpoint : DynamicEndpointExecutorBase
                 var existingLineHash = HashUtils.GenerateSimpleHash(existingLine);
                 if (existingLineHash.ToLower() != providedHash.ToLower())
                 {
-			        return Fail(File.ReadAllText(fullPath).ToNumbered() + "\n\nError: Line hash and line number do not match. Verify and try again.");
+                        return Fail(File.ReadAllText(fullPath).ToNumbered() +
+                                    "\n\nError: Line hash and line number do not match. Verify and try again.");
                 }
 
                 lines[lineNumber - 1] = newContent;
                 File.WriteAllLines(fullPath, lines);
 
-                return Success("New file content:\n\n" + File.ReadAllText(fullPath).ToNumbered() + "\n\nLine replaced successfully");
+                return Success("New file content:\n\n" + File.ReadAllText(fullPath).ToNumbered() +
+                               "\n\nLine replaced successfully");
         }
 }

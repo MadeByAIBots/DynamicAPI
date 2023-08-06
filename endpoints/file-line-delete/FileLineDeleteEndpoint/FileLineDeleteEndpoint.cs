@@ -1,12 +1,11 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
+using System.Text;
 using DynamicApi.Contracts;
-using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
-public class FileLineDeleteScriptEndpoint : DynamicEndpointExecutorBase
+namespace FileLineDeleteEndpoint;
+
+public class FileLineDeleteEndpoint : DynamicEndpointExecutorBase
 {
 	public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
 	{

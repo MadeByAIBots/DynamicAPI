@@ -1,7 +1,7 @@
 {
   "path": "/file-line-insert",
   "description": "Inserts a new line before a specified line in a file. NOTE: Use the 'file read lines' endpoint to get the correct line number and hash. DO NOT GUESS OR ASSUME.",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

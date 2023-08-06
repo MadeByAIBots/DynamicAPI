@@ -1,7 +1,7 @@
 {
 "description": "Updates the content of a file located at a specified path within a specified working directory.",
   "path": "/file-update",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

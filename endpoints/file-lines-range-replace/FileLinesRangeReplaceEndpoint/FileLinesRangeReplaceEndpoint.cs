@@ -1,12 +1,11 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Text;
 using DynamicApi.Contracts;
-using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
-public class FileLinesRangeReplaceScriptEndpoint : DynamicEndpointExecutorBase
+namespace FileLinesRangeReplaceEndpoint;
+
+public class FileLinesRangeReplaceEndpoint : DynamicEndpointExecutorBase
 {
     public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
