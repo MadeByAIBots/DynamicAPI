@@ -22,6 +22,7 @@ public class ApiConfiguration
     // }
     
     public int Port { get; set; }
+    public string NamePostfix { get; set; }
     public string EndpointPath { get; set; }
     public string TokenFilePath { get; set; }
     

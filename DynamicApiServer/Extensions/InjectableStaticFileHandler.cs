@@ -54,6 +54,7 @@ public class InjectableStaticFileHandler
         
         modifiedContent = InjectConfigValue(modifiedContent, "OPEN_AI_VERIFICATION_TOKEN", _configuration.OpenAIVerificationToken);
         modifiedContent = InjectConfigValue(modifiedContent, "SERVER_URL", _configuration.ExternalUrl);
+        modifiedContent = InjectConfigValue(modifiedContent, "NAME_POSTFIX", _configuration.NamePostfix);
         
         _logger.LogInformation("Modified content with configuration values");
         

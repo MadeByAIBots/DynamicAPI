@@ -1,6 +1,6 @@
 {
   "schema_version": "v1",
-  "name_for_human": "DynamicAPI",
+  "name_for_human": "DynamicAPI {{NAME_POSTFIX}}",
   "name_for_model": "dynamic_api",
   "description_for_human": "Dynamically generated API",
   "description_for_model": "Dynamically generated API",
