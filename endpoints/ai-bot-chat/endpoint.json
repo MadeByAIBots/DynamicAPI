@@ -1,7 +1,7 @@
 {
   "description": "Chat with an AI bot via OpenAI's API. The chat history will be preserved so it will remember previous messages.",
   "path": "/ai-bot-chat",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

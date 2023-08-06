@@ -1,23 +1,21 @@
-using System;
-using TalkFlow.Messages.Core.Provider;
-using TalkFlow.Messages.Core.Factory.Services;
-using TalkFlow.Messages.Core.Factory;
-using TalkFlow.Messages.Core.Services;
-using TalkFlow.Messages.Model;
-using TalkFlow.Messages.Core;
-using TalkFlow.Messages.Contracts.Factory;
-using TalkFlow.Messages.Providers.Backend.OpenAI;
-using TalkFlow.Messages.Providers.Backend.OpenAI.Services;
-using System.IO;
-using System.Threading.Tasks;
-using DynamicApi.Contracts;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Text;
-using Microsoft.Extensions.Logging;
+using System.Text.Json;
+using DynamicApi.Contracts;
+using DynamicApi.Endpoints.Model;
+using DynamicApi.Utilities.Files;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using TalkFlow.Messages.Contracts.Factory;
+using TalkFlow.Messages;
+using TalkFlow.Messages.Factory.Services;
+using TalkFlow.Messages.Providers.Backend.OpenAI.Services;
+using TalkFlow.Messages.Services;
 
-public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
+namespace AIBotFilesContentAnalysisEndpoint;
+
+
+public class AIBotFilesContentAnalysisEndpoint : DynamicEndpointExecutorBase
 {
     protected string[] IgnoreFolders { get;set; } = new string[]{
         "obj",
@@ -30,7 +28,7 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
 
     public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {
-        var logger = parameters.LoggerFactory.CreateLogger<AiBotSendFilesScriptEndpoint>();
+        var logger = parameters.LoggerFactory.CreateLogger<AIBotFilesContentAnalysisEndpoint>();
     
         if (!parameters.ApiConfig.Variables.TryGetValue("OpenAIKey", out var apiKey))
         {
@@ -94,7 +92,7 @@ public class AiBotSendFilesScriptEndpoint : DynamicEndpointExecutorBase
         return extensions.ToArray();
     }
     
-    public async Task<string[]> GetRelevantFileExtensions(string[] allFileExtensions, string message, string apiKey, ILogger<AiBotSendFilesScriptEndpoint> logger)
+    public async Task<string[]> GetRelevantFileExtensions(string[] allFileExtensions, string message, string apiKey, ILogger<AIBotFilesContentAnalysisEndpoint> logger)
     {
         var allFileExtensionsString = "\n" + String.Join('\n', allFileExtensions) + "\n";
         
@@ -141,7 +139,7 @@ The file extensions relevant to the inquiry are...
     }
     
     
-    public async Task<string[]> GetRelevantFilePaths(string message, string[] relativeFilePaths, string apiKey, ILogger<AiBotSendFilesScriptEndpoint> logger)
+    public async Task<string[]> GetRelevantFilePaths(string message, string[] relativeFilePaths, string apiKey, ILogger<AIBotFilesContentAnalysisEndpoint> logger)
     {
          var allFilePathsString = "\n" + String.Join('\n', relativeFilePaths) + "\n";
 
@@ -226,7 +224,7 @@ The file extensions relevant to the inquiry are...
     }
     
     
-    public async Task<string> GetAnswerFromRelativeFiles(string message, string contentOfMultipleFiles, string apiKey, ILogger<AiBotSendFilesScriptEndpoint> logger)
+    public async Task<string> GetAnswerFromRelativeFiles(string message, string contentOfMultipleFiles, string apiKey, ILogger<AIBotFilesContentAnalysisEndpoint> logger)
     {
          var inquiryPromptSection = GenerateInquiryPromptSection(message);
         
@@ -391,7 +389,7 @@ The file extensions relevant to the inquiry are...
             ";
     }
     
-        private string GetContentOfMultipleFiles(string workingDirectory, string[] relativeFilePaths, ILogger<AiBotSendFilesScriptEndpoint> logger)
+        private string GetContentOfMultipleFiles(string workingDirectory, string[] relativeFilePaths, ILogger<AIBotFilesContentAnalysisEndpoint> logger)
         {
             logger.LogInformation(
             $@"Getting content of multiple files...

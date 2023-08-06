@@ -1,7 +1,7 @@
 {
   "description": "Sends a message to OpenAI's Davinci model and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell it. It cannot access the web or files unless you send them to it.",
   "path": "/ai-bot-message",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {
