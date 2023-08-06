@@ -50,10 +50,14 @@ namespace DynamicApiServer.Execution.Executors.CSharpScript
 				var csharpExecutorConfig = (CSharpScriptExecutorDefinition)executorConfig;
 				string scriptPath = _scriptLocator.LocateScript(csharpExecutorConfig.Script, endpointDefinition.FolderName);
 
+				_logger.LogDebug($"  Script path: {scriptPath}");
+				
 				var scriptOptions = CreateScriptOptions();
 
+				var scriptContent = File.ReadAllText(scriptPath);
 
-				var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(File.ReadAllText(scriptPath), scriptOptions);
+				var script = Microsoft.CodeAnalysis.CSharp.Scripting.CSharpScript.Create(scriptContent, scriptOptions);
+				
 				var result = await ProcessScript(script, args);
 
 				return result.ToString();

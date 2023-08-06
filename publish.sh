@@ -4,9 +4,18 @@ publishDir="publish/"
 
 rm -r $publishDir
 
-dotnet publish -o $publishDir
+# Stop it first or publish command will fail as binaries are in use
+bash stop.sh
+
+dotnet publish -o $publishDir/bin
 
 cp install.sh $publishDir
 cp config.json $publishDir
 cp generate-auth-token.sh $publishDir
 cp config/ $publishDir/config/ -r
+cp example-file.txt $publishDir -f
+cp stop.sh $publishDir -f
+cp run.sh $publishDir -f
+cp run-async.sh $publishDir -f
+cp run-and-test.sh $publishDir -f
+cp test-running.sh $publishDir -f

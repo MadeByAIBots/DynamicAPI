@@ -25,6 +25,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicApi.WorkingDirectory
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateOpenAPISpec", "GenerateOpenAPISpec\GenerateOpenAPISpec.csproj", "{7F9D45FA-274C-439A-BDD7-D433CBE983A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunBashCommandEndpoint", "config\endpoints\run-bash-command\RunBashCommandEndpoint\RunBashCommandEndpoint.csproj", "{61303A81-CC12-4584-B64C-334425E654F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Endpoints", "Endpoints", "{81306D04-3802-411A-B3E1-C2D35CF50F58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldLibrary", "config\endpoints\csharp-hello-world\HelloWorldLibrary\HelloWorldLibrary.csproj", "{3E86BFDA-C105-4FC5-8BBB-FFD9FA4A1A6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryListEndpoint", "config\endpoints\directory-list\DirectoryListEndpoint\DirectoryListEndpoint.csproj", "{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,9 +98,24 @@ Global
 		{ACBF82A8-9201-4511-8748-D4EBD36718DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ACBF82A8-9201-4511-8748-D4EBD36718DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ACBF82A8-9201-4511-8748-D4EBD36718DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61303A81-CC12-4584-B64C-334425E654F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61303A81-CC12-4584-B64C-334425E654F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61303A81-CC12-4584-B64C-334425E654F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61303A81-CC12-4584-B64C-334425E654F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E86BFDA-C105-4FC5-8BBB-FFD9FA4A1A6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E86BFDA-C105-4FC5-8BBB-FFD9FA4A1A6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E86BFDA-C105-4FC5-8BBB-FFD9FA4A1A6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E86BFDA-C105-4FC5-8BBB-FFD9FA4A1A6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E35D8253-61C3-4D9C-8470-56AA3A8817CC} = {B72EDB17-25B7-4CBC-A66D-A4DB6D8A7C84}
 		{79C91703-CCD7-4DF9-81DE-AF4DFE67445D} = {B72EDB17-25B7-4CBC-A66D-A4DB6D8A7C84}
+		{61303A81-CC12-4584-B64C-334425E654F3} = {81306D04-3802-411A-B3E1-C2D35CF50F58}
+		{3E86BFDA-C105-4FC5-8BBB-FFD9FA4A1A6D} = {81306D04-3802-411A-B3E1-C2D35CF50F58}
+		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29} = {81306D04-3802-411A-B3E1-C2D35CF50F58}
 	EndGlobalSection
 EndGlobal

@@ -4,7 +4,7 @@
 original_dir=$(pwd)
 
 # Call the publish.sh script to build the project and publish the output
-./publish.sh
+bash publish.sh
 
 rm release.zip
 

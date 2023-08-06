@@ -1,5 +1,7 @@
 #!/bin/bash
 
+dir=$PWD
+
 # Check if config.override.json exists
 if [ -f "config.override.json" ]; then
     CONFIG_FILE="config.override.json"
@@ -13,10 +15,9 @@ PORT=$(jq -r '.Port' $CONFIG_FILE)
 # Kill any dotnet process
 bash stop.sh
 
-# Build the project
-(cd DynamicApiServer && dotnet build)
+bash generate-auth-token.sh
 
 # Run the project
-(dotnet run --project DynamicApiServer/DynamicApiServer.csproj --urls $URL:$PORT > run.log 2>&1 &)
+dotnet bin/DynamicApiServer.dll --urls $URL:$PORT
 
 echo "The application is running... listening on $URL:$PORT"

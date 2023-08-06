@@ -22,6 +22,7 @@ namespace DynamicApiServer.Extensions
                     loggingBuilder.ClearProviders();
             //        loggingBuilder.AddConfiguration(configuration.GetSection("Logging"));
                     loggingBuilder.AddConsole();
+                    loggingBuilder.SetMinimumLevel(LogLevel.Debug);
                 });
             //}
 

@@ -1,7 +1,7 @@
 {
   "description": "Lists the contents of a specified directory within the working directory.",
   "path": "/directory-list",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

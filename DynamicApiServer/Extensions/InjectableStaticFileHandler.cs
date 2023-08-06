@@ -37,7 +37,7 @@ public class InjectableStaticFileHandler
 
     private string GetWwwRootPath()
     {
-        var wwwrootPath1 = Path.Combine(_resolver.WorkingDirectory(), "wwwroot");
+        var wwwrootPath1 = Path.Combine(_resolver.WorkingDirectory(), "bin/wwwroot");
         var wwwrootPath2 = Path.Combine(_resolver.WorkingDirectory(), "DynamicApiServer/wwwroot");
 
         if (Directory.Exists(wwwrootPath1))

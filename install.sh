@@ -2,7 +2,8 @@
 # Check if the script is running from the workspace project folder
 if [ -d "publish" ]; then
   # If the publish directory exists, hand off execution to the install.sh script inside it
-  cp install.sh publish/install.sh
+  echo "Is inside workspace. Copying install script into publish folder and installing there..."
+  cp install.sh publish/install.sh -f
   cd publish
   bash install.sh
   # Exit the current script
@@ -17,8 +18,8 @@ bash generate-auth-token.sh
 
 SERVICE_NAME="dynamicapi"
 SCRIPT_DIR="$(cd "$(dirname \"${BASH_SOURCE[0]}\")" && pwd)"
-APP_PATH="$SCRIPT_DIR/DynamicApiServer.dll"
 WORKING_DIRECTORY="$SCRIPT_DIR"
+USER_NAME="$(whoami)"
 GROUP_NAME="$(id -gn)"
 SYSTEMD_FILE_PATH="/etc/systemd/system/$SERVICE_NAME.service"
 
@@ -26,6 +27,7 @@ echo "  Service name: $SERVICE_NAME"
 echo "  Script dir: $SCRIPT_DIR"
 echo "  Application path: $APP_PATH"
 echo "  Working directory: $WORKING_DIRECTORY"
+echo "  User name: $USER_NAME"
 echo "  Group name: $GROUP_NAME"
 echo "  Systemd File Path: $SYSTEMD_FILE_PATH"
 
@@ -35,13 +37,13 @@ Description=DynamicAPI
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/dotnet $APP_PATH
+ExecStart=/bin/bash $SCRIPT_DIR/run.sh
 WorkingDirectory=$WORKING_DIRECTORY
 User=$USER_NAME
 Group=$GROUP_NAME
 Restart=always
 RestartSec=10
-SyslogIdentifier=dotnet-example
+SyslogIdentifier=dynamicapi
 Environment=ASPNETCORE_ENVIRONMENT=Production 
 
 [Install]
@@ -69,3 +71,7 @@ if [ $? -eq 0 ]; then
 else
     echo "Error: $SERVICE_NAME.service is not active. Please check the service status for details."
 fi
+
+sleep 7
+
+bash test-running.sh
