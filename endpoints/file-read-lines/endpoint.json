@@ -1,7 +1,7 @@
 {
 "description": "Reads the lines of a file located at a specified path within a specified working directory.",
   "path": "/file-read-lines",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

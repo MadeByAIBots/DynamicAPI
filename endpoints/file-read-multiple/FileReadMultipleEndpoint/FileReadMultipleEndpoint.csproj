@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <OutDir>../bin</OutDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DynamicApi.Contracts\DynamicApi.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Utilities\Files\DynamicApi.Utilities.Files.csproj" />
+  </ItemGroup>
+
+</Project>

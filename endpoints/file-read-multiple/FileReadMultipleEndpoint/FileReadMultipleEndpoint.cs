@@ -1,12 +1,11 @@
-using System;
-using System.IO;
+﻿using System.Diagnostics;
 using System.Text;
-using System.Threading.Tasks;
 using DynamicApi.Contracts;
-using DynamicApi.Endpoints.Model;
 using DynamicApi.Utilities.Files;
 
-public class FileReadMultipleScriptEndpoint : DynamicEndpointExecutorBase
+namespace FileReadMultipleEndpoint;
+
+public class FileReadMultipleEndpoint : DynamicEndpointExecutorBase
 {
 	public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
 	{
@@ -27,6 +26,7 @@ public class FileReadMultipleScriptEndpoint : DynamicEndpointExecutorBase
 
 			var relativePath = fullPath.Replace(workingDirectory, "");
 			outputBuilder.AppendLine($"[{relativePath}]");
+			
 			var fileContent = File.ReadAllText(fullPath);
 			outputBuilder.AppendLine(fileContent);
 

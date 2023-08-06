@@ -1,7 +1,7 @@
 {
   "description": "Searches for a specified string in a file and replaces it with a new string. Use with caution.",
   "path": "/file-search-replace",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

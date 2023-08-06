@@ -1,6 +1,6 @@
 {
   "path": "/endpoint-list",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "get",
   "responses": [
     {

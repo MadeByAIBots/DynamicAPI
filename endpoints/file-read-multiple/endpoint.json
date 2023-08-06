@@ -1,6 +1,6 @@
 {
   "path": "/file-read-multiple",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {
