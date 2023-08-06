@@ -1,12 +1,8 @@
 #!/bin/bash
 
-if [ -f "config.override.json" ]; then
-    CONFIG_FILE="config.override.json"
-else
-    CONFIG_FILE="config.json"
-fi
+source config_utils.sh
 
-port=$(jq -r '.Port' $CONFIG_FILE)
+port=$(get_config_value 'Port')
 
 pid=$(lsof -t -i:$port)
 
