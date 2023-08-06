@@ -1,10 +1,10 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Text;
 using DynamicApi.Contracts;
-using DynamicApi.Endpoints.Model;
 
-public class FileCreateScriptEndpoint : IDynamicEndpointExecutor
+namespace FileCreateEndpoint;
+
+public class FileCreateEndpoint : IDynamicEndpointExecutor
 {
     public Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
     {

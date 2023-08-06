@@ -1,7 +1,7 @@
 {
 "description": "Creates a new file at a specified path within a specified working directory and writes content to it.",
   "path": "/file-create",
-  "executor": "csharp-script",
+  "executor": "csharp",
   "method": "post",
   "args": [
     {

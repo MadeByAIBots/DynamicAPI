@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldLibrary", "endpoi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DirectoryListEndpoint", "endpoints\directory-list\DirectoryListEndpoint\DirectoryListEndpoint.csproj", "{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileCreateEndpoint", "endpoints\file-create\FileCreateEndpoint\FileCreateEndpoint.csproj", "{65D59A7D-5D89-4AC7-98E6-757D6860E416}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,10 @@ Global
 		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65D59A7D-5D89-4AC7-98E6-757D6860E416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D59A7D-5D89-4AC7-98E6-757D6860E416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65D59A7D-5D89-4AC7-98E6-757D6860E416}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D59A7D-5D89-4AC7-98E6-757D6860E416}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E35D8253-61C3-4D9C-8470-56AA3A8817CC} = {B72EDB17-25B7-4CBC-A66D-A4DB6D8A7C84}
@@ -117,5 +123,6 @@ Global
 		{61303A81-CC12-4584-B64C-334425E654F3} = {81306D04-3802-411A-B3E1-C2D35CF50F58}
 		{3E86BFDA-C105-4FC5-8BBB-FFD9FA4A1A6D} = {81306D04-3802-411A-B3E1-C2D35CF50F58}
 		{AE52B8A3-596E-4C0D-B7F2-A639ED2C8F29} = {81306D04-3802-411A-B3E1-C2D35CF50F58}
+		{65D59A7D-5D89-4AC7-98E6-757D6860E416} = {81306D04-3802-411A-B3E1-C2D35CF50F58}
 	EndGlobalSection
 EndGlobal
