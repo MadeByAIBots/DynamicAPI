@@ -16,19 +16,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
     <PackageReference Include="TalkFlow.Chat.Core" Version="0.0.3.30-alpha" />
+    <PackageReference Include="TalkFlow.Chat.Providers.Persistence.Json" Version="0.0.3.30-alpha" />
     <PackageReference Include="TalkFlow.Messages.Core" Version="0.0.3.30-alpha" />
+    <PackageReference Include="TalkFlow.Messages.Providers.Backend.OpenAI" Version="0.0.3.30-alpha" />
     <PackageReference Include="TalkFlow.Messages.Providers.Storage.Json" Version="0.0.3.30-alpha" />
     <PackageReference Include="TestableIO.System.IO.Abstractions" Version="19.2.51" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="19.2.51" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="TalkFlow.Chat.Providers.Persistence.Json">
-      <HintPath>..\..\..\..\..\.nuget\packages\talkflow.chat.providers.persistence.json\0.0.3.30-alpha\lib\net7.0\TalkFlow.Chat.Providers.Persistence.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="TalkFlow.Messages.Providers.Backend.OpenAI">
-      <HintPath>..\..\..\..\..\.nuget\packages\talkflow.messages.providers.backend.openai\0.0.3.30-alpha\lib\net7.0\TalkFlow.Messages.Providers.Backend.OpenAI.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

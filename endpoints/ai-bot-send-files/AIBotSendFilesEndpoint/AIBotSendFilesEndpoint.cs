@@ -9,14 +9,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TalkFlow.Chat;
 using TalkFlow.Chat.Factory.Services;
-using TalkFlow.Chat.Providers.Persistence.Json.Services;
 using TalkFlow.Chat.Services;
 using TalkFlow.Messages;
 using TalkFlow.Messages.Extensions.Services;
 using TalkFlow.Messages.Factory.Services;
 using TalkFlow.Messages.Services;
 using TalkFlow.Messages.Model;
-using TalkFlow.Messages.Providers.Backend.OpenAI;
 using TalkFlow.Messages.Providers.Backend.OpenAI.Services;
 
 namespace AIBotSendFilesEndpoint;
