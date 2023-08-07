@@ -14,9 +14,9 @@ using TalkFlow.Messages.Model;
 using TalkFlow.Messages.Providers.Backend.OpenAI.Services;
 using TalkFlow.Messages.Services;
 
-namespace AiBotMessageEndpoint;
+namespace AIBotMessageEndpoint;
 
-public class AiBotMessageEndpoint : DynamicEndpointExecutorBase
+public class AIBotMessageEndpoint : DynamicEndpointExecutorBase
 {
 	public override async Task<EndpointExecutionResult> ExecuteAsync(DynamicExecutionParameters parameters)
 	{
