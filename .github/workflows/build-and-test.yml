@@ -46,7 +46,6 @@ jobs:
       - name: Execute test script
         run: bash ./test.sh
 
-    needs: test
   install:
     runs-on: ubuntu-latest
     steps:
