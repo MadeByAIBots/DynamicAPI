@@ -8,10 +8,10 @@ using DynamicApi.Utilities.Files;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TalkFlow.Messages;
-using TalkFlow.Messages.Core;
-using TalkFlow.Messages.Core.Extensions.Services;
-using TalkFlow.Messages.Core.Factory.Services;
-using TalkFlow.Messages.Core.Services;
+using TalkFlow.Messages;
+using TalkFlow.Messages.Extensions.Services;
+using TalkFlow.Messages.Factory.Services;
+using TalkFlow.Messages.Services;
 using TalkFlow.Messages.Model;
 using TalkFlow.Messages.Providers.Backend.OpenAI.Services;
 

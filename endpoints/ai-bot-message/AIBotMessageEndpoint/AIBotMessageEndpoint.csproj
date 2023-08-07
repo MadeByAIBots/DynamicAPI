@@ -15,8 +15,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
-    <PackageReference Include="TalkFlow.Messages.Core" Version="1.0.0.3150" />
-    <PackageReference Include="TalkFlow.Messages.Providers.Backend.OpenAI" Version="1.0.0.3150" />
+    <PackageReference Include="TalkFlow.Messages.Core" Version="0.0.3.30-alpha" />
+    <PackageReference Include="TalkFlow.Messages.Providers.Backend.OpenAI" Version="0.0.3.30-alpha" />
     <PackageReference Include="TestableIO.System.IO.Abstractions" Version="19.2.51" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="19.2.51" />
   </ItemGroup>
