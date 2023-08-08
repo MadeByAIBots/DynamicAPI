@@ -13,12 +13,10 @@ jobs:
       - name: Print working directory before checkout
         run: pwd
       - uses: actions/checkout@v2
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 7.0.x
-
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Execute build script
@@ -37,10 +35,13 @@ jobs:
           dotnet-version: 7.0.x
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Generate Auth Token
         run: bash ./generate-auth-token.sh
+        
       - name: Build
         run: bash build.sh
+        
       - name: Execute test script
         run: bash ./test.sh
 
@@ -50,16 +51,23 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 7.0.x
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Run publish.sh
         run: bash publish.sh
+        
+      - name: Run prepare.sh script
+        run: sudo bash prepare.sh
+        
       - name: Run install.sh script
-        run: sudo bash ./install.sh
+        run: sudo bash install.sh
+        
       - name: Check Service Status
         run: systemctl status dynamicapi || true
 
