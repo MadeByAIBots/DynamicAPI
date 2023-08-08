@@ -59,6 +59,9 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build
+        run: bash build.sh
+        
       - name: Run and Test
         run: bash run-and-test.sh
         
