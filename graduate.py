@@ -42,6 +42,7 @@ def checkout_branch(branch_name):
 
 def pull_changes(branch_name):
     try:
+        repo.git.fetch('origin', branch_name)
         repo.git.pull('origin', branch_name)
         logging.info(f"Pulled latest changes for branch {branch_name}")
     except git.GitCommandError as e:
