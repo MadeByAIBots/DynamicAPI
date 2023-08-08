@@ -61,6 +61,7 @@ jobs:
 
       - name: Run and Test
         run: bash run-and-test.sh
+        
   install:
     needs: test
     runs-on: ubuntu-latest
@@ -89,3 +90,13 @@ jobs:
 
       - name: Output Service Logs
         run: journalctl -u dynamicapi
+        
+  graduate:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run graduate.py
+        run: python3 graduate.py
