@@ -110,6 +110,9 @@ jobs:
       - name: Configure Git pull strategy
         run: git config pull.rebase false
 
+      - name: List all branches
+        run: git branch -a
+
       - name: Install gitpython module
         run: pip install gitpython
 
