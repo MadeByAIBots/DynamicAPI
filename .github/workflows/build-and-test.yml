@@ -105,6 +105,9 @@ jobs:
 
       - name: Install gitpython module
         run: pip install gitpython
-        
+
+      - name: Get branch name
+        run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+
       - name: Run graduate.py
-        run: python3 graduate.py
+        run: python3 graduate.py --branch=${{ env.BRANCH_NAME }}
