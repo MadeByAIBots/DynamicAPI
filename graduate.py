@@ -20,6 +20,9 @@ def fetch_branch(branch_name):
     try:
         repo.git.fetch('origin', branch_name)
         logging.info(f"Fetched branch {branch_name} from remote")
+        if not branch_name in [str(b) for b in repo.branches] and f'origin/{branch_name}' in repo.remotes.origin.refs:
+            repo.git.checkout('-b', branch_name, f'origin/{branch_name}')
+            logging.info(f"Checked out branch {branch_name} tracking remote branch origin/{branch_name}")
     except git.GitCommandError as e:
         logging.error(f"Failed to fetch branch {branch_name} from remote: {str(e)}")
         raise
