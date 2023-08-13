@@ -94,6 +94,18 @@ jobs:
       - name: Output Service Logs
         run: journalctl -u dynamicapi
         
+  install-from-source:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run install-from-source.sh script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./curl-scripts/install-from-source.sh
+
   graduate:
     needs: [test, install, run]
     runs-on: ubuntu-latest
@@ -125,19 +137,9 @@ jobs:
       - name: Get branch name
         run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
 
-- name: Configure Git pull strategy
-  run: git config pull.rebase false
-- name: Run graduate.py
+      - name: Configure Git pull strategy
+        run: git config pull.rebase false
+
+      - name: Run graduate.py
         run: python3 graduate.py --branch=${{ env.BRANCH_NAME }}
-install-from-source:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
 
-    - name: Run install-from-source.sh script
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: bash ./curl-scripts/install-from-source.sh
-
-    # Optional: Additional logging or verification steps
