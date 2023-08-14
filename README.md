@@ -17,7 +17,7 @@ The DynamicAPI allows endpoints to be added as modules without having to restart
 
 ## Quick Start
 
-For a detailed setup guide, please refer to the [Setup README](./setup/README.md).
+For a detailed setup guide, please refer to the [Setup README](./docs/setup/README.md).
 
 ## Built-in Endpoints
 
