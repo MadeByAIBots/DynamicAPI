@@ -2,7 +2,7 @@
 set -e # Exit on any error
 
 # Define default installation directory in the home directory
-DEFAULT_INSTALL_DIR="~/DynamicAPI-new"
+DEFAULT_INSTALL_DIR="~/DynamicAPI"
 
 # Define installation directory, allowing override by environment variable
 INSTALL_DIR=${INSTALL_DIR:-$DEFAULT_INSTALL_DIR}
