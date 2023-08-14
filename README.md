@@ -45,6 +45,10 @@ DynamicAPI comes with a variety of built-in endpoints that provide essential fun
 
 Have questions, ideas, or need help with DynamicAPI? Feel free to open an issue or contribute to the project. We welcome feedback and contributions from the community!
 
+Join the new discord server here:
+
+https://discord.gg/ECG3YTMpPK
+
 ## License
 
 This project is licensed under the GNU General Public License (GPL).
