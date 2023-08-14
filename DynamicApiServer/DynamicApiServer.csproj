@@ -18,7 +18,7 @@
     <PackageReference Include="TalkFlow.Messages.Providers.Backend.OpenAI" Version="0.0.3.30-alpha" />
     <PackageReference Include="TestableIO.System.IO.Abstractions" Version="19.2.51" />
     <PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="19.2.51" />
-    <PackageReference Include="Microsoft.NET.Build.Containers" Version="7.0.306" />
+    <PackageReference Include="Microsoft.NET.Build.Containers" Version="7.0.400" />
   </ItemGroup>
 
   <PropertyGroup>
