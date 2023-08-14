@@ -9,14 +9,29 @@ bash stop.sh
 
 dotnet publish -o $publishDir/bin
 
-cp install.sh $publishDir
-cp config.json $publishDir
-cp generate-auth-token.sh $publishDir
-cp endpoints/ $publishDir/endpoints/ -r
-cp example-file.txt $publishDir -f
-cp stop.sh $publishDir -f
-cp run.sh $publishDir -f
-cp run-async.sh $publishDir -f
-cp run-and-test.sh $publishDir -f
-cp test-running.sh $publishDir -f
-cp config_utils.sh $publishDir -f
+cp -r endpoints/ $publishDir/endpoints/
+
+# Array of files and scripts to copy
+files=(
+  "install.sh"
+  "config.json"
+  "generate-auth-token.sh"
+  "example-file.txt"
+  "stop.sh"
+  "run.sh"
+  "run-async.sh"
+  "run-and-test.sh"
+  "test-running.sh"
+  "config_utils.sh"
+  "set-external-url.sh"
+  "set-config-value.sh"
+  "set-name-postfix.sh"
+  "set-openai-verification-token.sh"
+  "set-port.sh"
+  "restart.sh"
+)
+
+# Loop to copy files and scripts
+for file in "${files[@]}"; do
+  cp $file $publishDir
+done
