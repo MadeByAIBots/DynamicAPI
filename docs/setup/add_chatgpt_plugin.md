@@ -102,7 +102,3 @@ If you didn't get the expected response, please log a GitHub issue to get assist
 
 ### Celebrate
 If you got the desired response... celebrate! You can now get ChatGPT to interact with your server, run commands, and read/write/edit files.
-
-## Notes
-- The local server setup and external URL configuration are covered in separate documents and must be completed before following this procedure.
-- The authentication token can be retrieved by simply opening the file or using standard commands like `cat`.
