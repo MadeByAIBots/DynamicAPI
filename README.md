@@ -1,25 +1,50 @@
 # DynamicAPI
 
-DynamicAPI is a highly flexible and adaptable API server that dynamically creates its endpoints based on configuration files. This allows for rapid development and deployment of various functionalities without modifying the core codebase.
+DynamicAPI is a modular API written in C# with .NET 7, which can be used as a ChatGPT plugin.
 
-## Concept
+The DynamicAPI allows endpoints to be added as modules without having to restart or rebuild the app.
 
-The core concept behind DynamicAPI is to define endpoints through configuration files and scripts. Each endpoint is defined in its own directory under `endpoints/`. The name of the directory corresponds to the endpoint's name, and the contents of the directory define the behavior of the endpoint.
+## Features
 
-## Usage
+- **Modular Design**: Add or update endpoints without restarting the application.
+- **Multiple Executor Types**: Supports the following:
+  - Bash
+  - C# script
+  - C#
+  - Python (coming soon)
+- **Built-in Endpoints**: Comes with a variety of essential endpoints (see below).
+- **ChatGPT Plugin**: Can be used as a standalone Dynamic API or as a ChatGPT plugin.
 
-1. **Define Endpoints**: Create a directory under `endpoints/` for each endpoint you want to define. Include any necessary configuration files, scripts, or other assets in the directory.
+## Quick Start
 
-2. **Run the Server**: Start the DynamicAPI server. It will automatically load the endpoints defined in the `endpoints/` directory.
+For a detailed setup guide, please refer to the [Setup README](./setup/README.md).
 
-3. **Interact with the API**: Send HTTP requests to the DynamicAPI server to interact with the endpoints you've defined. The server will execute the corresponding configurations and scripts and return the results.
+## Built-in Endpoints
 
-## Benefits
+DynamicAPI comes with a variety of built-in endpoints that provide essential functionalities out of the box. These endpoints cover a wide range of operations, from file and directory management to code execution and experimental AI interactions. Below is a selection of some of the most useful built-in endpoints:
 
-- **Flexibility**: Easily add or modify endpoints without changing the server's code.
-- **Rapid Prototyping**: Quickly prototype and test new API functionalities.
-- **Customization**: Tailor the behavior of endpoints to specific use cases through configurations and scripts.
+### File Operations
+- File Read/Write
+- File Search (Names & Content)
+- Line Operations (Insert, Replace, Delete, etc.)
 
-## Contributing
+### Directory Operations
+- Directory List/Create/Search
+- Directory Copy/Move
 
-As the project evolves, contributions are welcome. Please ensure that any added endpoints are well-documented and that changes are communicated effectively.
+### Code/Command Execution
+- Run Bash Command
+- Run Python Snippet
+
+### AI Interaction (Experimental)
+- AI Bot Message
+- AI Bot Chat
+- AI Bot Send Files and Ask Questions
+
+## Support and Community
+
+Have questions, ideas, or need help with DynamicAPI? Feel free to open an issue or contribute to the project. We welcome feedback and contributions from the community!
+
+## License
+
+This project is licensed under the GNU General Public License (GPL).
