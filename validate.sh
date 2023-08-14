@@ -9,6 +9,6 @@ swagger-cli validate DynamicApiServer/wwwroot/openapi.yaml
 jsonlint -q DynamicApiServer/wwwroot/.well-known/ai-plugin.json
 
 #!/bin/bash
-find ./config -name "*.json" -print0 | while IFS= read -r -d '' file; do
+find ./endpoints -name "*.json" -print0 | while IFS= read -r -d '' file; do
     jsonlint -q "$file" || echo "Invalid JSON: $file"
 done
