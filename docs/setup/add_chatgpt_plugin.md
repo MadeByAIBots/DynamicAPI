@@ -70,9 +70,11 @@ Note: If this fails, make sure you restarted the server using the restart script
 If it still fails, post a GitHub issue for assistance.
 
 ### 13. Finish Install on ChatGPT
-Click "Install for me" button
-Click "Continue"
-Click "Install plugin"
+1. Click "Install for me" button
+   
+2. Click "Continue"
+
+3. Click "Install plugin"
 
 ### 14. Enable the Plugin
 The new plugin should be enabled and the checkbox should be ticked. If it's not ticked, then tick it to enable it.
