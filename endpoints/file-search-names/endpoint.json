@@ -6,13 +6,13 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The base path where the search should start."
     },
     {
       "name": "fileName",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The name of the file to search for. Use * wildcards the same way you would with 'find' bash command."
     }

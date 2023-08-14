@@ -6,13 +6,13 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The absolute path to the current working directory (e.g., project or repository root)."
     },
     {
       "name": "directoryPath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The relative path of the new directory to be created."
     }

@@ -6,43 +6,43 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The absolute path to the directory where the file is located."
     },
     {
       "name": "filePath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The relative path of the file in which a line will be replaced."
     },
     {
       "name": "startLineNumber",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The line number of the start line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy."
     },
     {
       "name": "endLineNumber",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The line number of the end line to be replaced. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint to ensure accuracy."
     },
     {
       "name": "startLineHash",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The hash of the start line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint."
     },
     {
       "name": "endLineHash",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The hash of the end line to be replaced for verification. DO NOT GUESS OR ASSUME. This must be obtained from the 'file read lines' endpoint."
     },
     {
       "name": "newContents",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The new content to replace the old content with."
     }

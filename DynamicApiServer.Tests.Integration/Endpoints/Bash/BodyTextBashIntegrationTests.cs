@@ -30,7 +30,7 @@ namespace DynamicApiServer.Tests.Integration
                         new EndpointArgumentDefinition
                         {
                             Name = "target",
-                            Type = "string",
+                            SourceFormat = "string",
                             Source = "body",
                             Description = "The plain text body containing the target to say hello to."
                         }

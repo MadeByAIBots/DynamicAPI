@@ -6,13 +6,13 @@
   "args": [
     {
       "name": "sourcePath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The source path of the directory to be copied."
     },
     {
       "name": "destinationPath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The destination path where the directory should be copied to."
     }

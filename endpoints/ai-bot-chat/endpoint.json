@@ -6,7 +6,7 @@
   "args": [
     {
       "name": "message",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "A very detailed, comprehensive message to the bot. NOTE: It does not know anything about the current workspace, or working directory, so you need to provide it with any information it needs."
     }

@@ -6,25 +6,25 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The absolute path to the current working directory."
     },
     {
       "name": "filePath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The relative path of the file in which we'll search and replace."
     },
     {
       "name": "searchQuery",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The string we're looking for in the file."
     },
     {
       "name": "replacementString",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The string that will replace the searchQuery in the file."
     }

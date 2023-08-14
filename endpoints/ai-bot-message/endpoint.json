@@ -1,14 +1,14 @@
 {
-  "description": "Sends a message to OpenAI's Davinci model and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell it. It cannot access the web or files unless you send them to it.",
+  "description": "Sends a message to OpenAI's GPT model and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell it. It cannot access the web or files unless you send them to it.",
   "path": "/ai-bot-message",
   "executor": "csharp",
   "method": "post",
   "args": [
     {
       "name": "message",
-      "type": "json",
+      "type": "string",
       "source": "body",
-      "description": "The message to send to the Davinci model."
+      "description": "The message to send to the GPT model."
     }
   ],
   "responses": [

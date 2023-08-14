@@ -5,13 +5,13 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The base path where the files are located."
     },
     {
       "name": "filePaths",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The semicolon-separated list of file paths to read."
     }

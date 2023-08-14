@@ -25,11 +25,11 @@ namespace DynamicApiServer.Requests.Arguments
                 var body = await requestInfo.Body();
 
                 _logger.LogDebug("Body: " + body);
-                if (argumentDefinition.Type == "string")
+                if (argumentDefinition.SourceFormat == "string")
                 {
                     return await ExtractPlainTextArgument(body, argumentDefinition);
                 }
-                else if (argumentDefinition.Type == "json")
+                else if (argumentDefinition.SourceFormat == "json")
                 {
                     return await ExtractJsonArgument(body, argumentDefinition);
                 }

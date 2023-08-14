@@ -6,19 +6,19 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The base path where the search should start."
     },
     {
       "name": "query",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The search query. Use * wildcards the same way you would use in grep."
     },
     {
       "name": "recursive",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "Whether to search within subdirectories."
     }

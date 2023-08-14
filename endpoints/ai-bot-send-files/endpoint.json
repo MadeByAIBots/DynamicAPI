@@ -1,24 +1,24 @@
 {
-  "description": "Sends the contents of multiple files to OpenAI's Davinci model, along with instructions on what to do with them, and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell/send it. It cannot access the web or files unless you send them to it.",
+  "description": "Sends the contents of multiple files to OpenAI's GPT model, along with instructions on what to do with them, and receives a response. NOTE: The model has absolutely no knowledge of anything except what you tell/send it. It cannot access the web or files unless you send them to it.",
   "path": "/ai-bot-send-files",
   "executor": "csharp-script",
   "method": "post",
   "args": [
     {
       "name": "files",
-      "type": "json",
+      "type": "string",
       "source": "body",
-      "description": "A semicolon-separated list of file paths to send to the Davinci model. The content of these files will be read and sent as a message to the AI model."
+      "description": "A semicolon-separated list of file paths to send to the GPT model. The content of these files will be read and sent as a message to the AI model."
     },
     {
       "name": "message",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "A detailed instruction for the AI model, such as 'identify problems', 'summarize', 'provide suggestions', etc. The AI model will process the content of the files based on this instruction."
     },
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The base path where the files are located. All file paths should be relative to this directory."
     }

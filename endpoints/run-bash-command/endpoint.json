@@ -5,19 +5,19 @@
   "args": [
     {
       "name": "command",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The bash command to execute."
     },
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The base working directory to execute the command in."
     },
     {
       "name": "maxLines",
-      "type": "json",
+      "type": "string",
       "source": "body",
 "required": false,
       "description": "The maximum number of output lines, defaulting to 10."

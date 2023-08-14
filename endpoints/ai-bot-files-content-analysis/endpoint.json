@@ -1,18 +1,18 @@
 {
-  "description": "Ask OpenAI's Davinci model questions about files in the working directory. This will perform a smart multi step analysis to identify the relevant files, and send them to another bot for analysis, to generate a response to your message.",
+  "description": "Ask OpenAI's GPT model questions about files in the working directory. This will perform a smart multi step analysis to identify the relevant files, and send them to another bot for analysis, to generate a response to your message.",
   "path": "/ai-bot-files-content-analysis",
   "executor": "csharp",
   "method": "post",
   "args": [
     {
       "name": "message",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "A detailed instruction or question for the AI model, such as 'which file is responsible for...?', 'identify problems', 'summarize', 'provide suggestions', etc. The AI model will process the content of the files based on this instruction."
     },
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The base path where the files are located. All file paths should be relative to this directory."
     }

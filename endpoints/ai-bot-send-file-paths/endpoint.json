@@ -6,25 +6,25 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The working directory (eg. project or repository)"
     },
     {
       "name": "subDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The directory to list files from. This must be relative to the working directory."
     },
     {
       "name": "message",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The message to send to the bot, such as asking it for identify which file to use for a task."
     },
     {
       "name": "recursive",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "Whether to search directories recursively."
     }

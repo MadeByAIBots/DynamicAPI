@@ -6,19 +6,19 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The absolute path to the current working directory (e.g., project or repository root)."
     },
     {
       "name": "searchPath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The relative path from the working directory where the search should start."
     },
     {
       "name": "query",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The query for the directory names to search for. This can include wildcards for more flexible searching."
     }

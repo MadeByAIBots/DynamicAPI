@@ -6,20 +6,20 @@
   "args": [
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The absolute path to the current working directory (e.g., project or repository root)."
     },
     {
       "name": "directoryPath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "OPTIONAL: The relative path of the directory to be listed within the working directory.",
       "required": false
     },
     {
       "name": "recursive",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "Whether to list directories recursively.",
       "required": false

@@ -6,13 +6,13 @@
   "args": [
     {
       "name": "pythonSnippet",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The Python code snippet to execute."
     },
     {
       "name": "workingDirectory",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The base working directory to execute the command in."
     }

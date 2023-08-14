@@ -6,13 +6,13 @@
   "args": [
     {
       "name": "sourcePath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The absolute path of the directory to be moved."
     },
     {
       "name": "destinationPath",
-      "type": "json",
+      "type": "string",
       "source": "body",
       "description": "The absolute path where the directory should be moved to."
     }
